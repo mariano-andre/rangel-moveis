@@ -8,7 +8,7 @@ interface CardProps {
 export function Card({ children, className = "" }: CardProps) {
   return (
     <div
-      className={`bg-zinc-800/60 rounded-xl border border-zinc-700/60 p-4 ${className}`}
+      className={`bg-bg-card rounded-xl border border-border-strong p-4 ${className}`}
     >
       {children}
     </div>
@@ -22,7 +22,7 @@ interface CardTitleProps {
 
 export function CardTitle({ icon, children }: CardTitleProps) {
   return (
-    <div className="flex items-center gap-2 text-sm font-medium text-zinc-300 mb-3">
+    <div className="flex items-center gap-2 text-[14px] font-medium text-text-primary mb-3">
       {icon}
       {children}
     </div>

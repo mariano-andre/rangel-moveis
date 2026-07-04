@@ -21,20 +21,20 @@ export function MonthlyRevenueChart({ history }: MonthlyRevenueChartProps) {
               key={h.month}
               title={`${h.month}: R$ ${h.value.toLocaleString("pt-BR")}`}
               className={`flex-1 min-w-2 rounded-t-sm ${
-                isLast ? "bg-amber-600" : "bg-amber-600/40"
+                isLast ? "bg-brand" : "bg-brand-hover/80"
               }`}
               style={{ height: `${(h.value / maxValue) * 100}%` }}
             />
           );
         })}
       </div>
-      <div className="flex justify-between text-[10px] text-zinc-500 mt-1.5">
+      <div className="flex justify-between text-[10px] text-text-secondary mt-1.5">
         {history.map((h) => (
           <span key={h.month}>{h.month}</span>
         ))}
       </div>
       {isLastMonthBest && (
-        <p className="text-xs text-zinc-500 mt-3">
+        <p className="text-xs text-text-secondary/80 mt-3">
           Melhor mês dos últimos {history.length} meses.
         </p>
       )}

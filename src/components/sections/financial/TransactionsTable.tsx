@@ -21,24 +21,24 @@ export function TransactionsTable({
       <table className="w-full text-sm hidden md:table">
         <thead>
           <tr className="text-left">
-            <th className="text-[11px] text-zinc-500 uppercase font-medium pb-2 border-b border-zinc-700">
+            <th className="text-[11px] text-text-secondary uppercase font-medium pb-2 border-b border-border-input">
               Descrição
             </th>
-            <th className="text-[11px] text-zinc-500 uppercase font-medium pb-2 border-b border-zinc-700">
+            <th className="text-[11px] text-text-secondary uppercase font-medium pb-2 border-b border-border-input">
               Tipo
             </th>
-            <th className="text-[11px] text-zinc-500 uppercase font-medium pb-2 border-b border-zinc-700">
+            <th className="text-[11px] text-text-secondary uppercase font-medium pb-2 border-b border-border-input">
               Data
             </th>
-            <th className="text-[11px] text-zinc-500 uppercase font-medium pb-2 border-b border-zinc-700 text-right">
+            <th className="text-[11px] text-text-secondary uppercase font-medium pb-2 border-b border-border-input text-right">
               Valor
             </th>
           </tr>
         </thead>
         <tbody>
           {transactions.slice(0, 8).map((t) => (
-            <tr key={t.id} className="border-b border-zinc-800/60 last:border-0">
-              <td className="py-2.5 text-zinc-200">{t.description}</td>
+            <tr key={t.id} className="border-b border-border-strong last:border-0">
+              <td className="py-2.5 text-text-primary/80">{t.description}</td>
               <td className="py-2.5">
                 <Badge variant={t.type === "income" ? "green" : "red"}>
                   {t.type === "income" ? "Entrada" : "Saída"}
@@ -49,7 +49,7 @@ export function TransactionsTable({
               </td>
               <td
                 className={`py-2.5 text-right font-medium ${
-                  t.type === "income" ? "text-green-400" : "text-red-400"
+                  t.type === "income" ? "text-success" : "text-danger"
                 }`}
               >
                 {t.type === "income" ? "+" : "–"} {formatBRL(t.value)}
@@ -72,7 +72,7 @@ export function TransactionsTable({
               </span>
               <span
                 className={`text-sm font-medium ${
-                  t.type === "income" ? "text-green-400" : "text-red-400"
+                  t.type === "income" ? "text-success" : "text-danger"
                 }`}
               >
                 {t.type === "income" ? "+" : "–"} {formatBRL(t.value)}
@@ -82,7 +82,7 @@ export function TransactionsTable({
               <Badge variant={t.type === "income" ? "green" : "red"}>
                 {t.type === "income" ? "Entrada" : "Saída"}
               </Badge>
-              <span className="text-xs text-zinc-500">
+              <span className="text-xs text-text-secondary">
                 {formatDateBR(t.date)}
               </span>
             </div>

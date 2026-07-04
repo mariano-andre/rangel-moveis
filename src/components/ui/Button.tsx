@@ -8,10 +8,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
-  default:
-    "bg-zinc-800 text-zinc-200 border border-zinc-700 hover:bg-zinc-700",
-  primary: "bg-amber-600 text-white border border-amber-600 hover:bg-amber-700",
-  ghost: "bg-transparent text-zinc-400 border border-transparent hover:bg-zinc-800",
+  default: "bg-bg-elevated text-text-primary border border-border-input hover:bg-border-input",
+  primary: "bg-brand text-text-inverted border border-brand hover:bg-brand-hover",
+  ghost:   "bg-transparent text-text-secondary border border-transparent hover:bg-bg-elevated hover:text-text-primary",
 };
 
 export function Button({

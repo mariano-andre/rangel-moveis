@@ -39,6 +39,21 @@ export const financialMock: FinancialData = {
       date: "2025-05-01",
       value: 1500,
     },
+    {
+      id: 5,
+      description: "Pagamento Marcelo",
+      type: "expense",
+      category: "Mão de obra",
+      date: "2025-05-12",
+      value: 3009,
+    },
+    {
+      id: 6,
+      description: "Armário - Luiz Silva",
+      type: "income",
+      date: "2025-05-17",
+      value: 4000,
+    },
   ],
 
   // Futuramente calculado no backend agrupando transactions por mês.

@@ -1,14 +1,7 @@
-// Client Component que gerencia o estado interativo da página Financial:
-// - lista de transações (começa com os dados iniciais e cresce com novas entradas)
-// - abertura/fechamento do modal
-// - recálculo automático dos KPIs e categorias a cada nova transação
-//
-// A page.tsx continua como Server Component — passa os dados iniciais como props.
-
 "use client";
 
 import { useState } from "react";
-import { Transaction, ExpenseCategory, MonthlyRevenue } from "@/lib/types";
+import { Transaction, MonthlyRevenue } from "@/lib/types";
 import { calcRevenue, calcExpenses, calcExpensesByCategory } from "@/lib/calculations";
 import { FinancialKpis } from "@/components/sections/financial/FinancialKpis";
 import { ExpensesByCategory } from "@/components/sections/financial/ExpensesByCategory";
@@ -32,7 +25,6 @@ export function FinancialClient({
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Recalculados automaticamente a cada mudança em transactions
   const revenue            = calcRevenue(transactions);
   const expenses           = calcExpenses(transactions);
   const profit             = revenue - expenses;
@@ -46,6 +38,13 @@ export function FinancialClient({
         : 1,
     };
     setTransactions((prev) => [newTransaction, ...prev]);
+  }
+
+  // Substitui a transação editada mantendo sua posição no array
+  function handleEditTransaction(updated: Transaction) {
+    setTransactions((prev) =>
+      prev.map((t) => (t.id === updated.id ? updated : t))
+    );
   }
 
   return (
@@ -66,6 +65,7 @@ export function FinancialClient({
       <TransactionsTable
         transactions={transactions}
         onAddClick={() => setModalOpen(true)}
+        onEdit={handleEditTransaction}
       />
 
       {modalOpen && (

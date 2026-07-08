@@ -1,5 +1,3 @@
-// src/app/(manager)/financial/page.tsx
-//
 // Server Component — busca os dados do mock (futuro: backend) e passa
 // para o FinancialClient, que gerencia toda a interatividade da página.
 

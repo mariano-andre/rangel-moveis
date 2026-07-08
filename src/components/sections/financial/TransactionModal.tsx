@@ -35,7 +35,7 @@ const EMPTY_FORM: FormState = {
   description: "",
   type: "expense",
   value: "",
-  date: new Date().toISOString().split("T")[0],
+  date: new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }).split("/").reverse().join("-"),
   category: "Material",
   isNewCategory: false,
   newCategory: "",

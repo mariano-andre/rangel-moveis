@@ -9,13 +9,14 @@ interface ExpensesByCategoryProps {
 const barColors = ["bg-brand", "bg-text-secondary", "bg-text-secondary/80", "bg-text-secondary/60"];
 
 export function ExpensesByCategory({ categories }: ExpensesByCategoryProps) {
-  const maxValue = Math.max(...categories.map((c) => c.value));
+  const sorted = [...categories].sort((a, b) => b.value - a.value);
+  const maxValue = Math.max(...sorted.map((c) => c.value));
 
   return (
     <Card>
       <CardTitle>Despesas por categoria</CardTitle>
       <div className="space-y-2.5">
-        {categories.map((cat, i) => (
+        {sorted.map((cat, i) => (
           <div key={cat.label} className="flex items-center gap-2">
             <span className="text-xs text-text-secondary w-24 shrink-0">
               {cat.label}

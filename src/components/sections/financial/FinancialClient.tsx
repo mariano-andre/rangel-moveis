@@ -16,13 +16,22 @@ interface FinancialClientProps {
   receivablePendingCount: number;
 }
 
+// Ordena por data decrescente (mais recente no topo)
+function sortByDate(transactions: Transaction[]): Transaction[] {
+  return [...transactions].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
+}
+
 export function FinancialClient({
   initialTransactions,
   monthlyHistory,
   receivable,
   receivablePendingCount,
 }: FinancialClientProps) {
-  const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
+  const [transactions, setTransactions] = useState<Transaction[]>(
+    sortByDate(initialTransactions)
+  );
   const [modalOpen, setModalOpen] = useState(false);
 
   const revenue            = calcRevenue(transactions);
@@ -37,13 +46,12 @@ export function FinancialClient({
         ? Math.max(...transactions.map((t) => t.id)) + 1
         : 1,
     };
-    setTransactions((prev) => [newTransaction, ...prev]);
+    setTransactions((prev) => sortByDate([...prev, newTransaction]));
   }
 
-  // Substitui a transação editada mantendo sua posição no array
   function handleEditTransaction(updated: Transaction) {
     setTransactions((prev) =>
-      prev.map((t) => (t.id === updated.id ? updated : t))
+      sortByDate(prev.map((t) => (t.id === updated.id ? updated : t)))
     );
   }
 

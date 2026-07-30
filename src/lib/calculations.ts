@@ -1,4 +1,4 @@
-import { Transaction } from "@/lib/types";
+import { Transaction, InventoryItem, InventoryStatus } from "@/lib/types";
 
 // Soma todas as entradas
 export function calcRevenue(transactions: Transaction[]): number {
@@ -25,4 +25,10 @@ export function calcExpensesByCategory(transactions: Transaction[]) {
   }, {});
 
   return Object.entries(grouped).map(([label, value]) => ({ label, value }));
+}
+
+export function calcInventoryStatus(item: InventoryItem): InventoryStatus {
+  if (item.quantity <= item.minimum * 0.5) return "critical";
+  if (item.quantity < item.minimum)        return "low";
+  return "ok";
 }

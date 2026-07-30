@@ -5,3 +5,5 @@
 export * from "./financial"
 export * from "./projects"
 export * from "./employees"
+export * from "./inventory"
+export * from "./settings"

@@ -2,13 +2,22 @@
 
 import { ReactNode, useEffect } from "react";
 
+type ModalSize = "md" | "lg" | "xl";
+
+const sizeStyles: Record<ModalSize, string>={
+  md: "max-w-md",
+  lg: "max-w-lg",
+  xl: "max-w-xl",
+};
+
 interface ModalProps {
   title: string;
   onClose: () => void;
   children: ReactNode;
+  size?: ModalSize;
 }
 
-export function Modal({ title, onClose, children }: ModalProps) {
+export function Modal({ title, onClose, children, size = "md" }: ModalProps) {
 
   // fecha com Escape
   useEffect(() => {
@@ -26,7 +35,7 @@ export function Modal({ title, onClose, children }: ModalProps) {
       onMouseDown={onClose}
     >
       <div
-        className="relative w-full max-w-md bg-bg-card border border-border-strong rounded-2xl shadow-2xl"
+        className={`relative w-full ${sizeStyles[size]} bg-bg-card border border-border-strong rounded-2xl shadow-2xl`}
         onMouseDown={(e) => e.stopPropagation()} // impede fechar ao clicar dentro
       >
         {/* Header */}

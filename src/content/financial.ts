@@ -29,7 +29,7 @@ export const financialMock: FinancialData = {
       type: "expense",
       category: "Material",
       date: "2025-05-10",
-      value: 620,
+      value: 800,
     },
     {
       id: 4,
@@ -45,7 +45,7 @@ export const financialMock: FinancialData = {
       type: "expense",
       category: "Mão de obra",
       date: "2025-05-12",
-      value: 3009,
+      value: 3000,
     },
     {
       id: 6,

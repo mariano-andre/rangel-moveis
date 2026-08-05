@@ -1,0 +1,27 @@
+{
+  "tasks": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "imports": {
+    "next": "npm:next@16.2.9",
+    "react": "npm:react@19.2.4",
+    "react-dom": "npm:react-dom@19.2.4",
+    "@tailwindcss/postcss": "npm:@tailwindcss/postcss@^4",
+    "@types/node": "npm:@types/node@^20",
+    "@types/react": "npm:@types/react@^19",
+    "@types/react-dom": "npm:@types/react-dom@^19",
+    "babel-plugin-react-compiler": "npm:babel-plugin-react-compiler@1.0.0",
+    "eslint": "npm:eslint@^9",
+    "eslint-config-next": "npm:eslint-config-next@16.2.9",
+    "tailwindcss": "npm:tailwindcss@^4",
+    "typescript": "npm:typescript@^5"
+  },
+  "nodeModulesDir": "auto",
+  "allowScripts": [
+    "npm:sharp@0.34.5",
+    "npm:unrs-resolver@1.12.2"
+  ]
+}

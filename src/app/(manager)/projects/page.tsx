@@ -1,8 +1,10 @@
-import { projectsMock } from "@/content/projects";
 import { ProjectsClient } from "@/components/sections/projects/ProjectsClient";
+import { getProjects } from "@/db/queries/projects";
+import { getEmployees } from "@/db/queries/employees";
 
-export default function ProjectsPage() {
-  const { projects } = projectsMock;
+export default async function ProjectsPage() {
+  const projects = await getProjects();
+  const employees = await getEmployees();
 
   return (
     <div className="p-6 md:p-8">
@@ -15,7 +17,7 @@ export default function ProjectsPage() {
         </p>
       </div>
 
-      <ProjectsClient projects={projects} />
+      <ProjectsClient projects={projects} employees={employees} />
 
     </div>
   );

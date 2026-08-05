@@ -1,8 +1,8 @@
-import { employeesMock } from "@/content/employees";
+import { getEmployees } from "@/db/queries/employees";
 import { EmployeesClient } from "@/components/sections/employees/EmployeesClient";
 
-export default function EmployeesPage() {
-  const { employees } = employeesMock;
+export default async function EmployeesPage() {
+  const employees = await getEmployees();
 
   return (
     <div className="p-6 md:p-8">

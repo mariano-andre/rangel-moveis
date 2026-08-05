@@ -9,6 +9,7 @@ import { KpiCard } from "@/components/ui/KpiCard";
 import { EmployeesTable } from "@/components/sections/employees/EmployeesTable";
 import { EmployeeModal } from "@/components/sections/employees/EmployeeModal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { addEmployeeAction, editEmployeeAction, removeEmployeeAction } from "@/app/actions";
 
 interface EmployeesClientProps {
   initialEmployees: Employee[];
@@ -24,17 +25,40 @@ export function EmployeesClient({ initialEmployees }: EmployeesClientProps) {
   const cltCount   = employees.filter((e) => e.contractType === "clt").length;
   const commCount  = employees.filter((e) => e.contractType === "commission").length;
 
-  function handleSave(data: Omit<Employee, "id">) {
+  async function handleSave(data: Omit<Employee, "id">) {
     if (editing) {
+      const original = employees.find((e) => e.id === editing.id);
       setEmployees((prev) => prev.map((e) => e.id === editing.id ? { ...editing, ...data } : e));
+      try {
+        await editEmployeeAction(editing.id, data);
+      } catch (e) {
+        console.error(e);
+        if (original) setEmployees((prev) => prev.map((e) => e.id === editing.id ? original : e));
+      }
     } else {
-      const newId = employees.length > 0 ? Math.max(...employees.map((e) => e.id)) + 1 : 1;
-      setEmployees((prev) => [...prev, { id: newId, ...data }]);
+      const optimisticId = employees.length > 0 ? Math.max(...employees.map((e) => e.id)) + 1 : 1;
+      const optimisticEmployee = { id: optimisticId, ...data };
+      setEmployees((prev) => [...prev, optimisticEmployee]);
+      try {
+        const created = await addEmployeeAction(data);
+        setEmployees((prev) => prev.map((e) => e.id === optimisticId ? created : e));
+      } catch (e) {
+        console.error(e);
+        setEmployees((prev) => prev.filter((e) => e.id !== optimisticId));
+      }
     }
   }
 
-  function handleDelete(id: number) {
+  async function handleDelete(id: number) {
+    const original = employees.find((e) => e.id === id);
+    if (!original) return;
     setEmployees((prev) => prev.filter((e) => e.id !== id));
+    try {
+      await removeEmployeeAction(id);
+    } catch (e) {
+      console.error(e);
+      setEmployees((prev) => [...prev, original]);
+    }
   }
 
   function openEdit(employee: Employee) {

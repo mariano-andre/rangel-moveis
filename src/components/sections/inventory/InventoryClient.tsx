@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { InventoryTable } from "@/components/sections/inventory/InventoryTable";
 import { InventoryModal } from "@/components/sections/inventory/InventoryModal";
+import { editInventoryAction, removeInventoryAction } from "@/app/actions";
 
 interface InventoryClientProps {
   initialItems: InventoryItem[];
@@ -25,22 +26,50 @@ export function InventoryClient({ initialItems }: InventoryClientProps) {
   const alertCount   = items.filter((i) => calcInventoryStatus(i) !== "ok").length;
   const itemToDelete = items.find((i) => i.id === confirmDeleteId);
 
-  function handleEntry(itemId: number, quantity: number, pricePerUnit: number) {
-    setItems((prev) =>
-      prev.map((i) =>
-        i.id === itemId
-          ? { ...i, quantity: +(i.quantity + quantity).toFixed(3), pricePerUnit }
-          : i
-      )
-    );
+  async function handleEntry(itemId: number, quantity: number, pricePerUnit: number) {
+    const item = items.find((i) => i.id === itemId);
+    if (!item) return;
+    const newQuantity = +(item.quantity + quantity).toFixed(3);
+    
+    // Optimistic
+    setItems((prev) => prev.map((i) => i.id === itemId ? { ...i, quantity: newQuantity, pricePerUnit } : i));
+    
+    try {
+      await editInventoryAction(itemId, { quantity: newQuantity, pricePerUnit });
+    } catch (e) {
+      console.error(e);
+      setItems((prev) => prev.map((i) => i.id === itemId ? item : i));
+    }
   }
 
-  function handleEdit(id: number, data: Omit<InventoryItem, "id">) {
+  async function handleEdit(id: number, data: Omit<InventoryItem, "id">) {
+    const original = items.find((i) => i.id === id);
+    if (!original) return;
+    
+    // Optimistic
     setItems((prev) => prev.map((i) => i.id === id ? { ...i, ...data } : i));
+    
+    try {
+      await editInventoryAction(id, data);
+    } catch (e) {
+      console.error(e);
+      setItems((prev) => prev.map((i) => i.id === id ? original : i));
+    }
   }
 
-  function handleDelete(id: number) {
+  async function handleDelete(id: number) {
+    const originalItem = items.find((i) => i.id === id);
+    if (!originalItem) return;
+    
+    // Optimistic
     setItems((prev) => prev.filter((i) => i.id !== id));
+    
+    try {
+      await removeInventoryAction(id);
+    } catch (e) {
+      console.error(e);
+      setItems((prev) => [...prev, originalItem]);
+    }
   }
 
   return (

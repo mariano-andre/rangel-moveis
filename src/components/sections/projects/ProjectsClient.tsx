@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Project, ProjectStatus } from "@/lib/types";
+import { Project, ProjectStatus, Employee } from "@/lib/types";
 import { ProjectCard } from "@/components/sections/projects/ProjectCard";
 import { NewProjectModal } from "@/components/sections/projects/NewProjectModal";
 import { Button } from "@/components/ui/Button";
+import { addProjectAction, editProjectAction } from "@/app/actions";
 
 type Filter = "all" | ProjectStatus;
 type SortKey = "createdAt" | "deadline";
@@ -33,33 +34,54 @@ function sortProjects(projects: Project[], key: SortKey): Project[] {
 
 interface ProjectsClientProps {
   projects: Project[];
+  employees: Employee[];
 }
 
-export function ProjectsClient({ projects: initialProjects }: ProjectsClientProps) {
+export function ProjectsClient({ projects: initialProjects, employees }: ProjectsClientProps) {
   const [projects, setProjects]         = useState<Project[]>(initialProjects);
   const [activeFilter, setActiveFilter] = useState<Filter>("all");
   const [sortKey, setSortKey]           = useState<SortKey>("createdAt");
   const [newModalOpen, setNewModalOpen] = useState(false);
 
-  function handleAdvanceStep(projectId: number) {
+  async function handleAdvanceStep(projectId: number) {
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+    const newStepIndex = Math.min(project.currentStepIndex + 1, project.steps.length - 1);
+    
+    // Optimistic update
     setProjects((prev) =>
       prev.map((p) => {
         if (p.id !== projectId) return p;
-        return { ...p, currentStepIndex: Math.min(p.currentStepIndex + 1, p.steps.length - 1) };
+        return { ...p, currentStepIndex: newStepIndex };
       })
     );
+    
+    try {
+      await editProjectAction(projectId, { currentStepIndex: newStepIndex });
+    } catch (e) {
+      console.error(e);
+      // Rollback on error
+      setProjects((prev) => prev.map((p) => (p.id === projectId ? project : p)));
+    }
   }
 
-  function handleNewProject(data: Omit<Project, "id">) {
-    const newProject: Project = {
-      ...data,
-      id: projects.length > 0 ? Math.max(...projects.map((p) => p.id)) + 1 : 1,
-    };
-    setProjects((prev) => [newProject, ...prev]);
+  async function handleNewProject(data: Omit<Project, "id">) {
+    try {
+      const newProject = await addProjectAction(data);
+      setProjects((prev) => [newProject, ...prev]);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
-  function handleEditProject(updated: Project) {
-    setProjects((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+  async function handleEditProject(updated: Project) {
+    try {
+      const { id, createdAt, updatedAt, ...rest } = updated;
+      const updatedProject = await editProjectAction(id, rest);
+      setProjects((prev) => prev.map((p) => (p.id === updated.id ? updatedProject : p)));
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   const filtered = activeFilter === "all"
@@ -123,6 +145,7 @@ export function ProjectsClient({ projects: initialProjects }: ProjectsClientProp
             <ProjectCard
               key={project.id}
               project={project}
+              employees={employees}
               onAdvanceStep={() => handleAdvanceStep(project.id)}
               onEdit={handleEditProject}
             />
@@ -132,6 +155,7 @@ export function ProjectsClient({ projects: initialProjects }: ProjectsClientProp
 
       {newModalOpen && (
         <NewProjectModal
+          employees={employees}
           onClose={() => setNewModalOpen(false)}
           onSave={handleNewProject}
         />

@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Project } from "@/lib/types";
-import { employeesMock } from "@/content/employees";
+import { Project, Employee } from "@/lib/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 
 interface EditProjectModalProps {
   project: Project;
+  employees: Employee[];
   onClose: () => void;
   onSave: (updated: Project) => void;
 }
@@ -23,7 +23,7 @@ interface FormState {
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
 
-export function EditProjectModal({ project, onClose, onSave }: EditProjectModalProps) {
+export function EditProjectModal({ project, employees, onClose, onSave }: EditProjectModalProps) {
   const [form, setForm] = useState<FormState>({
     name:        project.name,
     description: project.description,
@@ -122,7 +122,7 @@ export function EditProjectModal({ project, onClose, onSave }: EditProjectModalP
             className={inputClass(!!errors.employeeId)}
           >
             <option value="">Selecionar funcionário...</option>
-            {employeesMock.employees.map((emp) => (
+            {employees.map((emp) => (
               <option key={emp.id} value={emp.id}>{emp.name}</option>
             ))}
           </select>

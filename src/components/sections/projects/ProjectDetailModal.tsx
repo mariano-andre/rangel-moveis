@@ -1,11 +1,11 @@
-import { Project, ProjectStatus } from "@/lib/types";
-import { employeesMock } from "@/content/employees";
+import { Project, ProjectStatus, Employee } from "@/lib/types";
 import { formatBRL, formatDateBR } from "@/lib/format";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 
 interface ProjectDetailModalProps {
   project: Project;
+  employees: Employee[];
   onClose: () => void;
   onEdit: () => void;
   onAdvanceStep: () => void;
@@ -18,8 +18,8 @@ const statusConfig: Record<ProjectStatus, { label: string; className: string }> 
   paused:      { label: "Pausado",      className: "bg-bg-elevated text-text-muted border-border-input"  },
 };
 
-export function ProjectDetailModal({ project, onClose, onEdit, onAdvanceStep }: ProjectDetailModalProps) {
-  const employee   = employeesMock.employees.find((e) => e.id === project.employeeId);
+export function ProjectDetailModal({ project, employees, onClose, onEdit, onAdvanceStep }: ProjectDetailModalProps) {
+  const employee   = employees.find((e) => e.id === project.employeeId);
   const status     = statusConfig[project.status];
   const isLastStep = project.currentStepIndex >= project.steps.length - 1;
 

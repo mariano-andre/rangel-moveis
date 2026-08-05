@@ -8,6 +8,7 @@ import { ExpensesByCategory } from "@/components/sections/financial/ExpensesByCa
 import { MonthlyRevenueChart } from "@/components/sections/financial/MonthlyRevenueChart";
 import { TransactionsTable } from "@/components/sections/financial/TransactionsTable";
 import { TransactionModal } from "@/components/sections/financial/TransactionModal";
+import { addTransactionAction, editTransactionAction } from "@/app/actions";
 
 interface FinancialClientProps {
   initialTransactions: Transaction[];
@@ -39,20 +40,35 @@ export function FinancialClient({
   const profit             = revenue - expenses;
   const expensesByCategory = calcExpensesByCategory(transactions);
 
-  function handleAddTransaction(data: Omit<Transaction, "id">) {
-    const newTransaction: Transaction = {
-      ...data,
-      id: transactions.length > 0
-        ? Math.max(...transactions.map((t) => t.id)) + 1
-        : 1,
-    };
+  async function handleAddTransaction(data: Omit<Transaction, "id">) {
+    const optimisticId = transactions.length > 0 ? Math.max(...transactions.map((t) => t.id)) + 1 : 1;
+    const newTransaction: Transaction = { ...data, id: optimisticId };
+    
     setTransactions((prev) => sortByDate([...prev, newTransaction]));
+    
+    try {
+      const created = await addTransactionAction(data);
+      setTransactions((prev) => sortByDate(prev.map((t) => (t.id === optimisticId ? created : t))));
+    } catch (e) {
+      console.error(e);
+      setTransactions((prev) => prev.filter((t) => t.id !== optimisticId));
+    }
   }
 
-  function handleEditTransaction(updated: Transaction) {
-    setTransactions((prev) =>
-      sortByDate(prev.map((t) => (t.id === updated.id ? updated : t)))
-    );
+  async function handleEditTransaction(updated: Transaction) {
+    const original = transactions.find((t) => t.id === updated.id);
+    if (!original) return;
+    
+    setTransactions((prev) => sortByDate(prev.map((t) => (t.id === updated.id ? updated : t))));
+    
+    try {
+      const { id, ...data } = updated;
+      const result = await editTransactionAction(id, data);
+      setTransactions((prev) => sortByDate(prev.map((t) => (t.id === updated.id ? result : t))));
+    } catch (e) {
+      console.error(e);
+      setTransactions((prev) => sortByDate(prev.map((t) => (t.id === updated.id ? original : t))));
+    }
   }
 
   return (

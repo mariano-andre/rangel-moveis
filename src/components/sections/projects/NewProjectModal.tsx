@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Project } from "@/lib/types";
-import { employeesMock } from "@/content/employees";
+import { Project, Employee } from "@/lib/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 
 interface NewProjectModalProps {
+  employees: Employee[];
   onClose: () => void;
   onSave: (project: Omit<Project, "id">) => void;
 }
@@ -31,7 +31,7 @@ const EMPTY_FORM: FormState = {
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
 
-export function NewProjectModal({ onClose, onSave }: NewProjectModalProps) {
+export function NewProjectModal({ employees, onClose, onSave }: NewProjectModalProps) {
   const [form, setForm]     = useState<FormState>(EMPTY_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -120,7 +120,7 @@ export function NewProjectModal({ onClose, onSave }: NewProjectModalProps) {
             className={inputClass(!!errors.employeeId)}
           >
             <option value="">Selecionar funcionário...</option>
-            {employeesMock.employees.map((emp) => (
+            {employees.map((emp) => (
               <option key={emp.id} value={emp.id}>
                 {emp.name}
               </option>

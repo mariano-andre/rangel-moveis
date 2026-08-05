@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Project, ProjectStatus } from "@/lib/types";
-import { employeesMock } from "@/content/employees";
+import { Project, ProjectStatus, Employee } from "@/lib/types";
 import { formatBRL, formatDateBR } from "@/lib/format";
 import { ProjectDetailModal } from "@/components/sections/projects/ProjectDetailModal";
 import { ConfirmStepModal } from "@/components/sections/projects/ConfirmStepModal";
@@ -11,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 
 interface ProjectCardProps {
   project: Project;
+  employees: Employee[];
   onAdvanceStep: () => void;
   onEdit: (updated: Project) => void;
 }
@@ -22,12 +22,12 @@ const statusConfig: Record<ProjectStatus, { label: string; className: string }> 
   paused:      { label: "Pausado",      className: "bg-bg-elevated text-text-muted border-border-input"  },
 };
 
-export function ProjectCard({ project, onAdvanceStep, onEdit }: ProjectCardProps) {
+export function ProjectCard({ project, employees, onAdvanceStep, onEdit }: ProjectCardProps) {
   const [detailOpen,  setDetailOpen]  = useState(false);
   const [editOpen,    setEditOpen]    = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  const employee    = employeesMock.employees.find((e) => e.id === project.employeeId);
+  const employee    = employees.find((e) => e.id === project.employeeId);
   const status      = statusConfig[project.status];
   const progress    = project.steps.length > 1
     ? Math.round((project.currentStepIndex / (project.steps.length - 1)) * 100)
@@ -129,6 +129,7 @@ export function ProjectCard({ project, onAdvanceStep, onEdit }: ProjectCardProps
       {detailOpen && (
         <ProjectDetailModal
           project={project}
+          employees={employees}
           onClose={() => setDetailOpen(false)}
           onEdit={() => { setDetailOpen(false); setEditOpen(true); }}
           onAdvanceStep={() => setConfirmOpen(true)}
@@ -138,6 +139,7 @@ export function ProjectCard({ project, onAdvanceStep, onEdit }: ProjectCardProps
       {editOpen && (
         <EditProjectModal
           project={project}
+          employees={employees}
           onClose={() => setEditOpen(false)}
           onSave={(updated) => { onEdit(updated); setEditOpen(false); }}
         />

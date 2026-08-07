@@ -13,6 +13,7 @@ interface ProjectCardProps {
   project: Project;
   employees: Employee[];
   onAdvanceStep: () => void;
+  onCompleteProject: () => void;
   onEdit: (updated: Project) => void;
 }
 
@@ -39,7 +40,8 @@ const statusConfig: Record<
 };
 
 export function ProjectCard(
-  { project, employees, onAdvanceStep, onEdit }: ProjectCardProps,
+  { project, employees, onAdvanceStep, onCompleteProject, onEdit }:
+    ProjectCardProps,
 ) {
   const [detailOpen, setDetailOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
@@ -167,16 +169,29 @@ export function ProjectCard(
               style={{ width: `${progress}%` }}
             />
           </div>
-          {!isLastStep && (
-            <Button
-              variant="success"
-              onClick={() => setConfirmOpen(true)}
-              className="self-end mt-1"
-            >
-              Avançar para próxima etapa
-              <Icon name="next" size={18} />
-            </Button>
-          )}
+          {!isLastStep
+            ? (
+              <Button
+                variant="success"
+                onClick={() => setConfirmOpen(true)}
+                className="self-end mt-1"
+              >
+                Avançar para próxima etapa
+                <Icon name="next" size={18} />
+              </Button>
+            )
+            : !isCompleted
+            ? (
+              <Button
+                variant="success"
+                onClick={onCompleteProject}
+                className="self-end mt-1"
+              >
+                Concluir projeto
+                <Icon name="apply" size={18} />
+              </Button>
+            )
+            : null}
         </div>
       </div>
 
@@ -190,6 +205,10 @@ export function ProjectCard(
             setEditOpen(true);
           }}
           onAdvanceStep={() => setConfirmOpen(true)}
+          onCompleteProject={() => {
+            onCompleteProject();
+            setDetailOpen(false);
+          }}
         />
       )}
 

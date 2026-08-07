@@ -10,6 +10,7 @@ interface ProjectDetailModalProps {
   onClose: () => void;
   onEdit: () => void;
   onAdvanceStep: () => void;
+  onCompleteProject: () => void;
 }
 
 const statusConfig: Record<
@@ -35,7 +36,7 @@ const statusConfig: Record<
 };
 
 export function ProjectDetailModal(
-  { project, employees, onClose, onEdit, onAdvanceStep }:
+  { project, employees, onClose, onEdit, onAdvanceStep, onCompleteProject }:
     ProjectDetailModalProps,
 ) {
   const employee = employees.find((e) => e.id === project.employeeId);
@@ -142,6 +143,13 @@ export function ProjectDetailModal(
             <Button variant="success" onClick={onAdvanceStep}>
               Avançar para próxima etapa
               <Icon name="next" size={18} />
+            </Button>
+          )
+          : project.status !== "completed"
+          ? (
+            <Button variant="success" onClick={onCompleteProject}>
+              Concluir projeto
+              <Icon name="apply" size={18} />
             </Button>
           )
           : <span />}

@@ -186,6 +186,24 @@ export function ProjectsClient(
   }
 
   /**
+   * Completes the project.
+   */
+  async function handleCompleteProject(projectId: number) {
+    const project = projects.find((p) => p.id === projectId);
+    if (!project) return;
+
+    try {
+      await optimisticUpdate(
+        projectId,
+        { status: "completed" },
+        (id, updated) => editProjectAction(id as number, updated),
+      );
+    } catch (_e) {
+      // The hook handles the rollback and logging automatically
+    }
+  }
+
+  /**
    * Creates a new project and optimistically adds it to the list.
    */
   async function handleNewProject(data: Omit<Project, "id">) {
@@ -312,6 +330,7 @@ export function ProjectsClient(
                 project={project}
                 employees={employees}
                 onAdvanceStep={() => handleAdvanceStep(project.id)}
+                onCompleteProject={() => handleCompleteProject(project.id)}
                 onEdit={handleEditProject}
               />
             ))}

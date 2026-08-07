@@ -59,7 +59,7 @@ export function NewProjectModal(
     return Object.keys(e).length === 0;
   }
 
-  async function handleSave() {
+  function handleSave() {
     if (!validate() || isSubmitting) return;
     setIsSubmitting(true);
     const steps = form.stepsRaw.split("\n").map((s) => s.trim()).filter(

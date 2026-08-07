@@ -28,7 +28,7 @@ export default async function EmployeeProjectsPage() {
       <ProjectsClient
         projects={projects}
         employees={employees}
-        isEmployee={true}
+        isEmployee
       />
     </div>
   );

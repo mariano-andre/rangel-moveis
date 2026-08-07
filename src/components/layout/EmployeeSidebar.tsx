@@ -38,7 +38,7 @@ export function EmployeeSidebar() {
             Painel do Funcionário
           </p>
         </div>
-        <button
+        <button type="button"
           onClick={() => setIsOpen(!isOpen)}
           className="text-text-primary p-2"
         >
@@ -73,7 +73,7 @@ export function EmployeeSidebar() {
         {/* Mobile menu title */}
         <div className="md:hidden px-4 py-4 border-b border-border-strong flex justify-between items-center">
           <p className="text-base font-semibold text-primary">Menu</p>
-          <button
+          <button type="button"
             onClick={() => setIsOpen(false)}
             className="text-text-primary"
           >
@@ -105,9 +105,9 @@ export function EmployeeSidebar() {
           </div>
 
           <div className="mt-8">
-            <button
+            <button type="button"
               onClick={() => {
-                logoutAction().then(() => window.location.href = "/");
+                logoutAction().then(() => globalThis.location.href = "/");
               }}
               className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-red-400 hover:bg-red-500/10 transition-colors"
             >

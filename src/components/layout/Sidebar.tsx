@@ -44,7 +44,7 @@ export function Sidebar() {
           </p>
           <p className="text-[10px] text-text-primary/80">Painel do gestor</p>
         </div>
-        <button
+        <button type="button"
           onClick={() => setIsOpen(!isOpen)}
           className="text-text-primary p-2"
         >
@@ -79,7 +79,7 @@ export function Sidebar() {
         {/* Mobile menu title */}
         <div className="md:hidden px-4 py-4 border-b border-border-strong flex justify-between items-center">
           <p className="text-base font-semibold text-primary">Menu</p>
-          <button
+          <button type="button"
             onClick={() => setIsOpen(false)}
             className="text-text-primary"
           >
@@ -128,10 +128,10 @@ export function Sidebar() {
           ))}
 
           <div className="mt-8">
-            <button
+            <button type="button"
               onClick={() => {
                 import("@/app/actions.ts").then(({ logoutAction }) => {
-                  logoutAction().then(() => window.location.href = "/");
+                  logoutAction().then(() => globalThis.location.href = "/");
                 });
               }}
               className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-red-400 hover:bg-red-500/10 transition-colors"

@@ -68,7 +68,7 @@ export function LoginClient({ employees }: LoginClientProps) {
 
         {/* Tabs */}
         <div className="flex border-b border-border-strong">
-          <button
+          <button type="button"
             onClick={() => {
               setActiveTab("manager");
               setError(null);
@@ -82,7 +82,7 @@ export function LoginClient({ employees }: LoginClientProps) {
           >
             Gestor
           </button>
-          <button
+          <button type="button"
             onClick={() => {
               setActiveTab("employee");
               setError(null);

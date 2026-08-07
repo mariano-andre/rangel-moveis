@@ -111,14 +111,16 @@ export function ActionCell(
   if (isEditing) {
     return (
       <div className="flex justify-end gap-1">
-        <button type="button"
+        <button
+          type="button"
           onClick={onConfirm}
           title="Confirmar"
           className="text-success hover:opacity-70 transition-opacity text-base px-1 font-bold"
         >
           ✓
         </button>
-        <button type="button"
+        <button
+          type="button"
           onClick={onCancel}
           title="Cancelar"
           className="text-danger  hover:opacity-70 transition-opacity text-base px-1 font-bold"
@@ -129,7 +131,8 @@ export function ActionCell(
     );
   }
   return (
-    <button type="button"
+    <button
+      type="button"
       onClick={onEdit}
       title="Editar"
       className="text-text-secondary hover:text-text-muted transition-colors text-sm px-1"

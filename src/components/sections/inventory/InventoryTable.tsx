@@ -84,21 +84,24 @@ export function InventoryTable(
                 </td>
                 <td className="py-3">
                   <div className="flex justify-end gap-1">
-                    <button type="button"
+                    <button
+                      type="button"
                       onClick={() => onEntry(item)}
                       title="Registrar entrada"
                       className="text-text-muted hover:text-text-primary transition-colors p-1.5"
                     >
                       +
                     </button>
-                    <button type="button"
+                    <button
+                      type="button"
                       onClick={() => onEdit(item)}
                       title="Editar"
                       className="text-text-muted hover:text-text-primary transition-colors p-1.5"
                     >
                       ✎
                     </button>
-                    <button type="button"
+                    <button
+                      type="button"
                       onClick={() => onDelete(item.id)}
                       title="Remover"
                       className="text-text-muted hover:text-danger transition-colors p-1.5"
@@ -129,19 +132,22 @@ export function InventoryTable(
                 </span>
                 <div className="flex items-center gap-1.5">
                   <Badge variant={status.variant}>{status.label}</Badge>
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => onEntry(item)}
                     className="text-text-muted hover:text-text-primary transition-colors p-1"
                   >
                     +
                   </button>
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => onEdit(item)}
                     className="text-text-muted hover:text-text-primary transition-colors p-1"
                   >
                     ✎
                   </button>
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => onDelete(item.id)}
                     className="text-text-muted hover:text-danger transition-colors p-1"
                   >

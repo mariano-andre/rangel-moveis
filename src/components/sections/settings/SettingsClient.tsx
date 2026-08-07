@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { AlertSettings, CompanySettings, Settings } from "../../../lib/types/index.ts";
+import {
+  AlertSettings,
+  CompanySettings,
+  Settings,
+} from "../../../lib/types/index.ts";
 import { CompanyForm } from "./CompanyForm.tsx";
 import { AlertsForm } from "./AlertsForm.tsx";
 import { saveSettingsAction } from "../../../app/actions.ts";
@@ -29,14 +33,22 @@ export function SettingsClient({ initialSettings }: SettingsClientProps) {
     setAlerts((prev) => ({ ...prev, [key]: value }));
   }
 
+  /**
+   * Saves settings to the server using the safe action wrapper.
+   */
   async function handleSave() {
     setSaved(false);
     try {
-      await saveSettingsAction({ ...company, ...alerts });
-      setSaved(true);
-      setTimeout(() => setSaved(false), 3000);
+      const result = await saveSettingsAction({ ...company, ...alerts });
+      if (result.success) {
+        setSaved(true);
+        setTimeout(() => setSaved(false), 3000);
+      } else {
+        console.error("Failed to save settings:", result.error);
+        // Could display an error toast here
+      }
     } catch (e) {
-      console.error(e);
+      console.error("Unexpected error saving settings", e);
     }
   }
 

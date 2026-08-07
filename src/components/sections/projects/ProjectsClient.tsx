@@ -1,3 +1,14 @@
+/**
+ * ProjectsClient.tsx
+ *
+ * Client component for managing Projects.
+ *
+ * Clean Code Principles Applied:
+ * - Single Responsibility Principle: Data synchronization and optimistic rollbacks
+ *   are abstracted into the `useOptimisticData` hook.
+ * - Separation of Concerns: The component focuses entirely on presentation and filters.
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -6,6 +17,7 @@ import { ProjectCard } from "./ProjectCard.tsx";
 import { NewProjectModal } from "./NewProjectModal.tsx";
 import { Button } from "../../ui/Button.tsx";
 import { addProjectAction, editProjectAction } from "../../../app/actions.ts";
+import { useOptimisticData } from "../../../lib/hooks/useOptimisticData.ts";
 
 type Filter = "all" | ProjectStatus;
 type SortKey = "createdAt" | "deadline";
@@ -40,59 +52,71 @@ interface ProjectsClientProps {
 export function ProjectsClient(
   { projects: initialProjects, employees }: ProjectsClientProps,
 ) {
-  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  // Use generic hook to manage projects state, eliminating duplicate rollback logic
+  const { data: projects, optimisticCreate, optimisticUpdate } =
+    useOptimisticData<Project>(initialProjects);
+
   const [activeFilter, setActiveFilter] = useState<Filter>("all");
   const [sortKey, setSortKey] = useState<SortKey>("createdAt");
   const [newModalOpen, setNewModalOpen] = useState(false);
 
+  /**
+   * Advances the project to the next step.
+   * Optimistically updates the UI so the user gets instant feedback.
+   */
   async function handleAdvanceStep(projectId: number) {
     const project = projects.find((p) => p.id === projectId);
     if (!project) return;
+
     const newStepIndex = Math.min(
       project.currentStepIndex + 1,
       project.steps.length - 1,
     );
 
-    // Optimistic update
-    setProjects((prev) =>
-      prev.map((p) => {
-        if (p.id !== projectId) return p;
-        return { ...p, currentStepIndex: newStepIndex };
-      })
-    );
-
     try {
-      await editProjectAction(projectId, { currentStepIndex: newStepIndex });
-    } catch (e) {
-      console.error(e);
-      // Rollback on error
-      setProjects((prev) =>
-        prev.map((p) => (p.id === projectId ? project : p))
+      await optimisticUpdate(
+        projectId,
+        { currentStepIndex: newStepIndex },
+        (id, updated) => editProjectAction(id as number, updated),
       );
+    } catch (_e) {
+      // The hook handles the rollback and logging automatically
     }
   }
 
+  /**
+   * Creates a new project and optimistically adds it to the list.
+   */
   async function handleNewProject(data: Omit<Project, "id">) {
+    const temporaryId = projects.length > 0
+      ? Math.max(...projects.map((p) => p.id)) + 1
+      : 1;
+
     try {
-      const newProject = await addProjectAction(data);
-      setProjects((prev) => [newProject as Project, ...prev]);
-    } catch (e) {
-      console.error(e);
+      await optimisticCreate(data, addProjectAction, temporaryId);
+    } catch (_e) {
+      // The hook handles the rollback and logging automatically
     }
   }
 
+  /**
+   * Updates an existing project.
+   */
   async function handleEditProject(updated: Project) {
     try {
       const { id, createdAt: _createdAt, ...rest } = updated;
-      const updatedProject = await editProjectAction(id, rest);
-      setProjects((prev) =>
-        prev.map((p) => (p.id === updated.id ? updatedProject as Project : p))
+      await optimisticUpdate(
+        id,
+        rest,
+        (actionId, updatedData) =>
+          editProjectAction(actionId as number, updatedData),
       );
-    } catch (e) {
-      console.error(e);
+    } catch (_e) {
+      // The hook handles the rollback and logging automatically
     }
   }
 
+  // Filter and sort the final data to be rendered
   const filtered = activeFilter === "all"
     ? projects
     : projects.filter((p) => p.status === activeFilter);
@@ -106,7 +130,8 @@ export function ProjectsClient(
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex flex-wrap gap-2">
             {filters.map((f) => (
-              <button type="button"
+              <button
+                type="button"
                 key={f.value}
                 onClick={() => setActiveFilter(f.value)}
                 className={`text-xs px-3.5 py-1.5 rounded-full border transition-colors ${
@@ -123,7 +148,8 @@ export function ProjectsClient(
             <span className="text-xs text-text-muted">Ordenar por</span>
             <div className="flex gap-1.5">
               {sortOptions.map((s) => (
-                <button type="button"
+                <button
+                  type="button"
                   key={s.value}
                   onClick={() => setSortKey(s.value)}
                   className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${

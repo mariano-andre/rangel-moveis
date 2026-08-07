@@ -60,14 +60,16 @@ export function EmployeesTable(
               </td>
               <td className="py-3">
                 <div className="flex justify-end gap-1">
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => onEdit(emp)}
                     title="Editar"
                     className="text-text-muted hover:text-text-primary transition-colors p-1.5"
                   >
                     ✎
                   </button>
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => onDelete(emp.id)}
                     title="Remover"
                     className="text-text-muted hover:text-danger transition-colors p-1.5"
@@ -96,13 +98,15 @@ export function EmployeesTable(
                 <Badge variant={emp.contractType === "clt" ? "green" : "gray"}>
                   {emp.contractType === "clt" ? "CLT" : "Comissão"}
                 </Badge>
-                <button type="button"
+                <button
+                  type="button"
                   onClick={() => onEdit(emp)}
                   className="text-text-muted hover:text-text-primary transition-colors p-1"
                 >
                   ✎
                 </button>
-                <button type="button"
+                <button
+                  type="button"
                   onClick={() => onDelete(emp.id)}
                   className="text-text-muted hover:text-danger transition-colors p-1"
                 >

@@ -1,3 +1,13 @@
+/**
+ * FinancialClient.tsx
+ *
+ * Client component for managing Transactions and Financial KPIs.
+ *
+ * Clean Code Principles Applied:
+ * - Single Responsibility Principle (SRP): UI logic is separated from optimistic state updates.
+ * - Extracted sorting and state management to the `useOptimisticData` hook where applicable.
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -12,7 +22,11 @@ import { ExpensesByCategory } from "./ExpensesByCategory.tsx";
 import { MonthlyRevenueChart } from "./MonthlyRevenueChart.tsx";
 import { TransactionsTable } from "./TransactionsTable.tsx";
 import { TransactionModal } from "./TransactionModal.tsx";
-import { addTransactionAction, editTransactionAction } from "../../../app/actions.ts";
+import {
+  addTransactionAction,
+  editTransactionAction,
+} from "../../../app/actions.ts";
+import { useOptimisticData } from "../../../lib/hooks/useOptimisticData.ts";
 
 interface FinancialClientProps {
   initialTransactions: Transaction[];
@@ -34,54 +48,50 @@ export function FinancialClient({
   receivable,
   receivablePendingCount,
 }: FinancialClientProps) {
-  const [transactions, setTransactions] = useState<Transaction[]>(
-    sortByDate(initialTransactions),
-  );
+  // Use generic hook to manage transactions state
+  const {
+    data: transactions,
+    optimisticCreate,
+    optimisticUpdate,
+  } = useOptimisticData<Transaction>(sortByDate(initialTransactions));
+
   const [modalOpen, setModalOpen] = useState(false);
 
+  // Derived state (calculated directly from the transactions array)
   const revenue = calcRevenue(transactions);
   const expenses = calcExpenses(transactions);
   const profit = revenue - expenses;
   const expensesByCategory = calcExpensesByCategory(transactions);
 
+  /**
+   * Optimistically add a transaction.
+   */
   async function handleAddTransaction(data: Omit<Transaction, "id">) {
-    const optimisticId = transactions.length > 0
+    const temporaryId = transactions.length > 0
       ? Math.max(...transactions.map((t) => t.id)) + 1
       : 1;
-    const newTransaction: Transaction = { ...data, id: optimisticId };
-
-    setTransactions((prev) => sortByDate([...prev, newTransaction]));
 
     try {
-      const created = await addTransactionAction(data);
-      setTransactions((prev) =>
-        sortByDate(prev.map((t) => (t.id === optimisticId ? created as Transaction : t)))
-      );
-    } catch (e) {
-      console.error(e);
-      setTransactions((prev) => prev.filter((t) => t.id !== optimisticId));
+      await optimisticCreate(data, addTransactionAction, temporaryId);
+    } catch (_e) {
+      // Automatic rollback inside useOptimisticData
     }
   }
 
+  /**
+   * Optimistically edit a transaction.
+   */
   async function handleEditTransaction(updated: Transaction) {
-    const original = transactions.find((t) => t.id === updated.id);
-    if (!original) return;
-
-    setTransactions((prev) =>
-      sortByDate(prev.map((t) => (t.id === updated.id ? updated : t)))
-    );
-
     try {
       const { id, ...data } = updated;
-      const result = await editTransactionAction(id, data);
-      setTransactions((prev) =>
-        sortByDate(prev.map((t) => (t.id === updated.id ? result as Transaction : t)))
+      await optimisticUpdate(
+        id,
+        data,
+        (actionId, updatedData) =>
+          editTransactionAction(actionId as number, updatedData),
       );
-    } catch (e) {
-      console.error(e);
-      setTransactions((prev) =>
-        sortByDate(prev.map((t) => (t.id === updated.id ? original : t)))
-      );
+    } catch (_e) {
+      // Automatic rollback inside useOptimisticData
     }
   }
 
@@ -101,7 +111,7 @@ export function FinancialClient({
       </div>
 
       <TransactionsTable
-        transactions={transactions}
+        transactions={sortByDate(transactions)} // ensure we keep sort if dates changed
         onAddClick={() => setModalOpen(true)}
         onEdit={handleEditTransaction}
       />

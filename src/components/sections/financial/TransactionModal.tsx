@@ -122,7 +122,8 @@ export function TransactionModal({ onClose, onSubmit }: TransactionModalProps) {
           </label>
           <div className="flex gap-2">
             {(["expense", "income"] as TransactionType[]).map((t) => (
-              <button type="button"
+              <button
+                type="button"
                 key={t}
                 onClick={() => set("type", t)}
                 className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
@@ -222,13 +223,15 @@ export function TransactionModal({ onClose, onSubmit }: TransactionModalProps) {
 
         {/* Footer */}
         <div className="flex gap-2 justify-end pt-1">
-          <button type="button"
+          <button
+            type="button"
             onClick={onClose}
             className="px-4 py-2 rounded-lg text-sm text-text-secondary border border-border-input bg-bg-elevated hover:text-text-primary transition-colors"
           >
             Cancelar
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={handleSubmit}
             className="px-4 py-2 rounded-lg text-sm font-medium bg-brand text-text-inverted hover:bg-brand-hover transition-colors"
           >

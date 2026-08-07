@@ -1,9 +1,9 @@
 import { integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import {
   ContractType,
+  ExpenseCategoryLabel,
   InventoryUnit,
   ProjectStatus,
-  ExpenseCategoryLabel,
   TransactionType,
 } from "../lib/types/index.ts";
 

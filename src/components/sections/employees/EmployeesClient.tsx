@@ -1,4 +1,4 @@
-// Responsável apenas por gerenciar estado e conectar os componentes.
+// Responsável apenas por gerenciar estado de UI, não contendo lógica complexa de cache ou reversões otimistas de banco de dados (transferidas para useOptimisticData).
 
 "use client";
 
@@ -14,13 +14,21 @@ import {
   editEmployeeAction,
   removeEmployeeAction,
 } from "../../../app/actions.ts";
+import { useOptimisticData } from "../../../lib/hooks/useOptimisticData.ts";
 
 interface EmployeesClientProps {
   initialEmployees: Employee[];
 }
 
 export function EmployeesClient({ initialEmployees }: EmployeesClientProps) {
-  const [employees, setEmployees] = useState<Employee[]>(initialEmployees);
+  // Utilizing the generic useOptimisticData hook separates business/optimistic logic from UI state
+  const {
+    data: employees,
+    optimisticCreate,
+    optimisticUpdate,
+    optimisticDelete,
+  } = useOptimisticData<Employee>(initialEmployees);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Employee | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
@@ -32,48 +40,35 @@ export function EmployeesClient({ initialEmployees }: EmployeesClientProps) {
 
   async function handleSave(data: Omit<Employee, "id">) {
     if (editing) {
-      const original = employees.find((e) => e.id === editing.id);
-      setEmployees((prev) =>
-        prev.map((e) => e.id === editing.id ? { ...editing, ...data } : e)
-      );
       try {
-        await editEmployeeAction(editing.id, data);
-      } catch (e) {
-        console.error(e);
-        if (original) {
-          setEmployees((prev) =>
-            prev.map((e) => e.id === editing.id ? original : e)
-          );
-        }
+        await optimisticUpdate(
+          editing.id,
+          data,
+          (id, updated) => editEmployeeAction(id as number, updated),
+        );
+      } catch (_e) {
+        // Error already logged by hook, we could show a toast here if we had one
       }
     } else {
       const optimisticId = employees.length > 0
         ? Math.max(...employees.map((e) => e.id)) + 1
         : 1;
-      const optimisticEmployee = { id: optimisticId, ...data };
-      setEmployees((prev) => [...prev, optimisticEmployee]);
+
       try {
-        const created = await addEmployeeAction(data);
-        setEmployees((prev) =>
-          prev.map((e) => e.id === optimisticId ? created : e)
-        );
-      } catch (e) {
-        console.error(e);
-        setEmployees((prev) => prev.filter((e) => e.id !== optimisticId));
+        await optimisticCreate(data, addEmployeeAction, optimisticId);
+      } catch (_e) {
+        // Toast notification could go here
       }
     }
   }
 
   async function handleDelete(id: number) {
-    const original = employees.find((e) => e.id === id);
-    if (!original) return;
-    setEmployees((prev) => prev.filter((e) => e.id !== id));
     try {
-      await removeEmployeeAction(id);
-    } catch (e) {
-      console.error(e);
-      setEmployees((prev) => [...prev, original]);
+      await optimisticDelete(id, (id) => removeEmployeeAction(id as number));
+    } catch (_e) {
+      // Toast notification could go here
     }
+    setConfirmDeleteId(null);
   }
 
   function openEdit(employee: Employee) {

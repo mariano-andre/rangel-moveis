@@ -67,7 +67,7 @@ export function EmployeeModal(
     onSave({
       name: form.name.trim(),
       contractType: form.contractType,
-      password: form.password || undefined,
+      password: form.password,
       fixedSalary: parseFloat(form.fixedSalary) || 0,
       commissionPercent: parseFloat(form.commissionPercent) || 0,
     });

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Project, Employee } from "@/lib/types";
+import { Employee, Project } from "@/lib/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 
@@ -23,14 +23,16 @@ interface FormState {
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
 
-export function EditProjectModal({ project, employees, onClose, onSave }: EditProjectModalProps) {
+export function EditProjectModal(
+  { project, employees, onClose, onSave }: EditProjectModalProps,
+) {
   const [form, setForm] = useState<FormState>({
-    name:        project.name,
+    name: project.name,
     description: project.description,
-    employeeId:  String(project.employeeId),
-    deadline:    project.deadline,
-    value:       String(project.value),
-    stepsRaw:    project.steps.join("\n"),
+    employeeId: String(project.employeeId),
+    deadline: project.deadline,
+    value: String(project.value),
+    stepsRaw: project.steps.join("\n"),
   });
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -41,19 +43,25 @@ export function EditProjectModal({ project, employees, onClose, onSave }: EditPr
 
   function validate(): boolean {
     const e: FormErrors = {};
-    if (!form.name.trim())                      e.name       = "Informe o nome do projeto.";
-    if (!form.employeeId)                       e.employeeId = "Selecione um responsável.";
-    if (!form.deadline)                         e.deadline   = "Informe o prazo de entrega.";
-    if (!form.value || parseFloat(form.value) <= 0) e.value  = "Informe um valor válido.";
-    const steps = form.stepsRaw.split("\n").map((s) => s.trim()).filter(Boolean);
-    if (steps.length === 0)                     e.stepsRaw   = "Informe ao menos uma etapa.";
+    if (!form.name.trim()) e.name = "Informe o nome do projeto.";
+    if (!form.employeeId) e.employeeId = "Selecione um responsável.";
+    if (!form.deadline) e.deadline = "Informe o prazo de entrega.";
+    if (!form.value || parseFloat(form.value) <= 0) {
+      e.value = "Informe um valor válido.";
+    }
+    const steps = form.stepsRaw.split("\n").map((s) => s.trim()).filter(
+      Boolean,
+    );
+    if (steps.length === 0) e.stepsRaw = "Informe ao menos uma etapa.";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
 
   function handleSave() {
     if (!validate()) return;
-    const steps = form.stepsRaw.split("\n").map((s) => s.trim()).filter(Boolean);
+    const steps = form.stepsRaw.split("\n").map((s) => s.trim()).filter(
+      Boolean,
+    );
 
     // Se as etapas mudaram, reseta o índice para não ficar fora dos limites
     const currentStepIndex = steps.length > project.currentStepIndex
@@ -62,11 +70,11 @@ export function EditProjectModal({ project, employees, onClose, onSave }: EditPr
 
     onSave({
       ...project,
-      name:             form.name.trim(),
-      description:      form.description.trim(),
-      employeeId:       parseInt(form.employeeId),
-      deadline:         form.deadline,
-      value:            parseFloat(form.value),
+      name: form.name.trim(),
+      description: form.description.trim(),
+      employeeId: parseInt(form.employeeId),
+      deadline: form.deadline,
+      value: parseFloat(form.value),
       steps,
       currentStepIndex,
     });
@@ -81,7 +89,6 @@ export function EditProjectModal({ project, employees, onClose, onSave }: EditPr
   return (
     <Modal title="Editar projeto" onClose={onClose} size="lg">
       <div className="flex flex-col gap-4">
-
         {/* Nome */}
         <div>
           <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
@@ -94,7 +101,9 @@ export function EditProjectModal({ project, employees, onClose, onSave }: EditPr
             placeholder="Ex: Cozinha planejada — Família Silva"
             className={inputClass(!!errors.name)}
           />
-          {errors.name && <p className="text-xs text-danger mt-1">{errors.name}</p>}
+          {errors.name && (
+            <p className="text-xs text-danger mt-1">{errors.name}</p>
+          )}
         </div>
 
         {/* Descrição */}
@@ -126,7 +135,9 @@ export function EditProjectModal({ project, employees, onClose, onSave }: EditPr
               <option key={emp.id} value={emp.id}>{emp.name}</option>
             ))}
           </select>
-          {errors.employeeId && <p className="text-xs text-danger mt-1">{errors.employeeId}</p>}
+          {errors.employeeId && (
+            <p className="text-xs text-danger mt-1">{errors.employeeId}</p>
+          )}
         </div>
 
         {/* Prazo e Valor */}
@@ -141,7 +152,9 @@ export function EditProjectModal({ project, employees, onClose, onSave }: EditPr
               onChange={(e) => set("deadline", e.target.value)}
               className={inputClass(!!errors.deadline)}
             />
-            {errors.deadline && <p className="text-xs text-danger mt-1">{errors.deadline}</p>}
+            {errors.deadline && (
+              <p className="text-xs text-danger mt-1">{errors.deadline}</p>
+            )}
           </div>
           <div>
             <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
@@ -156,7 +169,9 @@ export function EditProjectModal({ project, employees, onClose, onSave }: EditPr
               placeholder="0,00"
               className={inputClass(!!errors.value)}
             />
-            {errors.value && <p className="text-xs text-danger mt-1">{errors.value}</p>}
+            {errors.value && (
+              <p className="text-xs text-danger mt-1">{errors.value}</p>
+            )}
           </div>
         </div>
 
@@ -169,12 +184,17 @@ export function EditProjectModal({ project, employees, onClose, onSave }: EditPr
             value={form.stepsRaw}
             onChange={(e) => set("stepsRaw", e.target.value)}
             rows={5}
-            className={`${inputClass(!!errors.stepsRaw)} resize-none font-mono text-xs`}
+            className={`${
+              inputClass(!!errors.stepsRaw)
+            } resize-none font-mono text-xs`}
           />
-          {errors.stepsRaw && <p className="text-xs text-danger mt-1">{errors.stepsRaw}</p>}
+          {errors.stepsRaw && (
+            <p className="text-xs text-danger mt-1">{errors.stepsRaw}</p>
+          )}
           {form.stepsRaw && (
             <p className="text-[11px] text-text-muted mt-1">
-              {form.stepsRaw.split("\n").filter((s) => s.trim()).length} etapa(s) definida(s)
+              {form.stepsRaw.split("\n").filter((s) => s.trim()).length}{" "}
+              etapa(s) definida(s)
             </p>
           )}
         </div>
@@ -182,9 +202,10 @@ export function EditProjectModal({ project, employees, onClose, onSave }: EditPr
         {/* Footer */}
         <div className="flex justify-end gap-2 pt-1">
           <Button onClick={onClose}>Cancelar</Button>
-          <Button variant="primary" onClick={handleSave}>Salvar alterações</Button>
+          <Button variant="primary" onClick={handleSave}>
+            Salvar alterações
+          </Button>
         </div>
-
       </div>
     </Modal>
   );

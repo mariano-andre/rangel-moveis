@@ -2,7 +2,7 @@ import Database from "better-sqlite3";
 import { join } from "node:path";
 import { existsSync, mkdirSync } from "node:fs";
 
-const DATA_DIR = process.env.DATABASE_PATH 
+const DATA_DIR = process.env.DATABASE_PATH
   ? process.env.DATABASE_PATH.replace(/[^/]+$/, "") // Get directory from path
   : "./data";
 

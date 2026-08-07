@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Project, ProjectStatus, Employee } from "@/lib/types";
+import { Employee, Project, ProjectStatus } from "@/lib/types";
 import { ProjectCard } from "@/components/sections/projects/ProjectCard";
 import { NewProjectModal } from "@/components/sections/projects/NewProjectModal";
 import { Button } from "@/components/ui/Button";
@@ -11,16 +11,16 @@ type Filter = "all" | ProjectStatus;
 type SortKey = "createdAt" | "deadline";
 
 const filters: { value: Filter; label: string }[] = [
-  { value: "all",         label: "Todos"        },
+  { value: "all", label: "Todos" },
   { value: "in_progress", label: "Em andamento" },
-  { value: "waiting",     label: "Aguardando"   },
-  { value: "completed",   label: "Concluído"    },
-  { value: "paused",      label: "Pausado"      },
+  { value: "waiting", label: "Aguardando" },
+  { value: "completed", label: "Concluído" },
+  { value: "paused", label: "Pausado" },
 ];
 
 const sortOptions: { value: SortKey; label: string }[] = [
   { value: "createdAt", label: "Data de criação" },
-  { value: "deadline",  label: "Prazo"           },
+  { value: "deadline", label: "Prazo" },
 ];
 
 function sortProjects(projects: Project[], key: SortKey): Project[] {
@@ -37,17 +37,22 @@ interface ProjectsClientProps {
   employees: Employee[];
 }
 
-export function ProjectsClient({ projects: initialProjects, employees }: ProjectsClientProps) {
-  const [projects, setProjects]         = useState<Project[]>(initialProjects);
+export function ProjectsClient(
+  { projects: initialProjects, employees }: ProjectsClientProps,
+) {
+  const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [activeFilter, setActiveFilter] = useState<Filter>("all");
-  const [sortKey, setSortKey]           = useState<SortKey>("createdAt");
+  const [sortKey, setSortKey] = useState<SortKey>("createdAt");
   const [newModalOpen, setNewModalOpen] = useState(false);
 
   async function handleAdvanceStep(projectId: number) {
-    const project = projects.find(p => p.id === projectId);
+    const project = projects.find((p) => p.id === projectId);
     if (!project) return;
-    const newStepIndex = Math.min(project.currentStepIndex + 1, project.steps.length - 1);
-    
+    const newStepIndex = Math.min(
+      project.currentStepIndex + 1,
+      project.steps.length - 1,
+    );
+
     // Optimistic update
     setProjects((prev) =>
       prev.map((p) => {
@@ -55,13 +60,15 @@ export function ProjectsClient({ projects: initialProjects, employees }: Project
         return { ...p, currentStepIndex: newStepIndex };
       })
     );
-    
+
     try {
       await editProjectAction(projectId, { currentStepIndex: newStepIndex });
     } catch (e) {
       console.error(e);
       // Rollback on error
-      setProjects((prev) => prev.map((p) => (p.id === projectId ? project : p)));
+      setProjects((prev) =>
+        prev.map((p) => (p.id === projectId ? project : p))
+      );
     }
   }
 
@@ -78,7 +85,9 @@ export function ProjectsClient({ projects: initialProjects, employees }: Project
     try {
       const { id, createdAt, updatedAt, ...rest } = updated;
       const updatedProject = await editProjectAction(id, rest);
-      setProjects((prev) => prev.map((p) => (p.id === updated.id ? updatedProject : p)));
+      setProjects((prev) =>
+        prev.map((p) => (p.id === updated.id ? updatedProject : p))
+      );
     } catch (e) {
       console.error(e);
     }
@@ -135,23 +144,25 @@ export function ProjectsClient({ projects: initialProjects, employees }: Project
       </div>
 
       {/* Cards */}
-      {sorted.length === 0 ? (
-        <p className="text-sm text-text-muted text-center py-12">
-          Nenhum projeto nessa categoria.
-        </p>
-      ) : (
-        <div className="flex flex-col gap-4">
-          {sorted.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              employees={employees}
-              onAdvanceStep={() => handleAdvanceStep(project.id)}
-              onEdit={handleEditProject}
-            />
-          ))}
-        </div>
-      )}
+      {sorted.length === 0
+        ? (
+          <p className="text-sm text-text-muted text-center py-12">
+            Nenhum projeto nessa categoria.
+          </p>
+        )
+        : (
+          <div className="flex flex-col gap-4">
+            {sorted.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                employees={employees}
+                onAdvanceStep={() => handleAdvanceStep(project.id)}
+                onEdit={handleEditProject}
+              />
+            ))}
+          </div>
+        )}
 
       {newModalOpen && (
         <NewProjectModal

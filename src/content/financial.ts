@@ -5,7 +5,6 @@
 import { FinancialData } from "@/lib/types";
 
 export const financialMock: FinancialData = {
-
   // Fonte de verdade — equivale à tabela "transactions" no banco.
   transactions: [
     {

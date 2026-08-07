@@ -9,39 +9,54 @@ import { KpiCard } from "@/components/ui/KpiCard";
 import { EmployeesTable } from "@/components/sections/employees/EmployeesTable";
 import { EmployeeModal } from "@/components/sections/employees/EmployeeModal";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
-import { addEmployeeAction, editEmployeeAction, removeEmployeeAction } from "@/app/actions";
+import {
+  addEmployeeAction,
+  editEmployeeAction,
+  removeEmployeeAction,
+} from "@/app/actions";
 
 interface EmployeesClientProps {
   initialEmployees: Employee[];
 }
 
 export function EmployeesClient({ initialEmployees }: EmployeesClientProps) {
-  const [employees, setEmployees]             = useState<Employee[]>(initialEmployees);
-  const [modalOpen, setModalOpen]             = useState(false);
-  const [editing, setEditing]                 = useState<Employee | null>(null);
+  const [employees, setEmployees] = useState<Employee[]>(initialEmployees);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editing, setEditing] = useState<Employee | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
 
   const totalFolha = employees.reduce((sum, e) => sum + e.fixedSalary, 0);
-  const cltCount   = employees.filter((e) => e.contractType === "clt").length;
-  const commCount  = employees.filter((e) => e.contractType === "commission").length;
+  const cltCount = employees.filter((e) => e.contractType === "clt").length;
+  const commCount =
+    employees.filter((e) => e.contractType === "commission").length;
 
   async function handleSave(data: Omit<Employee, "id">) {
     if (editing) {
       const original = employees.find((e) => e.id === editing.id);
-      setEmployees((prev) => prev.map((e) => e.id === editing.id ? { ...editing, ...data } : e));
+      setEmployees((prev) =>
+        prev.map((e) => e.id === editing.id ? { ...editing, ...data } : e)
+      );
       try {
         await editEmployeeAction(editing.id, data);
       } catch (e) {
         console.error(e);
-        if (original) setEmployees((prev) => prev.map((e) => e.id === editing.id ? original : e));
+        if (original) {
+          setEmployees((prev) =>
+            prev.map((e) => e.id === editing.id ? original : e)
+          );
+        }
       }
     } else {
-      const optimisticId = employees.length > 0 ? Math.max(...employees.map((e) => e.id)) + 1 : 1;
+      const optimisticId = employees.length > 0
+        ? Math.max(...employees.map((e) => e.id)) + 1
+        : 1;
       const optimisticEmployee = { id: optimisticId, ...data };
       setEmployees((prev) => [...prev, optimisticEmployee]);
       try {
         const created = await addEmployeeAction(data);
-        setEmployees((prev) => prev.map((e) => e.id === optimisticId ? created : e));
+        setEmployees((prev) =>
+          prev.map((e) => e.id === optimisticId ? created : e)
+        );
       } catch (e) {
         console.error(e);
         setEmployees((prev) => prev.filter((e) => e.id !== optimisticId));
@@ -77,10 +92,22 @@ export function EmployeesClient({ initialEmployees }: EmployeesClientProps) {
     <>
       {/* KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <KpiCard label="Total"         value={String(employees.length)} delta="funcionários"     />
-        <KpiCard label="CLT"           value={String(cltCount)}         delta="contrato fixo"    />
-        <KpiCard label="Comissionados" value={String(commCount)}        delta="por serviço"      />
-        <KpiCard label="Folha fixa"    value={formatBRL(totalFolha)}    delta="salários mensais" />
+        <KpiCard
+          label="Total"
+          value={String(employees.length)}
+          delta="funcionários"
+        />
+        <KpiCard label="CLT" value={String(cltCount)} delta="contrato fixo" />
+        <KpiCard
+          label="Comissionados"
+          value={String(commCount)}
+          delta="por serviço"
+        />
+        <KpiCard
+          label="Folha fixa"
+          value={formatBRL(totalFolha)}
+          delta="salários mensais"
+        />
       </div>
 
       {/* Tabela */}
@@ -98,7 +125,9 @@ export function EmployeesClient({ initialEmployees }: EmployeesClientProps) {
           message={
             <>
               Tem certeza que deseja remover{" "}
-              <span className="font-medium text-text-primary">{employeeToDelete?.name}</span>
+              <span className="font-medium text-text-primary">
+                {employeeToDelete?.name}
+              </span>
               ? Essa ação não pode ser desfeita.
             </>
           }
@@ -112,7 +141,10 @@ export function EmployeesClient({ initialEmployees }: EmployeesClientProps) {
       {modalOpen && (
         <EmployeeModal
           employee={editing ?? undefined}
-          onClose={() => { setModalOpen(false); setEditing(null); }}
+          onClose={() => {
+            setModalOpen(false);
+            setEditing(null);
+          }}
           onSave={handleSave}
         />
       )}

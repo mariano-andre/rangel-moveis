@@ -7,10 +7,10 @@ interface AlertsFormProps {
 }
 
 const alerts: { key: keyof AlertSettings; label: string }[] = [
-  { key: "lowInventory",           label: "Estoque abaixo do mínimo"           },
-  { key: "deadlineApproaching",    label: "Prazo de entrega próximo (3 dias)"   },
-  { key: "pendingPayment",         label: "Pagamento pendente há mais de 7 dias" },
-  { key: "weeklyFinancialSummary", label: "Resumo financeiro semanal"           },
+  { key: "lowInventory", label: "Estoque abaixo do mínimo" },
+  { key: "deadlineApproaching", label: "Prazo de entrega próximo (3 dias)" },
+  { key: "pendingPayment", label: "Pagamento pendente há mais de 7 dias" },
+  { key: "weeklyFinancialSummary", label: "Resumo financeiro semanal" },
 ];
 
 export function AlertsForm({ data, onChange }: AlertsFormProps) {

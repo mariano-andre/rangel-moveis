@@ -1,18 +1,24 @@
-import { db } from '../index';
-import { projects } from '../schema';
-import { eq, desc } from 'drizzle-orm';
-import { z } from 'zod';
+import { db } from "../index";
+import { projects } from "../schema";
+import { desc, eq } from "drizzle-orm";
+import { z } from "zod";
 
 export const insertProjectSchema = z.object({
-  name: z.string().min(1, 'Nome é obrigatório'),
+  name: z.string().min(1, "Nome é obrigatório"),
   employeeId: z.number().int().positive(),
-  createdAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato de data inválido (YYYY-MM-DD)'),
-  deadline: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato de data inválido (YYYY-MM-DD)'),
+  createdAt: z.string().regex(
+    /^\d{4}-\d{2}-\d{2}$/,
+    "Formato de data inválido (YYYY-MM-DD)",
+  ),
+  deadline: z.string().regex(
+    /^\d{4}-\d{2}-\d{2}$/,
+    "Formato de data inválido (YYYY-MM-DD)",
+  ),
   value: z.number().min(0),
   description: z.string(),
   steps: z.array(z.string()),
   currentStepIndex: z.number().int().min(0),
-  status: z.enum(['in_progress', 'waiting', 'completed', 'paused']),
+  status: z.enum(["in_progress", "waiting", "completed", "paused"]),
 });
 
 export type InsertProject = z.infer<typeof insertProjectSchema>;
@@ -34,7 +40,10 @@ export async function createProject(data: InsertProject) {
 
 export async function updateProject(id: number, data: Partial<InsertProject>) {
   const validated = insertProjectSchema.partial().parse(data);
-  const result = await db.update(projects).set({ ...validated, updatedAt: new Date().toISOString() }).where(eq(projects.id, id)).returning();
+  const result = await db.update(projects).set({
+    ...validated,
+    updatedAt: new Date().toISOString(),
+  }).where(eq(projects.id, id)).returning();
   return result[0];
 }
 

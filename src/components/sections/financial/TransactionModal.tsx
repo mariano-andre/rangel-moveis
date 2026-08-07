@@ -6,7 +6,11 @@
 
 import { useState } from "react";
 import { Modal } from "@/components/ui/Modal";
-import { Transaction, TransactionType, ExpenseCategoryLabel } from "@/lib/types";
+import {
+  ExpenseCategoryLabel,
+  Transaction,
+  TransactionType,
+} from "@/lib/types";
 
 // Categorias fixas do sistema
 const FIXED_CATEGORIES: ExpenseCategoryLabel[] = [
@@ -35,7 +39,9 @@ const EMPTY_FORM: FormState = {
   description: "",
   type: "expense",
   value: "",
-  date: new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }).split("/").reverse().join("-"),
+  date: new Date().toLocaleDateString("pt-BR", {
+    timeZone: "America/Sao_Paulo",
+  }).split("/").reverse().join("-"),
   category: "Material",
   isNewCategory: false,
   newCategory: "",
@@ -43,7 +49,9 @@ const EMPTY_FORM: FormState = {
 
 export function TransactionModal({ onClose, onSubmit }: TransactionModalProps) {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
-  const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof FormState, string>>
+  >({});
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -52,11 +60,16 @@ export function TransactionModal({ onClose, onSubmit }: TransactionModalProps) {
 
   function validate(): boolean {
     const newErrors: typeof errors = {};
-    if (!form.description.trim())        newErrors.description = "Informe uma descrição.";
-    if (!form.value || parseFloat(form.value) <= 0) newErrors.value = "Informe um valor válido.";
-    if (!form.date)                       newErrors.date = "Informe a data.";
-    if (form.isNewCategory && !form.newCategory.trim())
+    if (!form.description.trim()) {
+      newErrors.description = "Informe uma descrição.";
+    }
+    if (!form.value || parseFloat(form.value) <= 0) {
+      newErrors.value = "Informe um valor válido.";
+    }
+    if (!form.date) newErrors.date = "Informe a data.";
+    if (form.isNewCategory && !form.newCategory.trim()) {
       newErrors.newCategory = "Informe o nome da nova categoria.";
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
@@ -85,7 +98,6 @@ export function TransactionModal({ onClose, onSubmit }: TransactionModalProps) {
   return (
     <Modal title="Registrar movimentação" onClose={onClose}>
       <div className="space-y-4">
-
         {/* Descrição */}
         <div>
           <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
@@ -199,7 +211,9 @@ export function TransactionModal({ onClose, onSubmit }: TransactionModalProps) {
                   className="w-full bg-bg-elevated border border-brand rounded-lg px-3 py-2 text-sm text-text-primary placeholder:text-text-muted outline-none"
                 />
                 {errors.newCategory && (
-                  <p className="text-xs text-danger mt-1">{errors.newCategory}</p>
+                  <p className="text-xs text-danger mt-1">
+                    {errors.newCategory}
+                  </p>
                 )}
               </div>
             )}

@@ -1,11 +1,11 @@
-import { db } from '../index';
-import { inventory } from '../schema';
-import { eq, desc } from 'drizzle-orm';
-import { z } from 'zod';
+import { db } from "../index";
+import { inventory } from "../schema";
+import { desc, eq } from "drizzle-orm";
+import { z } from "zod";
 
 export const insertInventorySchema = z.object({
-  material: z.string().min(1, 'Material é obrigatório'),
-  unit: z.enum(['chapas', 'unid.', 'kg', 'caixa', 'metro', 'litro']),
+  material: z.string().min(1, "Material é obrigatório"),
+  unit: z.enum(["chapas", "unid.", "kg", "caixa", "metro", "litro"]),
   quantity: z.number().min(0),
   minimum: z.number().min(0),
   pricePerUnit: z.number().min(0),
@@ -28,9 +28,15 @@ export async function createInventoryItem(data: InsertInventory) {
   return result[0];
 }
 
-export async function updateInventoryItem(id: number, data: Partial<InsertInventory>) {
+export async function updateInventoryItem(
+  id: number,
+  data: Partial<InsertInventory>,
+) {
   const validated = insertInventorySchema.partial().parse(data);
-  const result = await db.update(inventory).set({ ...validated, updatedAt: new Date().toISOString() }).where(eq(inventory.id, id)).returning();
+  const result = await db.update(inventory).set({
+    ...validated,
+    updatedAt: new Date().toISOString(),
+  }).where(eq(inventory.id, id)).returning();
   return result[0];
 }
 

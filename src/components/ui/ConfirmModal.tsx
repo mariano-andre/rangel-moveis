@@ -26,7 +26,10 @@ export function ConfirmModal({
           <Button onClick={onClose}>Cancelar</Button>
           <Button
             variant="danger"
-            onClick={() => { onConfirm(); onClose(); }}
+            onClick={() => {
+              onConfirm();
+              onClose();
+            }}
           >
             {confirmLabel}
           </Button>

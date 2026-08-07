@@ -5,7 +5,7 @@ export interface Employee {
   id: number;
   name: string;
   contractType: ContractType;
-  fixedSalary: number;       // valor fixo mensal em reais (pode ser 0)
+  fixedSalary: number; // valor fixo mensal em reais (pode ser 0)
   commissionPercent: number; // percentual de comissão sobre o valor do serviço
 }
 

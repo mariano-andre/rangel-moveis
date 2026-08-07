@@ -19,23 +19,35 @@ type ModalState =
   | null;
 
 export function InventoryClient({ initialItems }: InventoryClientProps) {
-  const [items, setItems]                     = useState<InventoryItem[]>(initialItems);
-  const [modal, setModal]                     = useState<ModalState>(null);
+  const [items, setItems] = useState<InventoryItem[]>(initialItems);
+  const [modal, setModal] = useState<ModalState>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
 
-  const alertCount   = items.filter((i) => calcInventoryStatus(i) !== "ok").length;
+  const alertCount =
+    items.filter((i) => calcInventoryStatus(i) !== "ok").length;
   const itemToDelete = items.find((i) => i.id === confirmDeleteId);
 
-  async function handleEntry(itemId: number, quantity: number, pricePerUnit: number) {
+  async function handleEntry(
+    itemId: number,
+    quantity: number,
+    pricePerUnit: number,
+  ) {
     const item = items.find((i) => i.id === itemId);
     if (!item) return;
     const newQuantity = +(item.quantity + quantity).toFixed(3);
-    
+
     // Optimistic
-    setItems((prev) => prev.map((i) => i.id === itemId ? { ...i, quantity: newQuantity, pricePerUnit } : i));
-    
+    setItems((prev) =>
+      prev.map((i) =>
+        i.id === itemId ? { ...i, quantity: newQuantity, pricePerUnit } : i
+      )
+    );
+
     try {
-      await editInventoryAction(itemId, { quantity: newQuantity, pricePerUnit });
+      await editInventoryAction(itemId, {
+        quantity: newQuantity,
+        pricePerUnit,
+      });
     } catch (e) {
       console.error(e);
       setItems((prev) => prev.map((i) => i.id === itemId ? item : i));
@@ -45,10 +57,10 @@ export function InventoryClient({ initialItems }: InventoryClientProps) {
   async function handleEdit(id: number, data: Omit<InventoryItem, "id">) {
     const original = items.find((i) => i.id === id);
     if (!original) return;
-    
+
     // Optimistic
     setItems((prev) => prev.map((i) => i.id === id ? { ...i, ...data } : i));
-    
+
     try {
       await editInventoryAction(id, data);
     } catch (e) {
@@ -60,10 +72,10 @@ export function InventoryClient({ initialItems }: InventoryClientProps) {
   async function handleDelete(id: number) {
     const originalItem = items.find((i) => i.id === id);
     if (!originalItem) return;
-    
+
     // Optimistic
     setItems((prev) => prev.filter((i) => i.id !== id));
-    
+
     try {
       await removeInventoryAction(id);
     } catch (e) {
@@ -89,7 +101,8 @@ export function InventoryClient({ initialItems }: InventoryClientProps) {
       {alertCount > 0 && (
         <div className="mb-4">
           <span className="inline-flex items-center gap-2 text-sm px-3.5 py-1.5 rounded-lg border border-warning-border text-warning bg-warning-muted">
-            ⚠ {alertCount} {alertCount === 1 ? "item em alerta" : "itens em alerta"}
+            ⚠ {alertCount}{" "}
+            {alertCount === 1 ? "item em alerta" : "itens em alerta"}
           </span>
         </div>
       )}
@@ -129,7 +142,9 @@ export function InventoryClient({ initialItems }: InventoryClientProps) {
           message={
             <>
               Tem certeza que deseja remover{" "}
-              <span className="font-medium text-text-primary">{itemToDelete?.material}</span>
+              <span className="font-medium text-text-primary">
+                {itemToDelete?.material}
+              </span>
               ? Essa ação não pode ser desfeita.
             </>
           }

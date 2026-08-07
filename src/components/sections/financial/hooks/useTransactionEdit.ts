@@ -27,9 +27,19 @@ export function useTransactionEdit(onEdit: (updated: Transaction) => void) {
     setDraft(null);
   }
 
-  function setDraftField<K extends keyof Transaction>(key: K, value: Transaction[K]) {
+  function setDraftField<K extends keyof Transaction>(
+    key: K,
+    value: Transaction[K],
+  ) {
     setDraft((prev) => (prev ? { ...prev, [key]: value } : prev));
   }
 
-  return { isEditing, draft, startEdit, cancelEdit, confirmEdit, setDraftField };
+  return {
+    isEditing,
+    draft,
+    startEdit,
+    cancelEdit,
+    confirmEdit,
+    setDraftField,
+  };
 }

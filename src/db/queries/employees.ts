@@ -1,11 +1,11 @@
-import { db } from '../index';
-import { employees } from '../schema';
-import { eq } from 'drizzle-orm';
-import { z } from 'zod';
+import { db } from "../index";
+import { employees } from "../schema";
+import { eq } from "drizzle-orm";
+import { z } from "zod";
 
 export const insertEmployeeSchema = z.object({
-  name: z.string().min(1, 'Nome é obrigatório'),
-  contractType: z.enum(['clt', 'commission']),
+  name: z.string().min(1, "Nome é obrigatório"),
+  contractType: z.enum(["clt", "commission"]),
   fixedSalary: z.number().min(0),
   commissionPercent: z.number().min(0).max(100),
 });
@@ -27,9 +27,15 @@ export async function createEmployee(data: InsertEmployee) {
   return result[0];
 }
 
-export async function updateEmployee(id: number, data: Partial<InsertEmployee>) {
+export async function updateEmployee(
+  id: number,
+  data: Partial<InsertEmployee>,
+) {
   const validated = insertEmployeeSchema.partial().parse(data);
-  const result = await db.update(employees).set({ ...validated, updatedAt: new Date().toISOString() }).where(eq(employees.id, id)).returning();
+  const result = await db.update(employees).set({
+    ...validated,
+    updatedAt: new Date().toISOString(),
+  }).where(eq(employees.id, id)).returning();
   return result[0];
 }
 

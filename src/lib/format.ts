@@ -6,7 +6,7 @@ import { TransactionType } from "./types";
 
 export function getTotalByType(
   transactions: Transaction[],
-  type: TransactionType
+  type: TransactionType,
 ): number {
   return transactions
     .filter((t) => t.type === type)
@@ -24,5 +24,3 @@ export function formatDateBR(isoDate: string): string {
   const [year, month, day] = isoDate.split("-");
   return `${day}/${month}/${year}`;
 }
-
-

@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Transaction, MonthlyRevenue } from "@/lib/types";
-import { calcRevenue, calcExpenses, calcExpensesByCategory } from "@/lib/calculations";
+import { MonthlyRevenue, Transaction } from "@/lib/types";
+import {
+  calcExpenses,
+  calcExpensesByCategory,
+  calcRevenue,
+} from "@/lib/calculations";
 import { FinancialKpis } from "@/components/sections/financial/FinancialKpis";
 import { ExpensesByCategory } from "@/components/sections/financial/ExpensesByCategory";
 import { MonthlyRevenueChart } from "@/components/sections/financial/MonthlyRevenueChart";
@@ -20,7 +24,7 @@ interface FinancialClientProps {
 // Ordena por data decrescente (mais recente no topo)
 function sortByDate(transactions: Transaction[]): Transaction[] {
   return [...transactions].sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   );
 }
 
@@ -31,24 +35,28 @@ export function FinancialClient({
   receivablePendingCount,
 }: FinancialClientProps) {
   const [transactions, setTransactions] = useState<Transaction[]>(
-    sortByDate(initialTransactions)
+    sortByDate(initialTransactions),
   );
   const [modalOpen, setModalOpen] = useState(false);
 
-  const revenue            = calcRevenue(transactions);
-  const expenses           = calcExpenses(transactions);
-  const profit             = revenue - expenses;
+  const revenue = calcRevenue(transactions);
+  const expenses = calcExpenses(transactions);
+  const profit = revenue - expenses;
   const expensesByCategory = calcExpensesByCategory(transactions);
 
   async function handleAddTransaction(data: Omit<Transaction, "id">) {
-    const optimisticId = transactions.length > 0 ? Math.max(...transactions.map((t) => t.id)) + 1 : 1;
+    const optimisticId = transactions.length > 0
+      ? Math.max(...transactions.map((t) => t.id)) + 1
+      : 1;
     const newTransaction: Transaction = { ...data, id: optimisticId };
-    
+
     setTransactions((prev) => sortByDate([...prev, newTransaction]));
-    
+
     try {
       const created = await addTransactionAction(data);
-      setTransactions((prev) => sortByDate(prev.map((t) => (t.id === optimisticId ? created : t))));
+      setTransactions((prev) =>
+        sortByDate(prev.map((t) => (t.id === optimisticId ? created : t)))
+      );
     } catch (e) {
       console.error(e);
       setTransactions((prev) => prev.filter((t) => t.id !== optimisticId));
@@ -58,16 +66,22 @@ export function FinancialClient({
   async function handleEditTransaction(updated: Transaction) {
     const original = transactions.find((t) => t.id === updated.id);
     if (!original) return;
-    
-    setTransactions((prev) => sortByDate(prev.map((t) => (t.id === updated.id ? updated : t))));
-    
+
+    setTransactions((prev) =>
+      sortByDate(prev.map((t) => (t.id === updated.id ? updated : t)))
+    );
+
     try {
       const { id, ...data } = updated;
       const result = await editTransactionAction(id, data);
-      setTransactions((prev) => sortByDate(prev.map((t) => (t.id === updated.id ? result : t))));
+      setTransactions((prev) =>
+        sortByDate(prev.map((t) => (t.id === updated.id ? result : t)))
+      );
     } catch (e) {
       console.error(e);
-      setTransactions((prev) => sortByDate(prev.map((t) => (t.id === updated.id ? original : t))));
+      setTransactions((prev) =>
+        sortByDate(prev.map((t) => (t.id === updated.id ? original : t)))
+      );
     }
   }
 

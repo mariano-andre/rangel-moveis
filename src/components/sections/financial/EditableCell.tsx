@@ -16,7 +16,9 @@ interface TextCellProps {
   className?: string;
 }
 
-export function TextCell({ isEditing, value, display, onChange, className = "" }: TextCellProps) {
+export function TextCell(
+  { isEditing, value, display, onChange, className = "" }: TextCellProps,
+) {
   if (!isEditing) return <>{display}</>;
   return (
     <input
@@ -34,7 +36,9 @@ interface DateCellProps {
   onChange: (v: string) => void;
 }
 
-export function DateCell({ isEditing, value, display, onChange }: DateCellProps) {
+export function DateCell(
+  { isEditing, value, display, onChange }: DateCellProps,
+) {
   if (!isEditing) return <>{display}</>;
   return (
     <input
@@ -53,7 +57,9 @@ interface NumberCellProps {
   onChange: (v: number) => void;
 }
 
-export function NumberCell({ isEditing, value, display, onChange }: NumberCellProps) {
+export function NumberCell(
+  { isEditing, value, display, onChange }: NumberCellProps,
+) {
   if (!isEditing) return <>{display}</>;
   return (
     <input
@@ -74,7 +80,9 @@ interface TypeCellProps {
   onChange: (v: TransactionType) => void;
 }
 
-export function TypeCell({ isEditing, value, display, onChange }: TypeCellProps) {
+export function TypeCell(
+  { isEditing, value, display, onChange }: TypeCellProps,
+) {
   if (!isEditing) return <>{display}</>;
   return (
     <select
@@ -97,17 +105,35 @@ interface ActionCellProps {
   onEdit: () => void;
 }
 
-export function ActionCell({ isEditing, onConfirm, onCancel, onEdit }: ActionCellProps) {
+export function ActionCell(
+  { isEditing, onConfirm, onCancel, onEdit }: ActionCellProps,
+) {
   if (isEditing) {
     return (
       <div className="flex justify-end gap-1">
-        <button onClick={onConfirm} title="Confirmar" className="text-success hover:opacity-70 transition-opacity text-base px-1 font-bold">✓</button>
-        <button onClick={onCancel}  title="Cancelar"  className="text-danger  hover:opacity-70 transition-opacity text-base px-1 font-bold">✕</button>
+        <button
+          onClick={onConfirm}
+          title="Confirmar"
+          className="text-success hover:opacity-70 transition-opacity text-base px-1 font-bold"
+        >
+          ✓
+        </button>
+        <button
+          onClick={onCancel}
+          title="Cancelar"
+          className="text-danger  hover:opacity-70 transition-opacity text-base px-1 font-bold"
+        >
+          ✕
+        </button>
       </div>
     );
   }
   return (
-    <button onClick={onEdit} title="Editar" className="text-text-secondary hover:text-text-muted transition-colors text-sm px-1">
+    <button
+      onClick={onEdit}
+      title="Editar"
+      className="text-text-secondary hover:text-text-muted transition-colors text-sm px-1"
+    >
       ✎
     </button>
   );

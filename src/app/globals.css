@@ -6,51 +6,49 @@
 }
 
 @theme {
- 
   /* ── Fundos ── */
-  --color-bg-root:        #111110;
-  --color-bg-sidebar:     #161614;
-  --color-bg-app:         #1a1a18;
-  --color-bg-card:        #222220;
-  --color-bg-elevated:    #2a2a28;
- 
+  --color-bg-root: #111110;
+  --color-bg-sidebar: #161614;
+  --color-bg-app: #1a1a18;
+  --color-bg-card: #222220;
+  --color-bg-elevated: #2a2a28;
+
   /* ── Bordas ── */
-  --color-border-strong:  #2e2e2b;
-  --color-border-soft:    #242422;
-  --color-border-input:   #333331;
- 
+  --color-border-strong: #2e2e2b;
+  --color-border-soft: #242422;
+  --color-border-input: #333331;
+
   /* ── Textos ── */
-  --color-text-primary:   #e8e2d6;
+  --color-text-primary: #e8e2d6;
   --color-text-secondary: #a09890;
-  --color-text-muted:     #5a5652;
-  --color-text-inverted:  #111110;
- 
+  --color-text-muted: #5a5652;
+  --color-text-inverted: #111110;
+
   /* ── Brand (laranja/âmbar dessaturado) ── */
-  --color-brand:          #dc7f27;
-  --color-brand-hover:    #a06022;
-  --color-brand-muted:    #2e1e0e;
-  --color-brand-border:   #4a2e10;
- 
+  --color-brand: #dc7f27;
+  --color-brand-hover: #a06022;
+  --color-brand-muted: #2e1e0e;
+  --color-brand-border: #4a2e10;
+
   /* ── Success (verde dessaturado) ── */
-  --color-success:        #4a9e68;
-  --color-success-muted:  #162410;
+  --color-success: #4a9e68;
+  --color-success-muted: #162410;
   --color-success-border: #244018;
- 
+
   /* ── Danger (vermelho dessaturado) ── */
-  --color-danger:         #c24a4a;
-  --color-danger-muted:   #281010;
-  --color-danger-border:  #441818;
- 
+  --color-danger: #c24a4a;
+  --color-danger-muted: #281010;
+  --color-danger-border: #441818;
+
   /* ── Warning (âmbar para alertas moderados) ── */
-  --color-warning:        #b08030;
-  --color-warning-muted:  #261c08;
+  --color-warning: #b08030;
+  --color-warning-muted: #261c08;
   --color-warning-border: #3e2c0e;
- 
+
   /* ── Info (azul dessaturado) ── */
-  --color-info:           #4878a8;
-  --color-info-muted:     #0e1c2e;
-  --color-info-border:    #162e4a;
- 
+  --color-info: #4878a8;
+  --color-info-muted: #0e1c2e;
+  --color-info-border: #162e4a;
 }
 
 body {

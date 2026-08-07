@@ -14,6 +14,7 @@ interface EmployeeModalProps {
 interface FormState {
   name: string;
   contractType: ContractType;
+  password?: string;
   fixedSalary: string;
   commissionPercent: string;
 }
@@ -31,6 +32,7 @@ export function EmployeeModal(
   const [form, setForm] = useState<FormState>({
     name: employee?.name ?? "",
     contractType: employee?.contractType ?? "clt",
+    password: employee?.password ?? "",
     fixedSalary: employee ? String(employee.fixedSalary) : "",
     commissionPercent: employee ? String(employee.commissionPercent) : "",
   });
@@ -53,6 +55,9 @@ export function EmployeeModal(
     if (form.commissionPercent !== "" && (comm < 0 || comm > 100)) {
       e.commissionPercent = "Informe um percentual entre 0 e 100.";
     }
+    if (form.password && form.password.length < 4) {
+      e.password = "A senha deve ter pelo menos 4 caracteres.";
+    }
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -62,6 +67,7 @@ export function EmployeeModal(
     onSave({
       name: form.name.trim(),
       contractType: form.contractType,
+      password: form.password,
       fixedSalary: parseFloat(form.fixedSalary) || 0,
       commissionPercent: parseFloat(form.commissionPercent) || 0,
     });
@@ -91,26 +97,43 @@ export function EmployeeModal(
           )}
         </div>
 
-        {/* Tipo de contrato */}
-        <div>
-          <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
-            Tipo de contrato
-          </label>
-          <div className="flex gap-2">
-            {(["clt", "commission"] as ContractType[]).map((t) => (
-              <button
-                type="button"
-                key={t}
-                onClick={() => set("contractType", t)}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
-                  form.contractType === t
-                    ? "bg-brand-muted border-brand-border text-brand"
-                    : "bg-bg-elevated border-border-input text-text-secondary hover:text-text-primary"
-                }`}
-              >
-                {t === "clt" ? "CLT" : "Comissionado"}
-              </button>
-            ))}
+        {/* Tipo de contrato e Senha */}
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
+              Tipo de contrato
+            </label>
+            <div className="flex gap-2">
+              {(["clt", "commission"] as ContractType[]).map((t) => (
+                <button
+                  type="button"
+                  key={t}
+                  onClick={() => set("contractType", t)}
+                  className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
+                    form.contractType === t
+                      ? "bg-brand-muted border-brand-border text-brand"
+                      : "bg-bg-elevated border-border-input text-text-secondary hover:text-text-primary"
+                  }`}
+                >
+                  {t === "clt" ? "CLT" : "Comissionado"}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
+              Senha
+            </label>
+            <input
+              type="text"
+              value={form.password}
+              onChange={(e) => set("password", e.target.value)}
+              placeholder="Opcional (mín 4 carac)"
+              className={inputClass(!!errors.password)}
+            />
+            {errors.password && (
+              <p className="text-xs text-danger mt-1">{errors.password}</p>
+            )}
           </div>
         </div>
 

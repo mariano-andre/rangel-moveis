@@ -32,6 +32,12 @@ export async function getProjectById(id: number) {
   return result[0] || null;
 }
 
+export async function getProjectsByEmployee(employeeId: number) {
+  return await db.select().from(projects).where(
+    eq(projects.employeeId, employeeId),
+  ).orderBy(desc(projects.createdAt));
+}
+
 export async function createProject(data: InsertProject) {
   const validated = insertProjectSchema.parse(data);
   const result = await db.insert(projects).values(validated).returning();

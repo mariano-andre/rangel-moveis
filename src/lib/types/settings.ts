@@ -1,6 +1,7 @@
 export interface CompanySettings {
   name: string;
   phone: string;
+  managerPassword?: string;
   monthlyRevenueGoal: number;
   defaultCommissionPercent: number;
 }

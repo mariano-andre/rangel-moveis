@@ -43,6 +43,12 @@ const fields: {
     type: "number",
     placeholder: "0",
   },
+  {
+    key: "managerPassword",
+    label: "Senha de Acesso (Gestor)",
+    type: "text",
+    placeholder: "Deixe em branco para não alterar",
+  },
 ];
 
 export function CompanyForm(
@@ -60,7 +66,7 @@ export function CompanyForm(
             </label>
             <input
               type={f.type}
-              value={data[f.key]}
+              value={data[f.key] ?? ""}
               onChange={(e) =>
                 onChange(
                   f.key,

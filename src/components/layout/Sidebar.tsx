@@ -77,6 +77,19 @@ export function Sidebar() {
             {item.label}
           </Link>
         ))}
+
+        <div className="mt-8">
+          <button
+            onClick={() => {
+              import("@/app/actions.ts").then(({ logoutAction }) => {
+                logoutAction().then(() => window.location.href = "/");
+              });
+            }}
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+          >
+            Sair
+          </button>
+        </div>
       </nav>
     </aside>
   );

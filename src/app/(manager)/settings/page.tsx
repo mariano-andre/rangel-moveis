@@ -10,6 +10,7 @@ export default async function SettingsPage() {
     company: {
       name: settings.companyName,
       phone: settings.companyPhone,
+      managerPassword: settings.managerPassword,
       monthlyRevenueGoal: settings.monthlyRevenueGoal,
       defaultCommissionPercent: settings.defaultCommissionPercent,
     },

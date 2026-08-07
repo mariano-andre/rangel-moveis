@@ -27,6 +27,7 @@ interface EntryModalProps {
   items: InventoryItem[];
   onClose: () => void;
   onSave: (itemId: number, quantity: number, pricePerUnit: number) => void;
+  onCreateNew?: (item: Omit<InventoryItem, "id">) => void;
 }
 
 // ── Modo: editar item ────────────────────────────────────────
@@ -47,68 +48,184 @@ const inputClass = (hasError: boolean) =>
 
 // ── Entry form ───────────────────────────────────────────────
 
-function EntryForm({ items, onClose, onSave }: Omit<EntryModalProps, "mode">) {
+function EntryForm(
+  { items, onClose, onSave, onCreateNew }: Omit<EntryModalProps, "mode">,
+) {
+  const [isNew, setIsNew] = useState(false);
+
+  // States for existing material
   const [selectedId, setSelectedId] = useState<string>(
     String(items[0]?.id ?? ""),
   );
+
+  // States for new material
+  const [newMaterial, setNewMaterial] = useState("");
+  const [newUnit, setNewUnit] = useState<InventoryUnit>("chapas");
+  const [newMinimum, setNewMinimum] = useState("0");
+
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const selectedItem = items.find((i) => i.id === parseInt(selectedId));
+  const selectedItem = !isNew
+    ? items.find((i) => i.id === parseInt(selectedId))
+    : null;
 
   function validate() {
     const e: Record<string, string> = {};
-    if (!selectedId) e.item = "Selecione um material.";
+    if (isNew) {
+      if (!newMaterial.trim()) e.material = "Informe o nome do material.";
+      if (!newMinimum || parseFloat(newMinimum) < 0) {
+        e.minimum = "Estoque mínimo inválido.";
+      }
+    } else {
+      if (!selectedId) e.item = "Selecione um material.";
+    }
+
     if (!quantity || parseFloat(quantity) <= 0) {
       e.quantity = "Informe a quantidade.";
     }
     if (!price || parseFloat(price) <= 0) e.price = "Informe o preço unitário.";
+
     setErrors(e);
     return Object.keys(e).length === 0;
   }
 
   function handleSave() {
     if (!validate()) return;
-    onSave(parseInt(selectedId), parseFloat(quantity), parseFloat(price));
+
+    if (isNew && onCreateNew) {
+      onCreateNew({
+        material: newMaterial.trim(),
+        unit: newUnit,
+        quantity: parseFloat(quantity) || 0,
+        minimum: parseFloat(newMinimum) || 0,
+        pricePerUnit: parseFloat(price) || 0,
+      });
+    } else {
+      onSave(parseInt(selectedId), parseFloat(quantity), parseFloat(price));
+    }
     onClose();
   }
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Toggle Novo/Existente */}
+      {onCreateNew && (
+        <div className="flex bg-bg-elevated p-1 rounded-lg border border-border-strong w-full">
+          <button
+            type="button"
+            className={`flex-1 text-xs py-1.5 rounded-md transition-colors ${
+              !isNew
+                ? "bg-bg-card shadow text-text-primary"
+                : "text-text-muted hover:text-text-primary"
+            }`}
+            onClick={() => setIsNew(false)}
+          >
+            Material existente
+          </button>
+          <button
+            type="button"
+            className={`flex-1 text-xs py-1.5 rounded-md transition-colors ${
+              isNew
+                ? "bg-bg-card shadow text-text-primary"
+                : "text-text-muted hover:text-text-primary"
+            }`}
+            onClick={() => setIsNew(true)}
+          >
+            Novo material
+          </button>
+        </div>
+      )}
+
       {/* Material */}
-      <div>
-        <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
-          Material
-        </label>
-        <select
-          value={selectedId}
-          onChange={(e) => {
-            setSelectedId(e.target.value);
-            const item = items.find((i) => i.id === parseInt(e.target.value));
-            if (item) setPrice(String(item.pricePerUnit));
-          }}
-          className={inputClass(!!errors.item)}
-        >
-          {items.map((i) => (
-            <option key={i.id} value={i.id}>{i.material}</option>
-          ))}
-        </select>
-        {errors.item && (
-          <p className="text-xs text-danger mt-1">{errors.item}</p>
+      {!isNew
+        ? (
+          <div>
+            <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
+              Material
+            </label>
+            <select
+              value={selectedId}
+              onChange={(e) => {
+                setSelectedId(e.target.value);
+                const item = items.find((i) =>
+                  i.id === parseInt(e.target.value)
+                );
+                if (item) setPrice(String(item.pricePerUnit));
+              }}
+              className={inputClass(!!errors.item)}
+            >
+              {items.map((i) => (
+                <option key={i.id} value={i.id}>{i.material}</option>
+              ))}
+            </select>
+            {errors.item && (
+              <p className="text-xs text-danger mt-1">{errors.item}</p>
+            )}
+            {selectedItem && (
+              <p className="text-xs text-text-muted mt-1">
+                Estoque atual: {selectedItem.quantity} {selectedItem.unit}
+              </p>
+            )}
+          </div>
+        )
+        : (
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
+                Material (Nome)
+              </label>
+              <input
+                type="text"
+                value={newMaterial}
+                onChange={(e) => setNewMaterial(e.target.value)}
+                className={inputClass(!!errors.material)}
+              />
+              {errors.material && (
+                <p className="text-xs text-danger mt-1">{errors.material}</p>
+              )}
+            </div>
+            <div>
+              <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
+                Unidade
+              </label>
+              <select
+                value={newUnit}
+                onChange={(e) => setNewUnit(e.target.value as InventoryUnit)}
+                className={inputClass(false)}
+              >
+                {UNITS.map((u) => <option key={u} value={u}>{u}</option>)}
+              </select>
+            </div>
+            <div className="col-span-2">
+              <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
+                Estoque mínimo
+              </label>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={newMinimum}
+                onChange={(e) => setNewMinimum(e.target.value)}
+                className={inputClass(!!errors.minimum)}
+              />
+              {errors.minimum && (
+                <p className="text-xs text-danger mt-1">{errors.minimum}</p>
+              )}
+            </div>
+          </div>
         )}
-        {selectedItem && (
-          <p className="text-xs text-text-muted mt-1">
-            Estoque atual: {selectedItem.quantity} {selectedItem.unit}
-          </p>
-        )}
-      </div>
 
       {/* Quantidade e Preço */}
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
-            Qtd. a adicionar {selectedItem ? `(${selectedItem.unit})` : ""}
+            Qtd. a adicionar {selectedItem
+              ? `(${selectedItem.unit})`
+              : isNew
+              ? `(${newUnit})`
+              : ""}
           </label>
           <input
             type="number"
@@ -310,6 +427,7 @@ export function InventoryModal(props: InventoryModalProps) {
             items={props.items}
             onClose={props.onClose}
             onSave={props.onSave}
+            onCreateNew={props.onCreateNew}
           />
         )
         : (

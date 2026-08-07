@@ -17,6 +17,7 @@ if (!fs.existsSync(dbDir)) {
 const sqlite = new Database(dbPath);
 // Use WAL mode for better concurrency in SQLite
 sqlite.pragma("journal_mode = WAL");
+sqlite.pragma("foreign_keys = ON");
 
 // Initialize drizzle
 export const db = drizzle(sqlite, { schema });

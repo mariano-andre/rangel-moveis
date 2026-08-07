@@ -1,7 +1,6 @@
 import { integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import {
   ContractType,
-  ExpenseCategoryLabel,
   InventoryUnit,
   ProjectStatus,
   TransactionType,
@@ -60,7 +59,7 @@ export const transactions = sqliteTable("transactions", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   description: text("description").notNull(),
   type: text("type").$type<TransactionType>().notNull(), // 'income' | 'expense'
-  category: text("category").$type<ExpenseCategoryLabel>(), // 'Material' | 'Mão de obra' | 'Aluguel' | 'Outros' (nullable)
+  category: text("category"), // nullable arbitrary string
   date: text("date").notNull(),
   value: real("value").notNull(),
   createdAt: text("created_at").notNull().$defaultFn(() =>

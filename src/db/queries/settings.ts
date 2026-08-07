@@ -6,7 +6,7 @@ import { z } from "zod";
 export const updateSettingsSchema = z.object({
   companyName: z.string().min(1, "Nome é obrigatório"),
   companyPhone: z.string(),
-  managerPassword: z.string().min(6, "Senha muito curta").optional(),
+  managerPassword: z.string().min(4, "Senha muito curta").optional(),
   monthlyRevenueGoal: z.number().min(0),
   defaultCommissionPercent: z.number().min(0).max(100),
   alertLowInventory: z.boolean(),

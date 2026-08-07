@@ -6,8 +6,7 @@ import { z } from "zod";
 export const insertTransactionSchema = z.object({
   description: z.string().min(1, "Descrição é obrigatória"),
   type: z.enum(["income", "expense"]),
-  category: z.enum(["Material", "Mão de obra", "Aluguel", "Outros"]).nullable()
-    .optional(),
+  category: z.string().nullable().optional(),
   date: z.string().regex(
     /^\d{4}-\d{2}-\d{2}$/,
     "Formato de data inválido (YYYY-MM-DD)",

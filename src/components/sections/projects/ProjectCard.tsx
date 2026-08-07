@@ -169,7 +169,7 @@ export function ProjectCard(
               style={{ width: `${progress}%` }}
             />
           </div>
-          {!isLastStep
+          {!isCompleted && !isLastStep
             ? (
               <Button
                 variant="success"
@@ -180,7 +180,7 @@ export function ProjectCard(
                 <Icon name="next" size={18} />
               </Button>
             )
-            : !isCompleted
+            : !isCompleted && isLastStep
             ? (
               <Button
                 variant="success"

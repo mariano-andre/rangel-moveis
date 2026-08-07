@@ -1,5 +1,7 @@
 "use server";
 
+import { clearSession, getSession, setSession } from "@/lib/auth.ts";
+
 import {
   createProject,
   deleteProject,
@@ -31,11 +33,21 @@ import { withSafeAction } from "@/lib/action-utils.ts";
  * robust error handling and avoid leaking server internals.
  */
 
+async function requireManager() {
+  const session = await getSession();
+  if (!session || session.role !== "manager") {
+    throw new Error("Acesso negado: apenas gestores podem realizar esta ação.");
+  }
+}
+
 export async function addProjectAction(
   data: Parameters<typeof createProject>[0],
 ) {
   return await withSafeAction(
-    () => createProject(data),
+    async () => {
+      await requireManager();
+      return createProject(data);
+    },
     "Erro ao criar projeto",
   );
 }
@@ -44,13 +56,19 @@ export async function editProjectAction(
   data: Parameters<typeof updateProject>[1],
 ) {
   return await withSafeAction(
-    () => updateProject(id, data),
+    async () => {
+      await requireManager();
+      return updateProject(id, data);
+    },
     "Erro ao atualizar projeto",
   );
 }
 export async function removeProjectAction(id: number) {
   return await withSafeAction(
-    () => deleteProject(id),
+    async () => {
+      await requireManager();
+      return deleteProject(id);
+    },
     "Erro ao remover projeto",
   );
 }
@@ -59,7 +77,10 @@ export async function addInventoryAction(
   data: Parameters<typeof createInventoryItem>[0],
 ) {
   return await withSafeAction(
-    () => createInventoryItem(data),
+    async () => {
+      await requireManager();
+      return createInventoryItem(data);
+    },
     "Erro ao adicionar item ao estoque",
   );
 }
@@ -68,13 +89,19 @@ export async function editInventoryAction(
   data: Parameters<typeof updateInventoryItem>[1],
 ) {
   return await withSafeAction(
-    () => updateInventoryItem(id, data),
+    async () => {
+      await requireManager();
+      return updateInventoryItem(id, data);
+    },
     "Erro ao atualizar item do estoque",
   );
 }
 export async function removeInventoryAction(id: number) {
   return await withSafeAction(
-    () => deleteInventoryItem(id),
+    async () => {
+      await requireManager();
+      return deleteInventoryItem(id);
+    },
     "Erro ao remover item do estoque",
   );
 }
@@ -83,7 +110,10 @@ export async function addEmployeeAction(
   data: Parameters<typeof createEmployee>[0],
 ) {
   return await withSafeAction(
-    () => createEmployee(data),
+    async () => {
+      await requireManager();
+      return createEmployee(data);
+    },
     "Erro ao adicionar funcionário",
   );
 }
@@ -92,13 +122,19 @@ export async function editEmployeeAction(
   data: Parameters<typeof updateEmployee>[1],
 ) {
   return await withSafeAction(
-    () => updateEmployee(id, data),
+    async () => {
+      await requireManager();
+      return updateEmployee(id, data);
+    },
     "Erro ao atualizar funcionário",
   );
 }
 export async function removeEmployeeAction(id: number) {
   return await withSafeAction(
-    () => deleteEmployee(id),
+    async () => {
+      await requireManager();
+      return deleteEmployee(id);
+    },
     "Erro ao remover funcionário",
   );
 }
@@ -107,7 +143,10 @@ export async function addTransactionAction(
   data: Parameters<typeof createTransaction>[0],
 ) {
   return await withSafeAction(
-    () => createTransaction(data),
+    async () => {
+      await requireManager();
+      return createTransaction(data);
+    },
     "Erro ao adicionar transação",
   );
 }
@@ -116,13 +155,19 @@ export async function editTransactionAction(
   data: Parameters<typeof updateTransaction>[1],
 ) {
   return await withSafeAction(
-    () => updateTransaction(id, data),
+    async () => {
+      await requireManager();
+      return updateTransaction(id, data);
+    },
     "Erro ao atualizar transação",
   );
 }
 export async function removeTransactionAction(id: number) {
   return await withSafeAction(
-    () => deleteTransaction(id),
+    async () => {
+      await requireManager();
+      return deleteTransaction(id);
+    },
     "Erro ao remover transação",
   );
 }
@@ -131,7 +176,10 @@ export async function saveSettingsAction(
   data: Parameters<typeof updateSettings>[0],
 ) {
   return await withSafeAction(
-    () => updateSettings(data),
+    async () => {
+      await requireManager();
+      return updateSettings(data);
+    },
     "Erro ao salvar configurações",
   );
 }
@@ -140,7 +188,6 @@ import {
   verifyEmployeePassword,
   verifyManagerPassword,
 } from "@/db/queries/auth.ts";
-import { clearSession, setSession } from "@/lib/auth.ts";
 
 export async function loginManagerAction(password: string) {
   return await withSafeAction(async () => {

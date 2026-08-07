@@ -18,7 +18,11 @@ import { ConfirmModal } from "@/components/ui/ConfirmModal.tsx";
 import { InventoryTable } from "@/components/sections/inventory/InventoryTable.tsx";
 import { InventoryModal } from "@/components/sections/inventory/InventoryModal.tsx";
 import { Icon } from "@/components/icons/index.ts";
-import { editInventoryAction, removeInventoryAction } from "@/app/actions.ts";
+import {
+  addInventoryAction,
+  editInventoryAction,
+  removeInventoryAction,
+} from "@/app/actions.ts";
 import { useOptimisticData } from "@/lib/hooks/useOptimisticData.ts";
 
 interface InventoryClientProps {
@@ -32,9 +36,10 @@ type ModalState =
 
 export function InventoryClient({ initialItems }: InventoryClientProps) {
   // Use generic hook to manage inventory state
-  const { data: items, optimisticUpdate, optimisticDelete } = useOptimisticData<
-    InventoryItem
-  >(initialItems);
+  const { data: items, optimisticUpdate, optimisticDelete, optimisticCreate } =
+    useOptimisticData<
+      InventoryItem
+    >(initialItems);
 
   const [modal, setModal] = useState<ModalState>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
@@ -63,6 +68,20 @@ export function InventoryClient({ initialItems }: InventoryClientProps) {
         (actionId, updatedData) =>
           editInventoryAction(actionId as number, updatedData),
       );
+    } catch (_e) {
+      // Handled by hook
+    }
+  }
+
+  /**
+   * Creates a new inventory material entirely.
+   */
+  async function handleCreateNew(data: Omit<InventoryItem, "id">) {
+    const temporaryId = items.length > 0
+      ? Math.max(...items.map((i) => i.id)) + 1
+      : 1;
+    try {
+      await optimisticCreate(data, addInventoryAction, temporaryId);
     } catch (_e) {
       // Handled by hook
     }
@@ -138,6 +157,7 @@ export function InventoryClient({ initialItems }: InventoryClientProps) {
           items={items}
           onClose={() => setModal(null)}
           onSave={handleEntry}
+          onCreateNew={handleCreateNew}
         />
       )}
 

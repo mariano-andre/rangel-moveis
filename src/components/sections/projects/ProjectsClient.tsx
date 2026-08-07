@@ -75,7 +75,7 @@ export function ProjectsClient(
   async function handleNewProject(data: Omit<Project, "id">) {
     try {
       const newProject = await addProjectAction(data);
-      setProjects((prev) => [newProject, ...prev]);
+      setProjects((prev) => [newProject as Project, ...prev]);
     } catch (e) {
       console.error(e);
     }
@@ -83,10 +83,10 @@ export function ProjectsClient(
 
   async function handleEditProject(updated: Project) {
     try {
-      const { id, createdAt: _createdAt, updatedAt: _updatedAt, ...rest } = updated;
+      const { id, createdAt: _createdAt, ...rest } = updated as any;
       const updatedProject = await editProjectAction(id, rest);
       setProjects((prev) =>
-        prev.map((p) => (p.id === updated.id ? updatedProject : p))
+        prev.map((p) => (p.id === updated.id ? updatedProject as Project : p))
       );
     } catch (e) {
       console.error(e);

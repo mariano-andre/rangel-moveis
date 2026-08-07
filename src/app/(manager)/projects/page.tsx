@@ -17,7 +17,7 @@ export default async function ProjectsPage() {
         </p>
       </div>
 
-      <ProjectsClient projects={projects} employees={employees} />
+      <ProjectsClient projects={projects as any} employees={employees as any} />
     </div>
   );
 }

@@ -32,7 +32,7 @@ export function SettingsClient({ initialSettings }: SettingsClientProps) {
   async function handleSave() {
     setSaved(false);
     try {
-      await saveSettingsAction({ company, alerts });
+      await saveSettingsAction({ ...company, ...alerts } as any);
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (e) {

@@ -55,7 +55,7 @@ export function FinancialClient({
     try {
       const created = await addTransactionAction(data);
       setTransactions((prev) =>
-        sortByDate(prev.map((t) => (t.id === optimisticId ? created : t)))
+        sortByDate(prev.map((t) => (t.id === optimisticId ? created as Transaction : t)))
       );
     } catch (e) {
       console.error(e);
@@ -75,7 +75,7 @@ export function FinancialClient({
       const { id, ...data } = updated;
       const result = await editTransactionAction(id, data);
       setTransactions((prev) =>
-        sortByDate(prev.map((t) => (t.id === updated.id ? result : t)))
+        sortByDate(prev.map((t) => (t.id === updated.id ? result as Transaction : t)))
       );
     } catch (e) {
       console.error(e);

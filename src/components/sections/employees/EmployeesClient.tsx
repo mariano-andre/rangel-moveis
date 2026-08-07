@@ -51,11 +51,11 @@ export function EmployeesClient({ initialEmployees }: EmployeesClientProps) {
         ? Math.max(...employees.map((e) => e.id)) + 1
         : 1;
       const optimisticEmployee = { id: optimisticId, ...data };
-      setEmployees((prev) => [...prev, optimisticEmployee]);
+      setEmployees((prev) => [...prev, optimisticEmployee as any]);
       try {
         const created = await addEmployeeAction(data);
         setEmployees((prev) =>
-          prev.map((e) => e.id === optimisticId ? created : e)
+          prev.map((e) => e.id === optimisticId ? created as any : e)
         );
       } catch (e) {
         console.error(e);

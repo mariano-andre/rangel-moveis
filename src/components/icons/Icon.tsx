@@ -16,6 +16,7 @@ export function Icon({
   return (
     <Component
       size={size}
+      suppressHydrationWarning
       {...props}
     />
   );

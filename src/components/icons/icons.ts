@@ -5,6 +5,7 @@ import {
   CirclePlus,
   Eye,
   FolderKanban,
+  Menu,
   MoveRight,
   Package,
   PencilIcon,
@@ -28,6 +29,7 @@ export const AppIcons = {
   next: MoveRight,
   new: CirclePlus,
   notification: Bell,
+  menu: Menu,
 } as const;
 
 export type IconName = keyof typeof AppIcons;

@@ -11,8 +11,8 @@ export interface Transaction {
   id: number;
   description: string;
   type: TransactionType;
-  category?: ExpenseCategoryLabel; // nullable — só preenchido em despesas
-  date: string;                    // ISO: YYYY-MM-DD
+  category?: ExpenseCategoryLabel | null; // nullable — só preenchido em despesas
+  date: string; // ISO: YYYY-MM-DD
   value: number;
 }
 

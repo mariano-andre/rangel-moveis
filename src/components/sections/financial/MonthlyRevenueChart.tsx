@@ -1,5 +1,5 @@
-import { Card, CardTitle } from "@/components/ui/Card";
-import { MonthlyRevenue } from "@/lib/types";
+import { Card, CardTitle } from "../../ui/Card.tsx";
+import { MonthlyRevenue } from "../../../lib/types/index.ts";
 
 interface MonthlyRevenueChartProps {
   history: MonthlyRevenue[];
@@ -7,8 +7,7 @@ interface MonthlyRevenueChartProps {
 
 export function MonthlyRevenueChart({ history }: MonthlyRevenueChartProps) {
   const maxValue = Math.max(...history.map((h) => h.value));
-  const isLastMonthBest =
-    history[history.length - 1].value === maxValue;
+  const isLastMonthBest = history[history.length - 1].value === maxValue;
 
   return (
     <Card>
@@ -29,9 +28,7 @@ export function MonthlyRevenueChart({ history }: MonthlyRevenueChartProps) {
         })}
       </div>
       <div className="flex justify-between text-[10px] text-text-secondary mt-1.5">
-        {history.map((h) => (
-          <span key={h.month}>{h.month}</span>
-        ))}
+        {history.map((h) => <span key={h.month}>{h.month}</span>)}
       </div>
       {isLastMonthBest && (
         <p className="text-xs text-text-secondary/80 mt-3">

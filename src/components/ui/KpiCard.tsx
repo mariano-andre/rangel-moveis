@@ -35,7 +35,9 @@ export function KpiCard({
         {value}
       </p>
       {delta && (
-        <p className={`text-[12px] mt-1 ${deltaColorStyles[deltaType]}`}>{delta}</p>
+        <p className={`text-[12px] mt-1 ${deltaColorStyles[deltaType]}`}>
+          {delta}
+        </p>
       )}
     </div>
   );

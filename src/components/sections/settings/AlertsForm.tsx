@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import { AlertSettings } from "@/lib/types";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Icon } from "@/components/icons";
+=======
+import { AlertSettings } from "../../../lib/types/index.ts";
+import { Card, CardTitle } from "../../ui/Card.tsx";
+>>>>>>> master
 
 interface AlertsFormProps {
   data: AlertSettings;
@@ -8,10 +13,10 @@ interface AlertsFormProps {
 }
 
 const alerts: { key: keyof AlertSettings; label: string }[] = [
-  { key: "lowInventory",           label: "Estoque abaixo do mínimo"           },
-  { key: "deadlineApproaching",    label: "Prazo de entrega próximo (3 dias)"   },
-  { key: "pendingPayment",         label: "Pagamento pendente há mais de 7 dias" },
-  { key: "weeklyFinancialSummary", label: "Resumo financeiro semanal"           },
+  { key: "lowInventory", label: "Estoque abaixo do mínimo" },
+  { key: "deadlineApproaching", label: "Prazo de entrega próximo (3 dias)" },
+  { key: "pendingPayment", label: "Pagamento pendente há mais de 7 dias" },
+  { key: "weeklyFinancialSummary", label: "Resumo financeiro semanal" },
 ];
 
 export function AlertsForm({ data, onChange }: AlertsFormProps) {

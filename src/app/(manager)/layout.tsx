@@ -1,4 +1,4 @@
-import { Sidebar } from "@/components/layout/Sidebar";
+import { Sidebar } from "../../components/layout/Sidebar.tsx";
 import { ReactNode } from "react";
 
 export default function ManagerLayout({ children }: { children: ReactNode }) {

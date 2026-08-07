@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Employee, ContractType } from "@/lib/types";
-import { Modal } from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
+import { ContractType, Employee } from "../../../lib/types/index.ts";
+import { Modal } from "../../ui/Modal.tsx";
+import { Button } from "../../ui/Button.tsx";
 
 interface EmployeeModalProps {
   employee?: Employee;
@@ -25,11 +25,13 @@ const inputClass = (hasError: boolean) =>
     hasError ? "border-danger" : "border-border-input focus:border-brand"
   }`;
 
-export function EmployeeModal({ employee, onClose, onSave }: EmployeeModalProps) {
+export function EmployeeModal(
+  { employee, onClose, onSave }: EmployeeModalProps,
+) {
   const [form, setForm] = useState<FormState>({
-    name:              employee?.name              ?? "",
-    contractType:      employee?.contractType      ?? "clt",
-    fixedSalary:       employee ? String(employee.fixedSalary)       : "",
+    name: employee?.name ?? "",
+    contractType: employee?.contractType ?? "clt",
+    fixedSalary: employee ? String(employee.fixedSalary) : "",
     commissionPercent: employee ? String(employee.commissionPercent) : "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -41,13 +43,16 @@ export function EmployeeModal({ employee, onClose, onSave }: EmployeeModalProps)
 
   function validate(): boolean {
     const e: FormErrors = {};
-    if (!form.name.trim())
+    if (!form.name.trim()) {
       e.name = "Informe o nome do funcionário.";
-    if (form.fixedSalary !== "" && parseFloat(form.fixedSalary) < 0)
+    }
+    if (form.fixedSalary !== "" && parseFloat(form.fixedSalary) < 0) {
       e.fixedSalary = "Salário não pode ser negativo.";
+    }
     const comm = parseFloat(form.commissionPercent);
-    if (form.commissionPercent !== "" && (comm < 0 || comm > 100))
+    if (form.commissionPercent !== "" && (comm < 0 || comm > 100)) {
       e.commissionPercent = "Informe um percentual entre 0 e 100.";
+    }
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -55,21 +60,25 @@ export function EmployeeModal({ employee, onClose, onSave }: EmployeeModalProps)
   function handleSave() {
     if (!validate()) return;
     onSave({
-      name:              form.name.trim(),
-      contractType:      form.contractType,
-      fixedSalary:       parseFloat(form.fixedSalary)       || 0,
+      name: form.name.trim(),
+      contractType: form.contractType,
+      fixedSalary: parseFloat(form.fixedSalary) || 0,
       commissionPercent: parseFloat(form.commissionPercent) || 0,
     });
     onClose();
   }
 
   return (
-    <Modal title={employee ? "Editar funcionário" : "Novo funcionário"} onClose={onClose}>
+    <Modal
+      title={employee ? "Editar funcionário" : "Novo funcionário"}
+      onClose={onClose}
+    >
       <div className="flex flex-col gap-4">
-
         {/* Nome */}
         <div>
-          <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">Nome</label>
+          <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
+            Nome
+          </label>
           <input
             type="text"
             value={form.name}
@@ -77,15 +86,20 @@ export function EmployeeModal({ employee, onClose, onSave }: EmployeeModalProps)
             placeholder="Ex: Carlos Silva"
             className={inputClass(!!errors.name)}
           />
-          {errors.name && <p className="text-xs text-danger mt-1">{errors.name}</p>}
+          {errors.name && (
+            <p className="text-xs text-danger mt-1">{errors.name}</p>
+          )}
         </div>
 
         {/* Tipo de contrato */}
         <div>
-          <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">Tipo de contrato</label>
+          <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
+            Tipo de contrato
+          </label>
           <div className="flex gap-2">
             {(["clt", "commission"] as ContractType[]).map((t) => (
               <button
+                type="button"
                 key={t}
                 onClick={() => set("contractType", t)}
                 className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
@@ -103,7 +117,9 @@ export function EmployeeModal({ employee, onClose, onSave }: EmployeeModalProps)
         {/* Salário e Comissão */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">Salário fixo (R$)</label>
+            <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
+              Salário fixo (R$)
+            </label>
             <input
               type="number"
               min="0"
@@ -113,10 +129,14 @@ export function EmployeeModal({ employee, onClose, onSave }: EmployeeModalProps)
               placeholder="0,00"
               className={inputClass(!!errors.fixedSalary)}
             />
-            {errors.fixedSalary && <p className="text-xs text-danger mt-1">{errors.fixedSalary}</p>}
+            {errors.fixedSalary && (
+              <p className="text-xs text-danger mt-1">{errors.fixedSalary}</p>
+            )}
           </div>
           <div>
-            <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">Comissão (%)</label>
+            <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
+              Comissão (%)
+            </label>
             <input
               type="number"
               min="0"
@@ -127,7 +147,11 @@ export function EmployeeModal({ employee, onClose, onSave }: EmployeeModalProps)
               placeholder="0"
               className={inputClass(!!errors.commissionPercent)}
             />
-            {errors.commissionPercent && <p className="text-xs text-danger mt-1">{errors.commissionPercent}</p>}
+            {errors.commissionPercent && (
+              <p className="text-xs text-danger mt-1">
+                {errors.commissionPercent}
+              </p>
+            )}
           </div>
         </div>
 
@@ -138,7 +162,6 @@ export function EmployeeModal({ employee, onClose, onSave }: EmployeeModalProps)
             {employee ? "Salvar alterações" : "Adicionar funcionário"}
           </Button>
         </div>
-
       </div>
     </Modal>
   );

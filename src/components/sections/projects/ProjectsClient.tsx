@@ -1,10 +1,23 @@
+/**
+ * ProjectsClient.tsx
+ *
+ * Client component for managing Projects.
+ *
+ * Clean Code Principles Applied:
+ * - Single Responsibility Principle: Data synchronization and optimistic rollbacks
+ *   are abstracted into the `useOptimisticData` hook.
+ * - Separation of Concerns: The component focuses entirely on presentation and filters.
+ */
+
 "use client";
 
 import { useState } from "react";
-import { Project, ProjectStatus } from "@/lib/types";
-import { ProjectCard } from "@/components/sections/projects/ProjectCard";
-import { NewProjectModal } from "@/components/sections/projects/NewProjectModal";
-import { Button } from "@/components/ui/Button";
+import { Employee, Project, ProjectStatus } from "../../../lib/types/index.ts";
+import { ProjectCard } from "./ProjectCard.tsx";
+import { NewProjectModal } from "./NewProjectModal.tsx";
+import { Button } from "../../ui/Button.tsx";
+import { addProjectAction, editProjectAction } from "../../../app/actions.ts";
+import { useOptimisticData } from "../../../lib/hooks/useOptimisticData.ts";
 
 type Filter = "all" | ProjectStatus;
 type SortKey = "createdAt" | "deadline";
@@ -12,14 +25,22 @@ type SortKey = "createdAt" | "deadline";
 const COMPLETED_PAGE_SIZE = 5; // projetos concluídos por página
 
 const filters: { value: Filter; label: string }[] = [
+<<<<<<< HEAD
   { value: "in_progress", label: "Em andamento" },
   { value: "completed",   label: "Concluído"    },
   { value: "paused",      label: "Pausado"      },
+=======
+  { value: "all", label: "Todos" },
+  { value: "in_progress", label: "Em andamento" },
+  { value: "waiting", label: "Aguardando" },
+  { value: "completed", label: "Concluído" },
+  { value: "paused", label: "Pausado" },
+>>>>>>> master
 ];
 
 const sortOptions: { value: SortKey; label: string }[] = [
   { value: "createdAt", label: "Data de criação" },
-  { value: "deadline",  label: "Prazo"           },
+  { value: "deadline", label: "Prazo" },
 ];
 
 function sortProjects(projects: Project[], key: SortKey): Project[] {
@@ -102,12 +123,25 @@ function Pagination({ currentPage, totalPages, onChange }: PaginationProps) {
 
 interface ProjectsClientProps {
   projects: Project[];
+  employees: Employee[];
 }
 
+<<<<<<< HEAD
 export function ProjectsClient({ projects: initialProjects }: ProjectsClientProps) {
   const [projects, setProjects]         = useState<Project[]>(initialProjects);
   const [activeFilter, setActiveFilter] = useState<Filter>("in_progress");
   const [sortKey, setSortKey]           = useState<SortKey>("createdAt");
+=======
+export function ProjectsClient(
+  { projects: initialProjects, employees }: ProjectsClientProps,
+) {
+  // Use generic hook to manage projects state, eliminating duplicate rollback logic
+  const { data: projects, optimisticCreate, optimisticUpdate } =
+    useOptimisticData<Project>(initialProjects);
+
+  const [activeFilter, setActiveFilter] = useState<Filter>("all");
+  const [sortKey, setSortKey] = useState<SortKey>("createdAt");
+>>>>>>> master
   const [newModalOpen, setNewModalOpen] = useState(false);
   const [completedPage, setCompletedPage] = useState(1);
 
@@ -122,28 +156,67 @@ export function ProjectsClient({ projects: initialProjects }: ProjectsClientProp
     setCompletedPage(1);
   }
 
-  function handleAdvanceStep(projectId: number) {
-    setProjects((prev) =>
-      prev.map((p) => {
-        if (p.id !== projectId) return p;
-        return { ...p, currentStepIndex: Math.min(p.currentStepIndex + 1, p.steps.length - 1) };
-      })
+  /**
+   * Advances the project to the next step.
+   * Optimistically updates the UI so the user gets instant feedback.
+   */
+  async function handleAdvanceStep(projectId: number) {
+    const project = projects.find((p) => p.id === projectId);
+    if (!project) return;
+
+    const newStepIndex = Math.min(
+      project.currentStepIndex + 1,
+      project.steps.length - 1,
     );
+
+    try {
+      await optimisticUpdate(
+        projectId,
+        { currentStepIndex: newStepIndex },
+        (id, updated) => editProjectAction(id as number, updated),
+      );
+    } catch (_e) {
+      // The hook handles the rollback and logging automatically
+    }
   }
 
-  function handleNewProject(data: Omit<Project, "id">) {
-    const newProject: Project = {
-      ...data,
-      id: projects.length > 0 ? Math.max(...projects.map((p) => p.id)) + 1 : 1,
-    };
-    setProjects((prev) => [newProject, ...prev]);
+  /**
+   * Creates a new project and optimistically adds it to the list.
+   */
+  async function handleNewProject(data: Omit<Project, "id">) {
+    const temporaryId = projects.length > 0
+      ? Math.max(...projects.map((p) => p.id)) + 1
+      : 1;
+
+    try {
+      await optimisticCreate(data, addProjectAction, temporaryId);
+    } catch (_e) {
+      // The hook handles the rollback and logging automatically
+    }
   }
 
-  function handleEditProject(updated: Project) {
-    setProjects((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+  /**
+   * Updates an existing project.
+   */
+  async function handleEditProject(updated: Project) {
+    try {
+      const { id, createdAt: _createdAt, ...rest } = updated;
+      await optimisticUpdate(
+        id,
+        rest,
+        (actionId, updatedData) =>
+          editProjectAction(actionId as number, updatedData),
+      );
+    } catch (_e) {
+      // The hook handles the rollback and logging automatically
+    }
   }
 
+<<<<<<< HEAD
   // Filtragem e ordenação
+=======
+  // Filter and sort the final data to be rendered
+>>>>>>> master
   const filtered = activeFilter === "all"
     ? projects
     : projects.filter((p) => p.status === activeFilter);
@@ -165,6 +238,7 @@ export function ProjectsClient({ projects: initialProjects }: ProjectsClientProp
           <div className="flex flex-wrap gap-2">
             {filters.map((f) => (
               <button
+                type="button"
                 key={f.value}
                 onClick={() => handleFilterChange(f.value)}
                 className={`text-xs px-3.5 py-1.5 rounded-full border transition-colors ${
@@ -182,6 +256,7 @@ export function ProjectsClient({ projects: initialProjects }: ProjectsClientProp
             <div className="flex gap-1.5">
               {sortOptions.map((s) => (
                 <button
+                  type="button"
                   key={s.value}
                   onClick={() => handleSortChange(s.value)}
                   className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
@@ -210,6 +285,7 @@ export function ProjectsClient({ projects: initialProjects }: ProjectsClientProp
       )}
 
       {/* Cards */}
+<<<<<<< HEAD
       {visibleProjects.length === 0 ? (
         <p className="text-sm text-text-muted text-center py-12">
           Nenhum projeto nessa categoria.
@@ -226,6 +302,27 @@ export function ProjectsClient({ projects: initialProjects }: ProjectsClientProp
           ))}
         </div>
       )}
+=======
+      {sorted.length === 0
+        ? (
+          <p className="text-sm text-text-muted text-center py-12">
+            Nenhum projeto nessa categoria.
+          </p>
+        )
+        : (
+          <div className="flex flex-col gap-4">
+            {sorted.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                employees={employees}
+                onAdvanceStep={() => handleAdvanceStep(project.id)}
+                onEdit={handleEditProject}
+              />
+            ))}
+          </div>
+        )}
+>>>>>>> master
 
       {/* Paginação */}
       <Pagination
@@ -236,6 +333,7 @@ export function ProjectsClient({ projects: initialProjects }: ProjectsClientProp
 
       {newModalOpen && (
         <NewProjectModal
+          employees={employees}
           onClose={() => setNewModalOpen(false)}
           onSave={handleNewProject}
         />

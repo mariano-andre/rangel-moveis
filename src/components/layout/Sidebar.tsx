@@ -15,6 +15,7 @@ interface NavItem {
 }
 
 const mainNav: NavItem[] = [
+<<<<<<< HEAD
   {
     icon: "financial",
     label: "Financeiro",
@@ -35,6 +36,12 @@ const mainNav: NavItem[] = [
     label: "Estoque",
     href: "/inventory",
   },
+=======
+  { label: "Financeiro", href: "/financial" },
+  { label: "Projetos", href: "/projects" },
+  { label: "Funcionários", href: "/employees" },
+  { label: "Estoque", href: "/inventory" },
+>>>>>>> master
 ];
 
 const systemNav: NavItem[] = [
@@ -49,8 +56,12 @@ export function Sidebar() {
   }
 
   return (
+<<<<<<< HEAD
     <aside className="w-70 shrink-0 flex flex-col bg-bg-sidebar border border-border-strong min-h-screen fixed">
 
+=======
+    <aside className="w-70 shrink-0 flex flex-col bg-bg-sidebar border border-border-strong min-h-screen">
+>>>>>>> master
       {/* Logo */}
       <div className="px-4 py-5 border-b border-border-strong">
         <p className="text-base font-semibold text-primary">Rangel Móveis</p>
@@ -93,7 +104,6 @@ export function Sidebar() {
           </Link>
         ))}
       </nav>
-
     </aside>
   );
 }

@@ -1,4 +1,4 @@
-import { ProjectsData } from "@/lib/types";
+import { ProjectsData } from "../lib/types/index.ts";
 
 export const projectsMock: ProjectsData = {
   projects: [
@@ -9,7 +9,8 @@ export const projectsMock: ProjectsData = {
       createdAt: "2025-04-30",
       deadline: "2025-05-28",
       value: 8500,
-      description: "Cozinha completa com ilha central e acabamento laminado branco.",
+      description:
+        "Cozinha completa com ilha central e acabamento laminado branco.",
       steps: [
         "Medição e projeto",
         "Corte e usinagem das peças",
@@ -26,7 +27,8 @@ export const projectsMock: ProjectsData = {
       createdAt: "2025-05-08",
       deadline: "2025-06-05",
       value: 4200,
-      description: "Armário embutido com nichos e portas de correr em MDF especial.",
+      description:
+        "Armário embutido com nichos e portas de correr em MDF especial.",
       steps: [
         "Medição e projeto",
         "Corte e montagem",
@@ -77,7 +79,8 @@ export const projectsMock: ProjectsData = {
       createdAt: "2025-03-15",
       deadline: "2025-04-20",
       value: 2400,
-      description: "Estante modular com nichos abertos e fechados para sala de estar.",
+      description:
+        "Estante modular com nichos abertos e fechados para sala de estar.",
       steps: [
         "Medição e projeto",
         "Corte e montagem",

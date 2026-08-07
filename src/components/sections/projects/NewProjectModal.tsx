@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Project } from "@/lib/types";
-import { employeesMock } from "@/content/employees";
-import { Modal } from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
+import { Employee, Project } from "../../../lib/types/index.ts";
+import { Modal } from "../../ui/Modal.tsx";
+import { Button } from "../../ui/Button.tsx";
 
 interface NewProjectModalProps {
+  employees: Employee[];
   onClose: () => void;
   onSave: (project: Omit<Project, "id">) => void;
 }
@@ -21,18 +21,20 @@ interface FormState {
 }
 
 const EMPTY_FORM: FormState = {
-  name:        "",
+  name: "",
   description: "",
-  employeeId:  "",
-  deadline:    "",
-  value:       "",
-  stepsRaw:    "",
+  employeeId: "",
+  deadline: "",
+  value: "",
+  stepsRaw: "",
 };
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
 
-export function NewProjectModal({ onClose, onSave }: NewProjectModalProps) {
-  const [form, setForm]     = useState<FormState>(EMPTY_FORM);
+export function NewProjectModal(
+  { employees, onClose, onSave }: NewProjectModalProps,
+) {
+  const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
 
   function set(key: keyof FormState, value: string) {
@@ -42,31 +44,38 @@ export function NewProjectModal({ onClose, onSave }: NewProjectModalProps) {
 
   function validate(): boolean {
     const e: FormErrors = {};
-    if (!form.name.trim())        e.name        = "Informe o nome do projeto.";
-    if (!form.employeeId)         e.employeeId  = "Selecione um responsável.";
-    if (!form.deadline)           e.deadline    = "Informe o prazo de entrega.";
-    if (!form.value || parseFloat(form.value) <= 0)
-                                  e.value       = "Informe um valor válido.";
-    const steps = form.stepsRaw.split("\n").map((s) => s.trim()).filter(Boolean);
-    if (steps.length === 0)       e.stepsRaw    = "Informe ao menos uma etapa.";
+    if (!form.name.trim()) e.name = "Informe o nome do projeto.";
+    if (!form.employeeId) e.employeeId = "Selecione um responsável.";
+    if (!form.deadline) e.deadline = "Informe o prazo de entrega.";
+    if (!form.value || parseFloat(form.value) <= 0) {
+      e.value = "Informe um valor válido.";
+    }
+    const steps = form.stepsRaw.split("\n").map((s) => s.trim()).filter(
+      Boolean,
+    );
+    if (steps.length === 0) e.stepsRaw = "Informe ao menos uma etapa.";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
 
   function handleSave() {
     if (!validate()) return;
-    const steps = form.stepsRaw.split("\n").map((s) => s.trim()).filter(Boolean);
+    const steps = form.stepsRaw.split("\n").map((s) => s.trim()).filter(
+      Boolean,
+    );
     onSave({
-      name:             form.name.trim(),
-      description:      form.description.trim(),
-      employeeId:       parseInt(form.employeeId),
-      deadline:         form.deadline,
-      value:            parseFloat(form.value),
+      name: form.name.trim(),
+      description: form.description.trim(),
+      employeeId: parseInt(form.employeeId),
+      deadline: form.deadline,
+      value: parseFloat(form.value),
       steps,
       currentStepIndex: 0,
-      status:           "in_progress",
-      createdAt:        new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })
-                          .split("/").reverse().join("-"),
+      status: "in_progress",
+      createdAt: new Date().toLocaleDateString("pt-BR", {
+        timeZone: "America/Sao_Paulo",
+      })
+        .split("/").reverse().join("-"),
     });
     onClose();
   }
@@ -79,7 +88,6 @@ export function NewProjectModal({ onClose, onSave }: NewProjectModalProps) {
   return (
     <Modal title="Novo projeto" onClose={onClose} size="xl">
       <div className="flex flex-col gap-4">
-
         {/* Nome */}
         <div>
           <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
@@ -92,7 +100,9 @@ export function NewProjectModal({ onClose, onSave }: NewProjectModalProps) {
             placeholder="Ex: Cozinha planejada — Família Silva"
             className={inputClass(!!errors.name)}
           />
-          {errors.name && <p className="text-xs text-danger mt-1">{errors.name}</p>}
+          {errors.name && (
+            <p className="text-xs text-danger mt-1">{errors.name}</p>
+          )}
         </div>
 
         {/* Descrição */}
@@ -120,13 +130,15 @@ export function NewProjectModal({ onClose, onSave }: NewProjectModalProps) {
             className={inputClass(!!errors.employeeId)}
           >
             <option value="">Selecionar funcionário...</option>
-            {employeesMock.employees.map((emp) => (
+            {employees.map((emp) => (
               <option key={emp.id} value={emp.id}>
                 {emp.name}
               </option>
             ))}
           </select>
-          {errors.employeeId && <p className="text-xs text-danger mt-1">{errors.employeeId}</p>}
+          {errors.employeeId && (
+            <p className="text-xs text-danger mt-1">{errors.employeeId}</p>
+          )}
         </div>
 
         {/* Prazo e Valor lado a lado */}
@@ -141,7 +153,9 @@ export function NewProjectModal({ onClose, onSave }: NewProjectModalProps) {
               onChange={(e) => set("deadline", e.target.value)}
               className={inputClass(!!errors.deadline)}
             />
-            {errors.deadline && <p className="text-xs text-danger mt-1">{errors.deadline}</p>}
+            {errors.deadline && (
+              <p className="text-xs text-danger mt-1">{errors.deadline}</p>
+            )}
           </div>
           <div>
             <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
@@ -156,7 +170,9 @@ export function NewProjectModal({ onClose, onSave }: NewProjectModalProps) {
               placeholder="0,00"
               className={inputClass(!!errors.value)}
             />
-            {errors.value && <p className="text-xs text-danger mt-1">{errors.value}</p>}
+            {errors.value && (
+              <p className="text-xs text-danger mt-1">{errors.value}</p>
+            )}
           </div>
         </div>
 
@@ -168,14 +184,22 @@ export function NewProjectModal({ onClose, onSave }: NewProjectModalProps) {
           <textarea
             value={form.stepsRaw}
             onChange={(e) => set("stepsRaw", e.target.value)}
-            placeholder={"Medição e projeto\nCorte e usinagem\nMontagem\nInstalação"}
+            placeholder="Medição e projeto
+Corte e usinagem
+Montagem
+Instalação"
             rows={5}
-            className={`${inputClass(!!errors.stepsRaw)} resize-none font-mono text-xs`}
+            className={`${
+              inputClass(!!errors.stepsRaw)
+            } resize-none font-mono text-xs`}
           />
-          {errors.stepsRaw && <p className="text-xs text-danger mt-1">{errors.stepsRaw}</p>}
+          {errors.stepsRaw && (
+            <p className="text-xs text-danger mt-1">{errors.stepsRaw}</p>
+          )}
           {form.stepsRaw && (
             <p className="text-[11px] text-text-muted mt-1">
-              {form.stepsRaw.split("\n").filter((s) => s.trim()).length} etapa(s) definida(s)
+              {form.stepsRaw.split("\n").filter((s) => s.trim()).length}{" "}
+              etapa(s) definida(s)
             </p>
           )}
         </div>
@@ -185,7 +209,6 @@ export function NewProjectModal({ onClose, onSave }: NewProjectModalProps) {
           <Button onClick={onClose}>Cancelar</Button>
           <Button variant="primary" onClick={handleSave}>Salvar projeto</Button>
         </div>
-
       </div>
     </Modal>
   );

@@ -1,8 +1,12 @@
 // Alterna entre exibição e input dependendo de isEditing.
 // Cada tipo de campo (text, date, number, select) tem seu próprio input.
 
+<<<<<<< HEAD
 import { Icon } from "@/components/icons";
 import { TransactionType } from "@/lib/types";
+=======
+import { TransactionType } from "../../../lib/types/index.ts";
+>>>>>>> master
 
 const INPUT_CLASS =
   "bg-bg-root border border-border-input rounded-md px-2 py-1 text-xs text-text-primary outline-none focus:border-brand transition-colors";
@@ -17,7 +21,9 @@ interface TextCellProps {
   className?: string;
 }
 
-export function TextCell({ isEditing, value, display, onChange, className = "" }: TextCellProps) {
+export function TextCell(
+  { isEditing, value, display, onChange, className = "" }: TextCellProps,
+) {
   if (!isEditing) return <>{display}</>;
   return (
     <input
@@ -35,7 +41,9 @@ interface DateCellProps {
   onChange: (v: string) => void;
 }
 
-export function DateCell({ isEditing, value, display, onChange }: DateCellProps) {
+export function DateCell(
+  { isEditing, value, display, onChange }: DateCellProps,
+) {
   if (!isEditing) return <>{display}</>;
   return (
     <input
@@ -54,7 +62,9 @@ interface NumberCellProps {
   onChange: (v: number) => void;
 }
 
-export function NumberCell({ isEditing, value, display, onChange }: NumberCellProps) {
+export function NumberCell(
+  { isEditing, value, display, onChange }: NumberCellProps,
+) {
   if (!isEditing) return <>{display}</>;
   return (
     <input
@@ -75,7 +85,9 @@ interface TypeCellProps {
   onChange: (v: TransactionType) => void;
 }
 
-export function TypeCell({ isEditing, value, display, onChange }: TypeCellProps) {
+export function TypeCell(
+  { isEditing, value, display, onChange }: TypeCellProps,
+) {
   if (!isEditing) return <>{display}</>;
   return (
     <select
@@ -98,22 +110,52 @@ interface ActionCellProps {
   onEdit: () => void;
 }
 
-export function ActionCell({ isEditing, onConfirm, onCancel, onEdit }: ActionCellProps) {
+export function ActionCell(
+  { isEditing, onConfirm, onCancel, onEdit }: ActionCellProps,
+) {
   if (isEditing) {
     return (
       <div className="flex justify-end gap-1">
+<<<<<<< HEAD
         <button onClick={onConfirm} title="Confirmar" className="text-success hover:opacity-70 transition-opacity text-base px-1 font-bold">
           <Icon name="apply" size={18} />
         </button>
         <button onClick={onCancel}  title="Cancelar"  className="text-danger  hover:opacity-70 transition-opacity text-base px-1 font-bold">
           <Icon name="cancel" size={18} />
+=======
+        <button
+          type="button"
+          onClick={onConfirm}
+          title="Confirmar"
+          className="text-success hover:opacity-70 transition-opacity text-base px-1 font-bold"
+        >
+          ✓
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          title="Cancelar"
+          className="text-danger  hover:opacity-70 transition-opacity text-base px-1 font-bold"
+        >
+          ✕
+>>>>>>> master
         </button>
       </div>
     );
   }
   return (
+<<<<<<< HEAD
     <button onClick={onEdit} title="Editar" className="text-text-secondary hover:text-text-muted transition-colors text-sm px-1">
       <Icon name="edit" size={18} />
+=======
+    <button
+      type="button"
+      onClick={onEdit}
+      title="Editar"
+      className="text-text-secondary hover:text-text-muted transition-colors text-sm px-1"
+    >
+      ✎
+>>>>>>> master
     </button>
   );
 }

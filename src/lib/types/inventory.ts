@@ -1,4 +1,10 @@
-export type InventoryUnit = "chapas" | "unid." | "kg" | "caixa" | "metro" | "litro";
+export type InventoryUnit =
+  | "chapas"
+  | "unid."
+  | "kg"
+  | "caixa"
+  | "metro"
+  | "litro";
 
 export type InventoryStatus = "ok" | "low" | "critical";
 
@@ -7,8 +13,8 @@ export interface InventoryItem {
   id: number;
   material: string;
   unit: InventoryUnit;
-  quantity: number;   // quantidade atual
-  minimum: number;    // quantidade mínima antes de alertar
+  quantity: number; // quantidade atual
+  minimum: number; // quantidade mínima antes de alertar
   pricePerUnit: number; // preço por unidade em reais
 }
 

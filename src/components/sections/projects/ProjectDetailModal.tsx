@@ -42,6 +42,7 @@ export function ProjectDetailModal(
   const employee = employees.find((e) => e.id === project.employeeId);
   const status = statusConfig[project.status];
   const isLastStep = project.currentStepIndex >= project.steps.length - 1;
+  const isCompleted = project.status === "completed";
 
   return (
     <Modal title="Detalhes do projeto" onClose={onClose} size="xl">
@@ -95,7 +96,6 @@ export function ProjectDetailModal(
         </p>
         <div className="flex flex-col gap-2.5">
           {project.steps.map((step, i) => {
-            const isCompleted = project.status === "completed";
             const isDone = isCompleted || i < project.currentStepIndex;
             const isCurrent = !isCompleted && i === project.currentStepIndex;
             return (
@@ -138,14 +138,14 @@ export function ProjectDetailModal(
 
       {/* Footer */}
       <div className="flex justify-between items-center">
-        {!isLastStep
+        {!isCompleted && !isLastStep
           ? (
             <Button variant="success" onClick={onAdvanceStep}>
               Avançar para próxima etapa
               <Icon name="next" size={18} />
             </Button>
           )
-          : project.status !== "completed"
+          : !isCompleted && isLastStep
           ? (
             <Button variant="success" onClick={onCompleteProject}>
               Concluir projeto

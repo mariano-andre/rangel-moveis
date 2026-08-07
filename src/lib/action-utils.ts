@@ -10,6 +10,8 @@
  *   to rely on generic boundary catches.
  */
 
+import { ZodError } from "zod";
+
 export type SafeActionResponse<T> =
   | { success: true; data: T }
   | { success: false; error: string };
@@ -32,9 +34,16 @@ export async function withSafeAction<T>(
     // We log the real error on the server for debugging
     console.error("[SafeActionError]:", error);
 
+    // If it's a Zod validation error, return the first error message to the client
+    if (error instanceof ZodError) {
+      // @ts-expect-error ZodError type inference issue
+      const firstIssue = error.errors?.[0] || error.issues?.[0];
+      if (firstIssue) {
+        return { success: false, error: firstIssue.message };
+      }
+    }
+
     // We return a sanitized, safe error message to the client
-    // If the error is an instance of Error and we want to expose some of its message,
-    // we could add custom logic here, but returning a generic/parameterized string is safer.
     return { success: false, error: errorMessage };
   }
 }

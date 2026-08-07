@@ -25,7 +25,7 @@
     "@types/react": "npm:@types/react@^19.2.18",
     "@types/react-dom": "npm:@types/react-dom@^19.2.4",
     "babel-plugin-react-compiler": "npm:babel-plugin-react-compiler@1.0.0",
-    "eslint": "npm:eslint@^10.8.0",
+    "eslint": "npm:eslint@^9",
     "eslint-config-next": "npm:eslint-config-next@16.3.0",
     "tailwindcss": "npm:tailwindcss@^4.3.3",
     "typescript": "npm:typescript@^5",

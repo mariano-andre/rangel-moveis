@@ -1,7 +1,7 @@
 // Alterna entre exibição e input dependendo de isEditing.
 // Cada tipo de campo (text, date, number, select) tem seu próprio input.
 
-import { TransactionType } from "@/lib/types";
+import { TransactionType } from "../../../lib/types/index.ts";
 
 const INPUT_CLASS =
   "bg-bg-root border border-border-input rounded-md px-2 py-1 text-xs text-text-primary outline-none focus:border-brand transition-colors";

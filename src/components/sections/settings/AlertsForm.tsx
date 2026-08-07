@@ -1,5 +1,5 @@
-import { AlertSettings } from "@/lib/types";
-import { Card, CardTitle } from "@/components/ui/Card";
+import { AlertSettings } from "../../../lib/types/index.ts";
+import { Card, CardTitle } from "../../ui/Card.tsx";
 
 interface AlertsFormProps {
   data: AlertSettings;

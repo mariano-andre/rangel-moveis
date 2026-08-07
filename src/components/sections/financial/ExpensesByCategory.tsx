@@ -1,6 +1,6 @@
-import { Card, CardTitle } from "@/components/ui/Card";
-import { ExpenseCategory } from "@/lib/types";
-import { formatBRL } from "@/lib/format";
+import { Card, CardTitle } from "../../ui/Card.tsx";
+import { ExpenseCategory } from "../../../lib/types/index.ts";
+import { formatBRL } from "../../../lib/format.ts";
 
 interface ExpensesByCategoryProps {
   categories: ExpenseCategory[];

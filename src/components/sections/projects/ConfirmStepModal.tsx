@@ -1,4 +1,4 @@
-import { Modal } from "@/components/ui/Modal";
+import { Modal } from "../../ui/Modal.tsx";
 
 interface ConfirmStepModalProps {
   currentStep: string;

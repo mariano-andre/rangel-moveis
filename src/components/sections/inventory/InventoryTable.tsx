@@ -1,8 +1,8 @@
-import { InventoryItem, InventoryStatus } from "@/lib/types";
-import { formatBRL } from "@/lib/format";
-import { calcInventoryStatus } from "@/lib/calculations";
-import { Card, CardTitle } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import { InventoryItem, InventoryStatus } from "../../../lib/types/index.ts";
+import { formatBRL } from "../../../lib/format.ts";
+import { calcInventoryStatus } from "../../../lib/calculations.ts";
+import { Card, CardTitle } from "../../ui/Card.tsx";
+import { Badge } from "../../ui/Badge.tsx";
 
 const statusConfig: Record<
   InventoryStatus,

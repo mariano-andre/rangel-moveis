@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Employee, Project } from "@/lib/types";
-import { Modal } from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
+import { Employee, Project } from "../../../lib/types/index.ts";
+import { Modal } from "../../ui/Modal.tsx";
+import { Button } from "../../ui/Button.tsx";
 
 interface NewProjectModalProps {
   employees: Employee[];
@@ -184,7 +184,10 @@ export function NewProjectModal(
           <textarea
             value={form.stepsRaw}
             onChange={(e) => set("stepsRaw", e.target.value)}
-            placeholder={"Medição e projeto\nCorte e usinagem\nMontagem\nInstalação"}
+            placeholder="Medição e projeto
+Corte e usinagem
+Montagem
+Instalação"
             rows={5}
             className={`${
               inputClass(!!errors.stepsRaw)

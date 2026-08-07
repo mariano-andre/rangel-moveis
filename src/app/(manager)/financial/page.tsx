@@ -1,10 +1,10 @@
 // Server Component — busca os dados do mock (futuro: backend) e passa
 // para o FinancialClient, que gerencia toda a interatividade da página.
 
-import { getTransactions } from "@/db/queries/financial";
-import { FinancialClient } from "@/components/sections/financial/FinancialClient";
+import { getTransactions } from "../../../db/queries/financial.ts";
+import { FinancialClient } from "../../../components/sections/financial/FinancialClient.tsx";
 
-import { getProjects } from "@/db/queries/projects";
+import { getProjects } from "../../../db/queries/projects.ts";
 
 const MONTHS = [
   "Jan",

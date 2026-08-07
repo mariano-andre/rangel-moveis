@@ -1,4 +1,4 @@
-import { Settings } from "@/lib/types";
+import { Settings } from "../lib/types/index.ts";
 
 export const settingsMock: Settings = {
   company: {

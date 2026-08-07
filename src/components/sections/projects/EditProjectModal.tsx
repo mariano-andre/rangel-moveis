@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Employee, Project } from "@/lib/types";
-import { Modal } from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
+import { Employee, Project } from "../../../lib/types/index.ts";
+import { Modal } from "../../ui/Modal.tsx";
+import { Button } from "../../ui/Button.tsx";
 
 interface EditProjectModalProps {
   project: Project;

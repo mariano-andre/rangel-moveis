@@ -3,17 +3,17 @@
 "use client";
 
 import { useState } from "react";
-import { Employee } from "@/lib/types";
-import { formatBRL } from "@/lib/format";
-import { KpiCard } from "@/components/ui/KpiCard";
-import { EmployeesTable } from "@/components/sections/employees/EmployeesTable";
-import { EmployeeModal } from "@/components/sections/employees/EmployeeModal";
-import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { Employee } from "../../../lib/types/index.ts";
+import { formatBRL } from "../../../lib/format.ts";
+import { KpiCard } from "../../ui/KpiCard.tsx";
+import { EmployeesTable } from "./EmployeesTable.tsx";
+import { EmployeeModal } from "./EmployeeModal.tsx";
+import { ConfirmModal } from "../../ui/ConfirmModal.tsx";
 import {
   addEmployeeAction,
   editEmployeeAction,
   removeEmployeeAction,
-} from "@/app/actions";
+} from "../../../app/actions.ts";
 
 interface EmployeesClientProps {
   initialEmployees: Employee[];

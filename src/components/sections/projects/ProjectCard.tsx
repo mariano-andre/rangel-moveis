@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Employee, Project, ProjectStatus } from "@/lib/types";
-import { formatBRL, formatDateBR } from "@/lib/format";
-import { ProjectDetailModal } from "@/components/sections/projects/ProjectDetailModal";
-import { ConfirmStepModal } from "@/components/sections/projects/ConfirmStepModal";
-import { EditProjectModal } from "@/components/sections/projects/EditProjectModal";
-import { Button } from "@/components/ui/Button";
+import { Employee, Project, ProjectStatus } from "../../../lib/types/index.ts";
+import { formatBRL, formatDateBR } from "../../../lib/format.ts";
+import { ProjectDetailModal } from "./ProjectDetailModal.tsx";
+import { ConfirmStepModal } from "./ConfirmStepModal.tsx";
+import { EditProjectModal } from "./EditProjectModal.tsx";
+import { Button } from "../../ui/Button.tsx";
 
 interface ProjectCardProps {
   project: Project;

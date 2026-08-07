@@ -4,23 +4,23 @@ import {
   createProject,
   deleteProject,
   updateProject,
-} from "@/db/queries/projects";
+} from "../db/queries/projects.ts";
 import {
   createInventoryItem,
   deleteInventoryItem,
   updateInventoryItem,
-} from "@/db/queries/inventory";
+} from "../db/queries/inventory.ts";
 import {
   createEmployee,
   deleteEmployee,
   updateEmployee,
-} from "@/db/queries/employees";
+} from "../db/queries/employees.ts";
 import {
   createTransaction,
   deleteTransaction,
   updateTransaction,
-} from "@/db/queries/financial";
-import { updateSettings } from "@/db/queries/settings";
+} from "../db/queries/financial.ts";
+import { updateSettings } from "../db/queries/settings.ts";
 
 export async function addProjectAction(data: any) {
   return createProject(data);

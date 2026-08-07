@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ContractType, Employee } from "@/lib/types";
-import { Modal } from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
+import { ContractType, Employee } from "../../../lib/types/index.ts";
+import { Modal } from "../../ui/Modal.tsx";
+import { Button } from "../../ui/Button.tsx";
 
 interface EmployeeModalProps {
   employee?: Employee;

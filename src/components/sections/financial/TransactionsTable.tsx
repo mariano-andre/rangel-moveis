@@ -3,19 +3,19 @@
 
 "use client";
 
-import { Card, CardTitle } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Transaction } from "@/lib/types";
-import { formatBRL, formatDateBR } from "@/lib/format";
-import { useTransactionEdit } from "@/components/sections/financial/hooks/useTransactionEdit";
+import { Card, CardTitle } from "../../ui/Card.tsx";
+import { Badge } from "../../ui/Badge.tsx";
+import { Button } from "../../ui/Button.tsx";
+import { Transaction } from "../../../lib/types/index.ts";
+import { formatBRL, formatDateBR } from "../../../lib/format.ts";
+import { useTransactionEdit } from "./hooks/useTransactionEdit.ts";
 import {
   ActionCell,
   DateCell,
   NumberCell,
   TextCell,
   TypeCell,
-} from "@/components/sections/financial/EditableCell";
+} from "./EditableCell.tsx";
 
 interface TransactionsTableProps {
   transactions: Transaction[];

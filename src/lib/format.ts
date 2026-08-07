@@ -1,8 +1,8 @@
 // ── Helpers ──
 // Funções utilitárias que hoje operam sobre o mock
 
-import { Transaction } from "./types";
-import { TransactionType } from "./types";
+import { Transaction } from "./types/index.ts";
+import { TransactionType } from "./types/index.ts";
 
 export function getTotalByType(
   transactions: Transaction[],

@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Employee, Project, ProjectStatus } from "@/lib/types";
-import { ProjectCard } from "@/components/sections/projects/ProjectCard";
-import { NewProjectModal } from "@/components/sections/projects/NewProjectModal";
-import { Button } from "@/components/ui/Button";
-import { addProjectAction, editProjectAction } from "@/app/actions";
+import { Employee, Project, ProjectStatus } from "../../../lib/types/index.ts";
+import { ProjectCard } from "./ProjectCard.tsx";
+import { NewProjectModal } from "./NewProjectModal.tsx";
+import { Button } from "../../ui/Button.tsx";
+import { addProjectAction, editProjectAction } from "../../../app/actions.ts";
 
 type Filter = "all" | ProjectStatus;
 type SortKey = "createdAt" | "deadline";

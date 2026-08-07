@@ -2,7 +2,7 @@
 // Contém apenas dados brutos: transactions, histórico mensal e valores a receber.
 // revenue, expenses, profit e expensesByCategory são calculados em calculations.ts.
 
-import { FinancialData } from "@/lib/types";
+import { FinancialData } from "../lib/types/index.ts";
 
 export const financialMock: FinancialData = {
   // Fonte de verdade — equivale à tabela "transactions" no banco.

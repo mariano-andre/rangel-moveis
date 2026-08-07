@@ -1,5 +1,5 @@
-import { db } from "../index";
-import { transactions } from "../schema";
+import { db } from "../index.ts";
+import { transactions } from "../schema.ts";
 import { desc, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 

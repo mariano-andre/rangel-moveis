@@ -1,8 +1,8 @@
-import { Employee } from "@/lib/types";
-import { formatBRL } from "@/lib/format";
-import { Card, CardTitle } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { Employee } from "../../../lib/types/index.ts";
+import { formatBRL } from "../../../lib/format.ts";
+import { Card, CardTitle } from "../../ui/Card.tsx";
+import { Badge } from "../../ui/Badge.tsx";
+import { Button } from "../../ui/Button.tsx";
 
 interface EmployeesTableProps {
   employees: Employee[];

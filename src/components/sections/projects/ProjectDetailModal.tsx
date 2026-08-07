@@ -1,7 +1,7 @@
-import { Employee, Project, ProjectStatus } from "@/lib/types";
-import { formatBRL, formatDateBR } from "@/lib/format";
-import { Modal } from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
+import { Employee, Project, ProjectStatus } from "../../../lib/types/index.ts";
+import { formatBRL, formatDateBR } from "../../../lib/format.ts";
+import { Modal } from "../../ui/Modal.tsx";
+import { Button } from "../../ui/Button.tsx";
 
 interface ProjectDetailModalProps {
   project: Project;

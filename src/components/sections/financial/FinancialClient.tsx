@@ -1,18 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { MonthlyRevenue, Transaction } from "@/lib/types";
+import { MonthlyRevenue, Transaction } from "../../../lib/types/index.ts";
 import {
   calcExpenses,
   calcExpensesByCategory,
   calcRevenue,
-} from "@/lib/calculations";
-import { FinancialKpis } from "@/components/sections/financial/FinancialKpis";
-import { ExpensesByCategory } from "@/components/sections/financial/ExpensesByCategory";
-import { MonthlyRevenueChart } from "@/components/sections/financial/MonthlyRevenueChart";
-import { TransactionsTable } from "@/components/sections/financial/TransactionsTable";
-import { TransactionModal } from "@/components/sections/financial/TransactionModal";
-import { addTransactionAction, editTransactionAction } from "@/app/actions";
+} from "../../../lib/calculations.ts";
+import { FinancialKpis } from "./FinancialKpis.tsx";
+import { ExpensesByCategory } from "./ExpensesByCategory.tsx";
+import { MonthlyRevenueChart } from "./MonthlyRevenueChart.tsx";
+import { TransactionsTable } from "./TransactionsTable.tsx";
+import { TransactionModal } from "./TransactionModal.tsx";
+import { addTransactionAction, editTransactionAction } from "../../../app/actions.ts";
 
 interface FinancialClientProps {
   initialTransactions: Transaction[];

@@ -1,16 +1,16 @@
-import { db } from "./index";
+import { db } from "./index.ts";
 import {
   employees,
   inventory,
   projects,
   settings,
   transactions,
-} from "./schema";
-import { employeesMock } from "../content/employees";
-import { projectsMock } from "../content/projects";
-import { inventoryMock } from "../content/inventory";
-import { financialMock } from "../content/financial";
-import { settingsMock } from "../content/settings";
+} from "./schema.ts";
+import { employeesMock } from "../content/employees.ts";
+import { projectsMock } from "../content/projects.ts";
+import { inventoryMock } from "../content/inventory.ts";
+import { financialMock } from "../content/financial.ts";
+import { settingsMock } from "../content/settings.ts";
 
 async function seed() {
   console.log("Seeding database...");

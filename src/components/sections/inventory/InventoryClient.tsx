@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { InventoryItem } from "@/lib/types";
-import { calcInventoryStatus } from "@/lib/calculations";
-import { Button } from "@/components/ui/Button";
-import { ConfirmModal } from "@/components/ui/ConfirmModal";
-import { InventoryTable } from "@/components/sections/inventory/InventoryTable";
-import { InventoryModal } from "@/components/sections/inventory/InventoryModal";
-import { editInventoryAction, removeInventoryAction } from "@/app/actions";
+import { InventoryItem } from "../../../lib/types/index.ts";
+import { calcInventoryStatus } from "../../../lib/calculations.ts";
+import { Button } from "../../ui/Button.tsx";
+import { ConfirmModal } from "../../ui/ConfirmModal.tsx";
+import { InventoryTable } from "./InventoryTable.tsx";
+import { InventoryModal } from "./InventoryModal.tsx";
+import { editInventoryAction, removeInventoryAction } from "../../../app/actions.ts";
 
 interface InventoryClientProps {
   initialItems: InventoryItem[];

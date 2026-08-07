@@ -1,6 +1,6 @@
-import { CompanySettings } from "@/lib/types";
-import { Card, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { CompanySettings } from "../../../lib/types/index.ts";
+import { Card, CardTitle } from "../../ui/Card.tsx";
+import { Button } from "../../ui/Button.tsx";
 
 interface CompanyFormProps {
   data: CompanySettings;

@@ -2,7 +2,7 @@
 // A tabela só chama esses handlers — não precisa saber como funcionam.
 
 import { useState } from "react";
-import { Transaction } from "@/lib/types";
+import { Transaction } from "../../../../lib/types/index.ts";
 
 export function useTransactionEdit(onEdit: (updated: Transaction) => void) {
   const [editingId, setEditingId] = useState<number | null>(null);

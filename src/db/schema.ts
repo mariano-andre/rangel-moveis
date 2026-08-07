@@ -1,9 +1,17 @@
 import { integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  ContractType,
+  InventoryUnit,
+  ProjectStatus,
+  ExpenseCategoryLabel,
+  TransactionType,
+} from "../lib/types/index.ts";
 
+// Define the employees table with explicit $type to map to frontend types
 export const employees = sqliteTable("employees", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
-  contractType: text("contract_type").notNull(), // 'clt' | 'commission'
+  contractType: text("contract_type").$type<ContractType>().notNull(), // 'clt' | 'commission'
   fixedSalary: real("fixed_salary").notNull(),
   commissionPercent: real("commission_percent").notNull(),
   createdAt: text("created_at").notNull().$defaultFn(() =>
@@ -26,7 +34,7 @@ export const projects = sqliteTable("projects", {
   description: text("description").notNull(),
   steps: text("steps", { mode: "json" }).$type<string[]>().notNull(),
   currentStepIndex: integer("current_step_index").notNull(),
-  status: text("status").notNull(), // 'in_progress' | 'waiting' | 'completed' | 'paused'
+  status: text("status").$type<ProjectStatus>().notNull(), // 'in_progress' | 'waiting' | 'completed' | 'paused'
   updatedAt: text("updated_at").notNull().$defaultFn(() =>
     new Date().toISOString()
   ),
@@ -35,7 +43,7 @@ export const projects = sqliteTable("projects", {
 export const inventory = sqliteTable("inventory", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   material: text("material").notNull(),
-  unit: text("unit").notNull(), // 'chapas' | 'unid.' | 'kg' | 'caixa' | 'metro' | 'litro'
+  unit: text("unit").$type<InventoryUnit>().notNull(), // 'chapas' | 'unid.' | 'kg' | 'caixa' | 'metro' | 'litro'
   quantity: real("quantity").notNull(),
   minimum: real("minimum").notNull(),
   pricePerUnit: real("price_per_unit").notNull(),
@@ -50,8 +58,8 @@ export const inventory = sqliteTable("inventory", {
 export const transactions = sqliteTable("transactions", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   description: text("description").notNull(),
-  type: text("type").notNull(), // 'income' | 'expense'
-  category: text("category"), // 'Material' | 'Mão de obra' | 'Aluguel' | 'Outros' (nullable)
+  type: text("type").$type<TransactionType>().notNull(), // 'income' | 'expense'
+  category: text("category").$type<ExpenseCategoryLabel>(), // 'Material' | 'Mão de obra' | 'Aluguel' | 'Outros' (nullable)
   date: text("date").notNull(),
   value: real("value").notNull(),
   createdAt: text("created_at").notNull().$defaultFn(() =>

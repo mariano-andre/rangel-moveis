@@ -10,7 +10,7 @@ export default async function EmployeesPage() {
         <h1 className="text-xl font-medium text-text-primary">Funcionários</h1>
         <p className="text-sm text-text-muted mt-0.5">Equipe e remuneração</p>
       </div>
-      <EmployeesClient initialEmployees={employees as any} />
+      <EmployeesClient initialEmployees={employees} />
     </div>
   );
 }

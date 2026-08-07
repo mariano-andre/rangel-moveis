@@ -83,7 +83,7 @@ export function ProjectsClient(
 
   async function handleEditProject(updated: Project) {
     try {
-      const { id, createdAt: _createdAt, ...rest } = updated as any;
+      const { id, createdAt: _createdAt, ...rest } = updated;
       const updatedProject = await editProjectAction(id, rest);
       setProjects((prev) =>
         prev.map((p) => (p.id === updated.id ? updatedProject as Project : p))

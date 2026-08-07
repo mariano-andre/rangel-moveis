@@ -74,7 +74,7 @@ export default async function FinancialPage() {
 
       {/* FinancialClient recebe os dados brutos e cuida do resto */}
       <FinancialClient
-        initialTransactions={data.transactions as any}
+        initialTransactions={data.transactions}
         monthlyHistory={data.monthlyHistory}
         receivable={data.receivable}
         receivablePendingCount={data.receivablePendingCount}

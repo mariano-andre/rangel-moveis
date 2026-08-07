@@ -37,5 +37,17 @@ O projeto usa SQLite via `better-sqlite3` gerenciado pelo `drizzle-orm`. O banco
 de dados roda em modo WAL para melhor concorrência. O arquivo fica por padrão em
 `./data/woodshop.db`.
 
+## Testes End-to-End (E2E)
+
+A aplicação conta com uma robusta bateria de testes E2E usando Puppeteer (Deno),
+localizada na pasta `test/`.
+
+- `deno run -A test/massive_parallel_e2e.ts`: Executa múltiplos browsers
+  simultaneamente simulando alto tráfego (stress testing e UI race conditions).
+- `deno run -A test/deterministic_e2e.ts`: Teste determinístico que valida o
+  caminho feliz (happy path) de gestor e funcionários.
+- Demais arquivos documentam variações caóticas (Monkey Testing) e simulações
+  focadas em performance.
+
 Consulte o arquivo `RUNBOOK.md` para instruções completas sobre como implantar,
 gerenciar o serviço PM2 e executar backups.

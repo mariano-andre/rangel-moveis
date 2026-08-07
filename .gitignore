@@ -49,3 +49,6 @@ next-env.d.ts
 
 # PM2
 *.log
+
+# AI/Test scripts
+/test

@@ -1,64 +1,74 @@
-// Responsável apenas por gerenciar estado e conectar os componentes.
+// Responsável apenas por gerenciar estado de UI, não contendo lógica complexa de cache ou reversões otimistas de banco de dados (transferidas para useOptimisticData).
 
 "use client";
 
 import { useState } from "react";
-import { Employee } from "@/lib/types";
-import { formatBRL } from "@/lib/format";
-import { KpiCard } from "@/components/ui/KpiCard";
-import { EmployeesTable } from "@/components/sections/employees/EmployeesTable";
-import { EmployeeModal } from "@/components/sections/employees/EmployeeModal";
-import { ConfirmModal } from "@/components/ui/ConfirmModal";
-import { addEmployeeAction, editEmployeeAction, removeEmployeeAction } from "@/app/actions";
+import { Employee } from "../../../lib/types/index.ts";
+import { formatBRL } from "../../../lib/format.ts";
+import { KpiCard } from "../../ui/KpiCard.tsx";
+import { EmployeesTable } from "./EmployeesTable.tsx";
+import { EmployeeModal } from "./EmployeeModal.tsx";
+import { ConfirmModal } from "../../ui/ConfirmModal.tsx";
+import {
+  addEmployeeAction,
+  editEmployeeAction,
+  removeEmployeeAction,
+} from "../../../app/actions.ts";
+import { useOptimisticData } from "../../../lib/hooks/useOptimisticData.ts";
 
 interface EmployeesClientProps {
   initialEmployees: Employee[];
 }
 
 export function EmployeesClient({ initialEmployees }: EmployeesClientProps) {
-  const [employees, setEmployees]             = useState<Employee[]>(initialEmployees);
-  const [modalOpen, setModalOpen]             = useState(false);
-  const [editing, setEditing]                 = useState<Employee | null>(null);
+  // Utilizing the generic useOptimisticData hook separates business/optimistic logic from UI state
+  const {
+    data: employees,
+    optimisticCreate,
+    optimisticUpdate,
+    optimisticDelete,
+  } = useOptimisticData<Employee>(initialEmployees);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editing, setEditing] = useState<Employee | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
 
   const totalFolha = employees.reduce((sum, e) => sum + e.fixedSalary, 0);
-  const cltCount   = employees.filter((e) => e.contractType === "clt").length;
-  const commCount  = employees.filter((e) => e.contractType === "commission").length;
+  const cltCount = employees.filter((e) => e.contractType === "clt").length;
+  const commCount =
+    employees.filter((e) => e.contractType === "commission").length;
 
   async function handleSave(data: Omit<Employee, "id">) {
     if (editing) {
-      const original = employees.find((e) => e.id === editing.id);
-      setEmployees((prev) => prev.map((e) => e.id === editing.id ? { ...editing, ...data } : e));
       try {
-        await editEmployeeAction(editing.id, data);
-      } catch (e) {
-        console.error(e);
-        if (original) setEmployees((prev) => prev.map((e) => e.id === editing.id ? original : e));
+        await optimisticUpdate(
+          editing.id,
+          data,
+          (id, updated) => editEmployeeAction(id as number, updated),
+        );
+      } catch (_e) {
+        // Error already logged by hook, we could show a toast here if we had one
       }
     } else {
-      const optimisticId = employees.length > 0 ? Math.max(...employees.map((e) => e.id)) + 1 : 1;
-      const optimisticEmployee = { id: optimisticId, ...data };
-      setEmployees((prev) => [...prev, optimisticEmployee]);
+      const optimisticId = employees.length > 0
+        ? Math.max(...employees.map((e) => e.id)) + 1
+        : 1;
+
       try {
-        const created = await addEmployeeAction(data);
-        setEmployees((prev) => prev.map((e) => e.id === optimisticId ? created : e));
-      } catch (e) {
-        console.error(e);
-        setEmployees((prev) => prev.filter((e) => e.id !== optimisticId));
+        await optimisticCreate(data, addEmployeeAction, optimisticId);
+      } catch (_e) {
+        // Toast notification could go here
       }
     }
   }
 
   async function handleDelete(id: number) {
-    const original = employees.find((e) => e.id === id);
-    if (!original) return;
-    setEmployees((prev) => prev.filter((e) => e.id !== id));
     try {
-      await removeEmployeeAction(id);
-    } catch (e) {
-      console.error(e);
-      setEmployees((prev) => [...prev, original]);
+      await optimisticDelete(id, (id) => removeEmployeeAction(id as number));
+    } catch (_e) {
+      // Toast notification could go here
     }
+    setConfirmDeleteId(null);
   }
 
   function openEdit(employee: Employee) {
@@ -77,10 +87,22 @@ export function EmployeesClient({ initialEmployees }: EmployeesClientProps) {
     <>
       {/* KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <KpiCard label="Total"         value={String(employees.length)} delta="funcionários"     />
-        <KpiCard label="CLT"           value={String(cltCount)}         delta="contrato fixo"    />
-        <KpiCard label="Comissionados" value={String(commCount)}        delta="por serviço"      />
-        <KpiCard label="Folha fixa"    value={formatBRL(totalFolha)}    delta="salários mensais" />
+        <KpiCard
+          label="Total"
+          value={String(employees.length)}
+          delta="funcionários"
+        />
+        <KpiCard label="CLT" value={String(cltCount)} delta="contrato fixo" />
+        <KpiCard
+          label="Comissionados"
+          value={String(commCount)}
+          delta="por serviço"
+        />
+        <KpiCard
+          label="Folha fixa"
+          value={formatBRL(totalFolha)}
+          delta="salários mensais"
+        />
       </div>
 
       {/* Tabela */}
@@ -98,7 +120,9 @@ export function EmployeesClient({ initialEmployees }: EmployeesClientProps) {
           message={
             <>
               Tem certeza que deseja remover{" "}
-              <span className="font-medium text-text-primary">{employeeToDelete?.name}</span>
+              <span className="font-medium text-text-primary">
+                {employeeToDelete?.name}
+              </span>
               ? Essa ação não pode ser desfeita.
             </>
           }
@@ -112,7 +136,10 @@ export function EmployeesClient({ initialEmployees }: EmployeesClientProps) {
       {modalOpen && (
         <EmployeeModal
           employee={editing ?? undefined}
-          onClose={() => { setModalOpen(false); setEditing(null); }}
+          onClose={() => {
+            setModalOpen(false);
+            setEditing(null);
+          }}
           onSave={handleSave}
         />
       )}

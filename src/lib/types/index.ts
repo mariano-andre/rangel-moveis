@@ -2,8 +2,8 @@
 // Permite que os imports existentes continuem funcionando sem alteração:
 // import { Transaction } from "@/lib/types" continua resolvendo normalmente.
 
-export * from "./financial"
-export * from "./projects"
-export * from "./employees"
-export * from "./inventory"
-export * from "./settings"
+export * from "./financial.ts";
+export * from "./projects.ts";
+export * from "./employees.ts";
+export * from "./inventory.ts";
+export * from "./settings.ts";

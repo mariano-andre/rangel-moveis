@@ -1,4 +1,4 @@
-import { Transaction, InventoryItem, InventoryStatus } from "@/lib/types";
+import { InventoryItem, InventoryStatus, Transaction } from "./types/index.ts";
 
 // Soma todas as entradas
 export function calcRevenue(transactions: Transaction[]): number {
@@ -29,6 +29,6 @@ export function calcExpensesByCategory(transactions: Transaction[]) {
 
 export function calcInventoryStatus(item: InventoryItem): InventoryStatus {
   if (item.quantity <= item.minimum * 0.5) return "critical";
-  if (item.quantity < item.minimum)        return "low";
+  if (item.quantity < item.minimum) return "low";
   return "ok";
 }

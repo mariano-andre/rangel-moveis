@@ -1,12 +1,12 @@
 // ── Helpers ──
 // Funções utilitárias que hoje operam sobre o mock
 
-import { Transaction } from "./types";
-import { TransactionType } from "./types";
+import { Transaction } from "./types/index.ts";
+import { TransactionType } from "./types/index.ts";
 
 export function getTotalByType(
   transactions: Transaction[],
-  type: TransactionType
+  type: TransactionType,
 ): number {
   return transactions
     .filter((t) => t.type === type)
@@ -24,5 +24,3 @@ export function formatDateBR(isoDate: string): string {
   const [year, month, day] = isoDate.split("-");
   return `${day}/${month}/${year}`;
 }
-
-

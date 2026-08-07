@@ -4,7 +4,7 @@ import { ReactNode, useEffect } from "react";
 
 type ModalSize = "md" | "lg" | "xl";
 
-const sizeStyles: Record<ModalSize, string>={
+const sizeStyles: Record<ModalSize, string> = {
   md: "max-w-md",
   lg: "max-w-lg",
   xl: "max-w-xl",
@@ -18,7 +18,6 @@ interface ModalProps {
 }
 
 export function Modal({ title, onClose, children, size = "md" }: ModalProps) {
-
   // fecha com Escape
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
@@ -35,13 +34,16 @@ export function Modal({ title, onClose, children, size = "md" }: ModalProps) {
       onMouseDown={onClose}
     >
       <div
-        className={`relative w-full ${sizeStyles[size]} bg-bg-card border border-border-strong rounded-2xl shadow-2xl`}
+        className={`relative w-full ${
+          sizeStyles[size]
+        } bg-bg-card border border-border-strong rounded-2xl shadow-2xl`}
         onMouseDown={(e) => e.stopPropagation()} // impede fechar ao clicar dentro
       >
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-border-soft">
           <span className="text-sm font-medium text-text-primary">{title}</span>
           <button
+            type="button"
             onClick={onClose}
             className="text-text-muted hover:text-text-primary transition-colors text-lg leading-none"
           >

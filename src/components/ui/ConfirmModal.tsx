@@ -1,7 +1,7 @@
 // Modal de confirmação genérico — reutilizável em qualquer tela.
 
-import { Modal } from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
+import { Modal } from "./Modal.tsx";
+import { Button } from "./Button.tsx";
 
 interface ConfirmModalProps {
   title: string;
@@ -26,7 +26,10 @@ export function ConfirmModal({
           <Button onClick={onClose}>Cancelar</Button>
           <Button
             variant="danger"
-            onClick={() => { onConfirm(); onClose(); }}
+            onClick={() => {
+              onConfirm();
+              onClose();
+            }}
           >
             {confirmLabel}
           </Button>

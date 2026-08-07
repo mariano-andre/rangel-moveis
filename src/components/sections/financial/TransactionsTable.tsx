@@ -3,13 +3,19 @@
 
 "use client";
 
-import { Card, CardTitle } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Transaction } from "@/lib/types";
-import { formatBRL, formatDateBR } from "@/lib/format";
-import { useTransactionEdit } from "@/components/sections/financial/hooks/useTransactionEdit";
-import { TextCell, DateCell, NumberCell, TypeCell, ActionCell } from "@/components/sections/financial/EditableCell";
+import { Card, CardTitle } from "../../ui/Card.tsx";
+import { Badge } from "../../ui/Badge.tsx";
+import { Button } from "../../ui/Button.tsx";
+import { Transaction } from "../../../lib/types/index.ts";
+import { formatBRL, formatDateBR } from "../../../lib/format.ts";
+import { useTransactionEdit } from "./hooks/useTransactionEdit.ts";
+import {
+  ActionCell,
+  DateCell,
+  NumberCell,
+  TextCell,
+  TypeCell,
+} from "./EditableCell.tsx";
 
 interface TransactionsTableProps {
   transactions: Transaction[];
@@ -17,9 +23,17 @@ interface TransactionsTableProps {
   onEdit: (updated: Transaction) => void;
 }
 
-export function TransactionsTable({ transactions, onAddClick, onEdit }: TransactionsTableProps) {
-  const { isEditing, draft, startEdit, cancelEdit, confirmEdit, setDraftField } =
-    useTransactionEdit(onEdit);
+export function TransactionsTable(
+  { transactions, onAddClick, onEdit }: TransactionsTableProps,
+) {
+  const {
+    isEditing,
+    draft,
+    startEdit,
+    cancelEdit,
+    confirmEdit,
+    setDraftField,
+  } = useTransactionEdit(onEdit);
 
   return (
     <Card>
@@ -32,7 +46,9 @@ export function TransactionsTable({ transactions, onAddClick, onEdit }: Transact
             {["Descrição", "Tipo", "Data", "Valor", ""].map((h, i) => (
               <th
                 key={i}
-                className={`text-[11px] text-text-secondary uppercase font-medium pb-2 border-b border-border-input ${i === 3 ? "text-right" : ""}`}
+                className={`text-[11px] text-text-secondary uppercase font-medium pb-2 border-b border-border-input ${
+                  i === 3 ? "text-right" : ""
+                }`}
               >
                 {h}
               </th>
@@ -43,12 +59,21 @@ export function TransactionsTable({ transactions, onAddClick, onEdit }: Transact
           {transactions.slice(0, 8).map((t) => {
             const editing = isEditing(t.id);
             return (
-              <tr key={t.id} className={`border-b border-border-strong last:border-0 ${editing ? "bg-bg-elevated/40" : ""}`}>
+              <tr
+                key={t.id}
+                className={`border-b border-border-strong last:border-0 ${
+                  editing ? "bg-bg-elevated/40" : ""
+                }`}
+              >
                 <td className="py-2.5 pr-2">
                   <TextCell
                     isEditing={editing}
                     value={draft?.description ?? ""}
-                    display={<span className="text-text-primary/80">{t.description}</span>}
+                    display={
+                      <span className="text-text-primary/80">
+                        {t.description}
+                      </span>
+                    }
                     onChange={(v) => setDraftField("description", v)}
                   />
                 </td>
@@ -56,7 +81,11 @@ export function TransactionsTable({ transactions, onAddClick, onEdit }: Transact
                   <TypeCell
                     isEditing={editing}
                     value={draft?.type ?? t.type}
-                    display={<Badge variant={t.type === "income" ? "green" : "red"}>{t.type === "income" ? "Entrada" : "Saída"}</Badge>}
+                    display={
+                      <Badge variant={t.type === "income" ? "green" : "red"}>
+                        {t.type === "income" ? "Entrada" : "Saída"}
+                      </Badge>
+                    }
                     onChange={(v) => setDraftField("type", v)}
                   />
                 </td>
@@ -64,7 +93,11 @@ export function TransactionsTable({ transactions, onAddClick, onEdit }: Transact
                   <DateCell
                     isEditing={editing}
                     value={draft?.date ?? ""}
-                    display={<span className="text-xs text-text-muted">{formatDateBR(t.date)}</span>}
+                    display={
+                      <span className="text-xs text-text-muted">
+                        {formatDateBR(t.date)}
+                      </span>
+                    }
                     onChange={(v) => setDraftField("date", v)}
                   />
                 </td>
@@ -73,7 +106,11 @@ export function TransactionsTable({ transactions, onAddClick, onEdit }: Transact
                     isEditing={editing}
                     value={draft?.value ?? t.value}
                     display={
-                      <span className={`font-medium ${t.type === "income" ? "text-success" : "text-danger"}`}>
+                      <span
+                        className={`font-medium ${
+                          t.type === "income" ? "text-success" : "text-danger"
+                        }`}
+                      >
                         {t.type === "income" ? "+" : "–"} {formatBRL(t.value)}
                       </span>
                     }
@@ -97,23 +134,39 @@ export function TransactionsTable({ transactions, onAddClick, onEdit }: Transact
       {/* ── Mobile ── */}
       <div className="md:hidden">
         {transactions.slice(0, 6).map((t) => (
-          <div key={t.id} className="py-3 border-b border-border-strong last:border-0">
+          <div
+            key={t.id}
+            className="py-3 border-b border-border-strong last:border-0"
+          >
             <div className="flex justify-between items-center mb-1">
               <span className="text-sm font-medium text-text-primary">
                 {t.description.split("—").pop()?.trim()}
               </span>
               <div className="flex items-center gap-2">
-                <span className={`text-sm font-medium ${t.type === "income" ? "text-success" : "text-danger"}`}>
+                <span
+                  className={`text-sm font-medium ${
+                    t.type === "income" ? "text-success" : "text-danger"
+                  }`}
+                >
                   {t.type === "income" ? "+" : "–"} {formatBRL(t.value)}
                 </span>
-                <button onClick={() => startEdit(t)} title="Editar" className="text-text-muted hover:text-text-primary transition-colors text-sm">✎</button>
+                <button
+                  type="button"
+                  onClick={() => startEdit(t)}
+                  title="Editar"
+                  className="text-text-muted hover:text-text-primary transition-colors text-sm"
+                >
+                  ✎
+                </button>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <Badge variant={t.type === "income" ? "green" : "red"}>
                 {t.type === "income" ? "Entrada" : "Saída"}
               </Badge>
-              <span className="text-xs text-text-secondary">{formatDateBR(t.date)}</span>
+              <span className="text-xs text-text-secondary">
+                {formatDateBR(t.date)}
+              </span>
             </div>
           </div>
         ))}

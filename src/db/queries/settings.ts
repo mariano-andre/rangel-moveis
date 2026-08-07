@@ -1,10 +1,10 @@
-import { db } from '../index';
-import { settings } from '../schema';
-import { eq } from 'drizzle-orm';
-import { z } from 'zod';
+import { db } from "../index.ts";
+import { settings } from "../schema.ts";
+import { eq } from "drizzle-orm";
+import { z } from "zod";
 
 export const updateSettingsSchema = z.object({
-  companyName: z.string().min(1, 'Nome é obrigatório'),
+  companyName: z.string().min(1, "Nome é obrigatório"),
   companyPhone: z.string(),
   monthlyRevenueGoal: z.number().min(0),
   defaultCommissionPercent: z.number().min(0).max(100),
@@ -21,8 +21,8 @@ export async function getSettings() {
   if (result.length === 0) {
     const defaultSettings = await db.insert(settings).values({
       id: 1,
-      companyName: 'Minha Marcenaria',
-      companyPhone: '',
+      companyName: "Minha Marcenaria",
+      companyPhone: "",
       monthlyRevenueGoal: 10000,
       defaultCommissionPercent: 10,
       alertLowInventory: true,
@@ -37,6 +37,9 @@ export async function getSettings() {
 
 export async function updateSettings(data: Partial<UpdateSettings>) {
   const validated = updateSettingsSchema.partial().parse(data);
-  const result = await db.update(settings).set({ ...validated, updatedAt: new Date().toISOString() }).where(eq(settings.id, 1)).returning();
+  const result = await db.update(settings).set({
+    ...validated,
+    updatedAt: new Date().toISOString(),
+  }).where(eq(settings.id, 1)).returning();
   return result[0];
 }

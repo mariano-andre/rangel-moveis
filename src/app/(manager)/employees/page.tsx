@@ -1,5 +1,5 @@
-import { getEmployees } from "@/db/queries/employees";
-import { EmployeesClient } from "@/components/sections/employees/EmployeesClient";
+import { getEmployees } from "../../../db/queries/employees.ts";
+import { EmployeesClient } from "../../../components/sections/employees/EmployeesClient.tsx";
 
 export default async function EmployeesPage() {
   const employees = await getEmployees();

@@ -1,13 +1,19 @@
-import { db } from './index';
-import { employees, projects, inventory, transactions, settings } from './schema';
-import { employeesMock } from '../content/employees';
-import { projectsMock } from '../content/projects';
-import { inventoryMock } from '../content/inventory';
-import { financialMock } from '../content/financial';
-import { settingsMock } from '../content/settings';
+import { db } from "./index.ts";
+import {
+  employees,
+  inventory,
+  projects,
+  settings,
+  transactions,
+} from "./schema.ts";
+import { employeesMock } from "../content/employees.ts";
+import { projectsMock } from "../content/projects.ts";
+import { inventoryMock } from "../content/inventory.ts";
+import { financialMock } from "../content/financial.ts";
+import { settingsMock } from "../content/settings.ts";
 
 async function seed() {
-  console.log('Seeding database...');
+  console.log("Seeding database...");
 
   // Clear existing data (optional, but good for idempotency during development)
   await db.delete(projects);
@@ -16,10 +22,10 @@ async function seed() {
   await db.delete(transactions);
   await db.delete(settings);
 
-  console.log('Cleared existing data.');
+  console.log("Cleared existing data.");
 
   // Seed Employees
-  console.log('Seeding employees...');
+  console.log("Seeding employees...");
   for (const emp of employeesMock.employees) {
     await db.insert(employees).values({
       id: emp.id,
@@ -31,7 +37,7 @@ async function seed() {
   }
 
   // Seed Projects
-  console.log('Seeding projects...');
+  console.log("Seeding projects...");
   for (const proj of projectsMock.projects) {
     await db.insert(projects).values({
       id: proj.id,
@@ -48,7 +54,7 @@ async function seed() {
   }
 
   // Seed Inventory
-  console.log('Seeding inventory...');
+  console.log("Seeding inventory...");
   for (const item of inventoryMock.items) {
     await db.insert(inventory).values({
       id: item.id,
@@ -61,7 +67,7 @@ async function seed() {
   }
 
   // Seed Transactions
-  console.log('Seeding transactions...');
+  console.log("Seeding transactions...");
   for (const txn of financialMock.transactions) {
     await db.insert(transactions).values({
       id: txn.id,
@@ -74,7 +80,7 @@ async function seed() {
   }
 
   // Seed Settings
-  console.log('Seeding settings...');
+  console.log("Seeding settings...");
   await db.insert(settings).values({
     id: 1,
     companyName: settingsMock.company.name,
@@ -87,10 +93,10 @@ async function seed() {
     alertWeeklyFinancialSummary: settingsMock.alerts.weeklyFinancialSummary,
   });
 
-  console.log('Seeding complete!');
+  console.log("Seeding complete!");
 }
 
 seed().catch((err) => {
-  console.error('Error seeding database:', err);
+  console.error("Error seeding database:", err);
   process.exit(1);
 });

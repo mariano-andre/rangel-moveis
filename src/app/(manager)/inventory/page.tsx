@@ -1,5 +1,5 @@
-import { getInventory } from "@/db/queries/inventory";
-import { InventoryClient } from "@/components/sections/inventory/InventoryClient";
+import { getInventory } from "../../../db/queries/inventory.ts";
+import { InventoryClient } from "../../../components/sections/inventory/InventoryClient.tsx";
 
 export default async function InventoryPage() {
   const items = await getInventory();

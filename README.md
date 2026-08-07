@@ -1,15 +1,18 @@
 # Woodshop Dashboard
 
-Um sistema de gestão local para marcenaria, construído com Next.js (App Router), Deno, e SQLite.
+Um sistema de gestão local para marcenaria, construído com Next.js (App Router),
+Deno, e SQLite.
 
 ## Requisitos
 
 - [Deno](https://deno.land/) instalado na máquina (versão mais recente)
-- [PM2](https://pm2.keymetrics.io/) instalado globalmente (opcional, recomendado para execução em background)
+- [PM2](https://pm2.keymetrics.io/) instalado globalmente (opcional, recomendado
+  para execução em background)
 
 ## Como executar no ambiente de desenvolvimento
 
 1. Instale as dependências executando o comando (o Deno baixará os módulos npm):
+
 ```bash
 deno task dev
 ```
@@ -25,11 +28,14 @@ deno task dev
 - `deno task db:migrate`: Aplica as migrações no banco SQLite local.
 - `deno task db:studio`: Abre o Drizzle Studio para visualizar os dados.
 - `deno task db:seed`: Popula o banco com os dados iniciais.
-- `deno task db:backup`: Realiza o backup do banco de dados SQLite de forma segura usando API nativa do better-sqlite3.
+- `deno task db:backup`: Realiza o backup do banco de dados SQLite de forma
+  segura usando API nativa do better-sqlite3.
 
 ## Banco de Dados (SQLite)
 
-O projeto usa SQLite via `better-sqlite3` gerenciado pelo `drizzle-orm`. O banco de dados roda em modo WAL para melhor concorrência.
-O arquivo fica por padrão em `./data/woodshop.db`.
+O projeto usa SQLite via `better-sqlite3` gerenciado pelo `drizzle-orm`. O banco
+de dados roda em modo WAL para melhor concorrência. O arquivo fica por padrão em
+`./data/woodshop.db`.
 
-Consulte o arquivo `RUNBOOK.md` para instruções completas sobre como implantar, gerenciar o serviço PM2 e executar backups.
+Consulte o arquivo `RUNBOOK.md` para instruções completas sobre como implantar,
+gerenciar o serviço PM2 e executar backups.

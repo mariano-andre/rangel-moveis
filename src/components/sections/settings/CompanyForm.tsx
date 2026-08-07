@@ -1,6 +1,6 @@
-import { CompanySettings } from "@/lib/types";
-import { Card, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
+import { CompanySettings } from "../../../lib/types/index.ts";
+import { Card, CardTitle } from "../../ui/Card.tsx";
+import { Button } from "../../ui/Button.tsx";
 
 interface CompanyFormProps {
   data: CompanySettings;
@@ -18,13 +18,35 @@ const fields: {
   type: "text" | "number";
   placeholder: string;
 }[] = [
-  { key: "name",                     label: "Nome da marcenaria",          type: "text",   placeholder: "Ex: Rangel Móveis"  },
-  { key: "phone",                    label: "Telefone",                    type: "text",   placeholder: "(21) 99999-0000"    },
-  { key: "monthlyRevenueGoal",       label: "Meta de faturamento mensal (R$)", type: "number", placeholder: "0"              },
-  { key: "defaultCommissionPercent", label: "Comissão padrão (%)",         type: "number", placeholder: "0"                  },
+  {
+    key: "name",
+    label: "Nome da marcenaria",
+    type: "text",
+    placeholder: "Ex: Rangel Móveis",
+  },
+  {
+    key: "phone",
+    label: "Telefone",
+    type: "text",
+    placeholder: "(21) 99999-0000",
+  },
+  {
+    key: "monthlyRevenueGoal",
+    label: "Meta de faturamento mensal (R$)",
+    type: "number",
+    placeholder: "0",
+  },
+  {
+    key: "defaultCommissionPercent",
+    label: "Comissão padrão (%)",
+    type: "number",
+    placeholder: "0",
+  },
 ];
 
-export function CompanyForm({ data, onChange, onSave, saved }: CompanyFormProps) {
+export function CompanyForm(
+  { data, onChange, onSave, saved }: CompanyFormProps,
+) {
   return (
     <Card>
       <CardTitle icon={<span>🏢</span>}>Informações da empresa</CardTitle>
@@ -39,8 +61,12 @@ export function CompanyForm({ data, onChange, onSave, saved }: CompanyFormProps)
               type={f.type}
               value={data[f.key]}
               onChange={(e) =>
-                onChange(f.key, f.type === "number" ? parseFloat(e.target.value) || 0 : e.target.value)
-              }
+                onChange(
+                  f.key,
+                  f.type === "number"
+                    ? parseFloat(e.target.value) || 0
+                    : e.target.value,
+                )}
               placeholder={f.placeholder}
               className={inputClass}
             />

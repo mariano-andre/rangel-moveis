@@ -5,21 +5,40 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Icon } from "../icons";
+import { IconName } from "../icons/icons";
 
 interface NavItem {
+  icon: IconName;
   label: string;
   href: string;
 }
 
 const mainNav: NavItem[] = [
-  { label: "Financeiro",   href: "/financial"   },
-  { label: "Projetos",     href: "/projects"    },
-  { label: "Funcionários", href: "/employees"   },
-  { label: "Estoque",      href: "/inventory"   },
+  {
+    icon: "financial",
+    label: "Financeiro",
+    href: "/financial",
+  },
+  {
+    icon: "projects",
+    label: "Projetos",
+    href: "/projects",
+  },
+  {
+    icon: "employees",
+    label: "Funcionários",
+    href: "/employees",
+  },
+  {
+    icon: "inventory",
+    label: "Estoque",
+    href: "/inventory",
+  },
 ];
 
 const systemNav: NavItem[] = [
-  { label: "Configurações", href: "/settings" },
+  { icon: "settings", label: "Configurações", href: "/settings" },
 ];
 
 export function Sidebar() {
@@ -30,7 +49,7 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="w-70 shrink-0 flex flex-col bg-bg-sidebar border border-border-strong min-h-screen">
+    <aside className="w-70 shrink-0 flex flex-col bg-bg-sidebar border border-border-strong min-h-screen fixed">
 
       {/* Logo */}
       <div className="px-4 py-5 border-b border-border-strong">
@@ -47,12 +66,12 @@ export function Sidebar() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm mb-0.5 transition-colors ${
-              isActive(item.href)
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm mb-0.5 transition-colors ${isActive(item.href)
                 ? "bg-brand text-text-primary"
                 : "text-text-secondary hover:bg-bg-elevated hover:text-text-primary"
-            }`}
+              }`}
           >
+            <Icon name={item.icon} size={18} />
             {item.label}
           </Link>
         ))}
@@ -64,12 +83,12 @@ export function Sidebar() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm mb-0.5 transition-colors ${
-              isActive(item.href)
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm mb-0.5 transition-colors ${isActive(item.href)
                 ? "bg-brand text-text-primary"
                 : "text-text-secondary hover:bg-bg-elevated hover:text-text-primary"
-            }`}
+              }`}
           >
+            <Icon name={item.icon} size={18} />
             {item.label}
           </Link>
         ))}

@@ -3,6 +3,7 @@ import { employeesMock } from "@/content/employees";
 import { formatBRL, formatDateBR } from "@/lib/format";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/icons";
 
 interface ProjectDetailModalProps {
   project: Project;
@@ -13,7 +14,6 @@ interface ProjectDetailModalProps {
 
 const statusConfig: Record<ProjectStatus, { label: string; className: string }> = {
   in_progress: { label: "Em andamento", className: "bg-brand-muted text-brand border-brand-border"      },
-  waiting:     { label: "Aguardando",   className: "bg-info-muted text-info border-info-border"          },
   completed:   { label: "Concluído",    className: "bg-success-muted text-success border-success-border" },
   paused:      { label: "Pausado",      className: "bg-bg-elevated text-text-muted border-border-input"  },
 };
@@ -95,13 +95,15 @@ export function ProjectDetailModal({ project, onClose, onEdit, onAdvanceStep }: 
       <div className="flex justify-between items-center">
         {!isLastStep ? (
           <Button variant="success" onClick={onAdvanceStep}>
-            Avançar para próxima etapa →
+            Avançar para próxima etapa 
+            <Icon name="next" size={18} />
           </Button>
         ) : (
           <span />
         )}
         <Button variant="primary" onClick={onEdit}>
-          ✎ Editar projeto
+          <Icon name="edit" size={18} />
+          Editar projeto
         </Button>
       </div>
 

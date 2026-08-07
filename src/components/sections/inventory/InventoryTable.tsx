@@ -3,6 +3,7 @@ import { formatBRL } from "@/lib/format";
 import { calcInventoryStatus } from "@/lib/calculations";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import { Icon } from "@/components/icons";
 
 const statusConfig: Record<InventoryStatus, { label: string; variant: "green" | "amber" | "red" }> = {
   ok:       { label: "OK",      variant: "green" },
@@ -61,21 +62,21 @@ export function InventoryTable({ items, onEntry, onEdit, onDelete }: InventoryTa
                       title="Registrar entrada"
                       className="text-text-muted hover:text-text-primary transition-colors p-1.5"
                     >
-                      +
+                      <Icon name="new" size={18} />
                     </button>
                     <button
                       onClick={() => onEdit(item)}
                       title="Editar"
                       className="text-text-muted hover:text-text-primary transition-colors p-1.5"
                     >
-                      ✎
+                      <Icon name="edit" size={18} />
                     </button>
                     <button
                       onClick={() => onDelete(item.id)}
                       title="Remover"
                       className="text-text-muted hover:text-danger transition-colors p-1.5"
                     >
-                      ✕
+                      <Icon name="cancel" size={18} />
                     </button>
                   </div>
                 </td>
@@ -97,8 +98,12 @@ export function InventoryTable({ items, onEntry, onEdit, onDelete }: InventoryTa
                 <div className="flex items-center gap-1.5">
                   <Badge variant={status.variant}>{status.label}</Badge>
                   <button onClick={() => onEntry(item)}  className="text-text-muted hover:text-text-primary transition-colors p-1">+</button>
-                  <button onClick={() => onEdit(item)}   className="text-text-muted hover:text-text-primary transition-colors p-1">✎</button>
-                  <button onClick={() => onDelete(item.id)} className="text-text-muted hover:text-danger transition-colors p-1">✕</button>
+                  <button onClick={() => onEdit(item)}   className="text-text-muted hover:text-text-primary transition-colors p-1">
+                    <Icon name="edit" size={18} />
+                  </button>
+                  <button onClick={() => onDelete(item.id)} className="text-text-muted hover:text-danger transition-colors p-1">
+                    <Icon name="cancel" size={18} />
+                  </button>
                 </div>
               </div>
               <p className="text-xs text-text-muted">

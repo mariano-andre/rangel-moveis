@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect } from "react";
+import { Icon } from "../icons";
 
 type ModalSize = "md" | "lg" | "xl";
 
@@ -45,7 +46,7 @@ export function Modal({ title, onClose, children, size = "md" }: ModalProps) {
             onClick={onClose}
             className="text-text-muted hover:text-text-primary transition-colors text-lg leading-none"
           >
-            ✕
+            <Icon name="cancel" size={18} />
           </button>
         </div>
 

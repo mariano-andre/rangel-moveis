@@ -8,6 +8,7 @@ import { ProjectDetailModal } from "@/components/sections/projects/ProjectDetail
 import { ConfirmStepModal } from "@/components/sections/projects/ConfirmStepModal";
 import { EditProjectModal } from "@/components/sections/projects/EditProjectModal";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/icons";
 
 interface ProjectCardProps {
   project: Project;
@@ -16,25 +17,24 @@ interface ProjectCardProps {
 }
 
 const statusConfig: Record<ProjectStatus, { label: string; className: string }> = {
-  in_progress: { label: "Em andamento", className: "bg-brand-muted text-brand border-brand-border"      },
-  waiting:     { label: "Aguardando",   className: "bg-info-muted text-info border-info-border"          },
-  completed:   { label: "Concluído",    className: "bg-success-muted text-success border-success-border" },
-  paused:      { label: "Pausado",      className: "bg-bg-elevated text-text-muted border-border-input"  },
+  in_progress: { label: "Em andamento", className: "bg-brand-muted text-brand border-brand-border" },
+  completed: { label: "Concluído", className: "bg-success-muted text-success border-success-border" },
+  paused: { label: "Pausado", className: "bg-bg-elevated text-text-muted border-border-input" },
 };
 
 export function ProjectCard({ project, onAdvanceStep, onEdit }: ProjectCardProps) {
-  const [detailOpen,  setDetailOpen]  = useState(false);
-  const [editOpen,    setEditOpen]    = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  const employee    = employeesMock.employees.find((e) => e.id === project.employeeId);
-  const status      = statusConfig[project.status];
-  const progress    = project.steps.length > 1
+  const employee = employeesMock.employees.find((e) => e.id === project.employeeId);
+  const status = statusConfig[project.status];
+  const progress = project.steps.length > 1
     ? Math.round((project.currentStepIndex / (project.steps.length - 1)) * 100)
     : 100;
-  const isLastStep  = project.currentStepIndex >= project.steps.length - 1;
+  const isLastStep = project.currentStepIndex >= project.steps.length - 1;
   const currentStep = project.steps[project.currentStepIndex];
-  const nextStep    = isLastStep ? null : project.steps[project.currentStepIndex + 1];
+  const nextStep = isLastStep ? null : project.steps[project.currentStepIndex + 1];
 
   return (
     <>
@@ -57,14 +57,14 @@ export function ProjectCard({ project, onAdvanceStep, onEdit }: ProjectCardProps
               title="Ver detalhes"
               className="text-text-muted hover:text-text-primary transition-colors p-1"
             >
-              👁
+              <Icon name="details" size={18} />
             </button>
             <button
               onClick={() => setEditOpen(true)}
               title="Editar projeto"
               className="text-text-muted hover:text-text-primary transition-colors p-1"
             >
-              ✎
+              <Icon name="edit" size={18} />
             </button>
           </div>
         </div>
@@ -77,27 +77,25 @@ export function ProjectCard({ project, onAdvanceStep, onEdit }: ProjectCardProps
         {/* Etapas */}
         <div className="flex flex-col gap-2.5">
           {project.steps.map((step, i) => {
-            const isDone    = i < project.currentStepIndex;
+            const isDone = i < project.currentStepIndex;
             const isCurrent = i === project.currentStepIndex;
             const isPending = i > project.currentStepIndex;
             return (
               <div key={i} className="flex items-start gap-3">
                 <div className="flex flex-col items-center gap-0.5 pt-0.5">
-                  <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${
-                    isDone    ? "bg-success" :
-                    isCurrent ? "bg-brand"   :
-                                "border border-border-input bg-transparent"
-                  }`} />
+                  <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${isDone ? "bg-success" :
+                      isCurrent ? "bg-brand" :
+                        "border border-border-input bg-transparent"
+                    }`} />
                   {i < project.steps.length - 1 && (
                     <div className="w-px h-4 bg-border-strong" />
                   )}
                 </div>
                 <div className="flex flex-col gap-0.5 pb-1">
-                  <span className={`text-sm ${
-                    isDone    ? "text-text-muted line-through" :
-                    isCurrent ? "text-text-primary font-medium" :
-                                "text-text-secondary"
-                  }`}>
+                  <span className={`text-sm ${isDone ? "text-text-muted line-through" :
+                      isCurrent ? "text-text-primary font-medium" :
+                        "text-text-secondary"
+                    }`}>
                     {step}
                   </span>
                   {isCurrent && <span className="text-[11px] text-brand">Em andamento</span>}
@@ -119,7 +117,8 @@ export function ProjectCard({ project, onAdvanceStep, onEdit }: ProjectCardProps
           </div>
           {!isLastStep && (
             <Button variant="success" onClick={() => setConfirmOpen(true)} className="self-end mt-1">
-              Avançar para próxima etapa →
+              Avançar para próxima etapa
+              <Icon name="next" size={18} />
             </Button>
           )}
         </div>

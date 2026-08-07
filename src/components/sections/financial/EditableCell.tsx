@@ -1,6 +1,7 @@
 // Alterna entre exibição e input dependendo de isEditing.
 // Cada tipo de campo (text, date, number, select) tem seu próprio input.
 
+import { Icon } from "@/components/icons";
 import { TransactionType } from "@/lib/types";
 
 const INPUT_CLASS =
@@ -101,14 +102,18 @@ export function ActionCell({ isEditing, onConfirm, onCancel, onEdit }: ActionCel
   if (isEditing) {
     return (
       <div className="flex justify-end gap-1">
-        <button onClick={onConfirm} title="Confirmar" className="text-success hover:opacity-70 transition-opacity text-base px-1 font-bold">✓</button>
-        <button onClick={onCancel}  title="Cancelar"  className="text-danger  hover:opacity-70 transition-opacity text-base px-1 font-bold">✕</button>
+        <button onClick={onConfirm} title="Confirmar" className="text-success hover:opacity-70 transition-opacity text-base px-1 font-bold">
+          <Icon name="apply" size={18} />
+        </button>
+        <button onClick={onCancel}  title="Cancelar"  className="text-danger  hover:opacity-70 transition-opacity text-base px-1 font-bold">
+          <Icon name="cancel" size={18} />
+        </button>
       </div>
     );
   }
   return (
     <button onClick={onEdit} title="Editar" className="text-text-secondary hover:text-text-muted transition-colors text-sm px-1">
-      ✎
+      <Icon name="edit" size={18} />
     </button>
   );
 }

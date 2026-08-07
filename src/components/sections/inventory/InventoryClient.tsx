@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { InventoryTable } from "@/components/sections/inventory/InventoryTable";
 import { InventoryModal } from "@/components/sections/inventory/InventoryModal";
+import { Icon } from "@/components/icons";
 
 interface InventoryClientProps {
   initialItems: InventoryItem[];
@@ -52,7 +53,8 @@ export function InventoryClient({ initialItems }: InventoryClientProps) {
           <p className="text-sm text-text-muted mt-0.5">Materiais e insumos</p>
         </div>
         <Button variant="primary" onClick={() => setModal({ type: "entry" })}>
-          ↓ Registrar entrada
+          <Icon name="new" size={18} />
+          Registrar entrada
         </Button>
       </div>
 

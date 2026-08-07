@@ -3,6 +3,7 @@ import { formatBRL } from "@/lib/format";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/icons";
 
 interface EmployeesTableProps {
   employees: Employee[];
@@ -57,14 +58,14 @@ export function EmployeesTable({ employees, onAdd, onEdit, onDelete }: Employees
                     title="Editar"
                     className="text-text-muted hover:text-text-primary transition-colors p-1.5"
                   >
-                    ✎
+                    <Icon name="edit" size={18} />
                   </button>
                   <button
                     onClick={() => onDelete(emp.id)}
                     title="Remover"
                     className="text-text-muted hover:text-danger transition-colors p-1.5"
                   >
-                    ✕
+                    <Icon name="cancel" size={18} />
                   </button>
                 </div>
               </td>
@@ -83,8 +84,12 @@ export function EmployeesTable({ employees, onAdd, onEdit, onDelete }: Employees
                 <Badge variant={emp.contractType === "clt" ? "green" : "gray"}>
                   {emp.contractType === "clt" ? "CLT" : "Comissão"}
                 </Badge>
-                <button onClick={() => onEdit(emp)} className="text-text-muted hover:text-text-primary transition-colors p-1">✎</button>
-                <button onClick={() => onDelete(emp.id)} className="text-text-muted hover:text-danger transition-colors p-1">✕</button>
+                <button onClick={() => onEdit(emp)} className="text-text-muted hover:text-text-primary transition-colors p-1">
+                  <Icon name="edit" size={18} />
+                </button>
+                <button onClick={() => onDelete(emp.id)} className="text-text-muted hover:text-danger transition-colors p-1">
+                  <Icon name="cancel" size={18} />
+                </button>
               </div>
             </div>
             <p className="text-xs text-text-muted">

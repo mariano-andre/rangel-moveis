@@ -33,7 +33,7 @@ export const projectsMock: ProjectsData = {
         "Instalação",
       ],
       currentStepIndex: 0,
-      status: "waiting",
+      status: "in_progress",
     },
     {
       id: 3,

@@ -2,7 +2,6 @@ export type ProjectStep = string;
 
 export type ProjectStatus =
   | "in_progress"  // em andamento
-  | "waiting"      // aguardando (material, cliente, etc.)
   | "completed"    // concluído
   | "paused";      // pausado
 

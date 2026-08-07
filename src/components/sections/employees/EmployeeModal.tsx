@@ -98,7 +98,7 @@ export function EmployeeModal(
           </label>
           <div className="flex gap-2">
             {(["clt", "commission"] as ContractType[]).map((t) => (
-              <button
+              <button type="button"
                 key={t}
                 onClick={() => set("contractType", t)}
                 className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${

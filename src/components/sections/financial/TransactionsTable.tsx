@@ -150,7 +150,7 @@ export function TransactionsTable(
                 >
                   {t.type === "income" ? "+" : "–"} {formatBRL(t.value)}
                 </span>
-                <button
+                <button type="button"
                   onClick={() => startEdit(t)}
                   title="Editar"
                   className="text-text-muted hover:text-text-primary transition-colors text-sm"

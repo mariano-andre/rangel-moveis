@@ -75,14 +75,14 @@ export function ProjectCard(
             >
               {status.label}
             </span>
-            <button
+            <button type="button"
               onClick={() => setDetailOpen(true)}
               title="Ver detalhes"
               className="text-text-muted hover:text-text-primary transition-colors p-1"
             >
               👁
             </button>
-            <button
+            <button type="button"
               onClick={() => setEditOpen(true)}
               title="Editar projeto"
               className="text-text-muted hover:text-text-primary transition-colors p-1"

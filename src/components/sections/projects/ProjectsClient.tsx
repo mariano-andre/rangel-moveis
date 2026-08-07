@@ -83,7 +83,7 @@ export function ProjectsClient(
 
   async function handleEditProject(updated: Project) {
     try {
-      const { id, createdAt, updatedAt, ...rest } = updated;
+      const { id, createdAt: _createdAt, updatedAt: _updatedAt, ...rest } = updated;
       const updatedProject = await editProjectAction(id, rest);
       setProjects((prev) =>
         prev.map((p) => (p.id === updated.id ? updatedProject : p))
@@ -106,7 +106,7 @@ export function ProjectsClient(
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex flex-wrap gap-2">
             {filters.map((f) => (
-              <button
+              <button type="button"
                 key={f.value}
                 onClick={() => setActiveFilter(f.value)}
                 className={`text-xs px-3.5 py-1.5 rounded-full border transition-colors ${
@@ -123,7 +123,7 @@ export function ProjectsClient(
             <span className="text-xs text-text-muted">Ordenar por</span>
             <div className="flex gap-1.5">
               {sortOptions.map((s) => (
-                <button
+                <button type="button"
                   key={s.value}
                   onClick={() => setSortKey(s.value)}
                   className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${

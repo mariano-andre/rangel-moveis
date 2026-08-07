@@ -13,7 +13,7 @@ export const insertEmployeeSchema = z.object({
 export type InsertEmployee = z.infer<typeof insertEmployeeSchema>;
 
 export async function getEmployees() {
-  return db.select().from(employees).orderBy(employees.name);
+  return await db.select().from(employees).orderBy(employees.name);
 }
 
 export async function getEmployeeById(id: number) {

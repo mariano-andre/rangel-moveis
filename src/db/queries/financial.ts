@@ -1,6 +1,6 @@
 import { db } from "../index.ts";
 import { transactions } from "../schema.ts";
-import { desc, eq, sql } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const insertTransactionSchema = z.object({
@@ -18,7 +18,7 @@ export const insertTransactionSchema = z.object({
 export type InsertTransaction = z.infer<typeof insertTransactionSchema>;
 
 export async function getTransactions() {
-  return db.select().from(transactions).orderBy(desc(transactions.date));
+  return await db.select().from(transactions).orderBy(desc(transactions.date));
 }
 
 export async function getTransactionById(id: number) {

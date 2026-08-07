@@ -22,46 +22,46 @@ import {
 } from "../db/queries/financial.ts";
 import { updateSettings } from "../db/queries/settings.ts";
 
-export async function addProjectAction(data: any) {
-  return createProject(data);
+export async function addProjectAction(data: unknown) {
+  return await createProject(data);
 }
-export async function editProjectAction(id: number, data: any) {
-  return updateProject(id, data);
+export async function editProjectAction(id: number, data: unknown) {
+  return await updateProject(id, data);
 }
 export async function removeProjectAction(id: number) {
-  return deleteProject(id);
+  return await deleteProject(id);
 }
 
-export async function addInventoryAction(data: any) {
-  return createInventoryItem(data);
+export async function addInventoryAction(data: unknown) {
+  return await createInventoryItem(data);
 }
-export async function editInventoryAction(id: number, data: any) {
-  return updateInventoryItem(id, data);
+export async function editInventoryAction(id: number, data: unknown) {
+  return await updateInventoryItem(id, data);
 }
 export async function removeInventoryAction(id: number) {
-  return deleteInventoryItem(id);
+  return await deleteInventoryItem(id);
 }
 
-export async function addEmployeeAction(data: any) {
-  return createEmployee(data);
+export async function addEmployeeAction(data: unknown) {
+  return await createEmployee(data);
 }
-export async function editEmployeeAction(id: number, data: any) {
-  return updateEmployee(id, data);
+export async function editEmployeeAction(id: number, data: unknown) {
+  return await updateEmployee(id, data);
 }
 export async function removeEmployeeAction(id: number) {
-  return deleteEmployee(id);
+  return await deleteEmployee(id);
 }
 
-export async function addTransactionAction(data: any) {
-  return createTransaction(data);
+export async function addTransactionAction(data: unknown) {
+  return await createTransaction(data);
 }
-export async function editTransactionAction(id: number, data: any) {
-  return updateTransaction(id, data);
+export async function editTransactionAction(id: number, data: unknown) {
+  return await updateTransaction(id, data);
 }
 export async function removeTransactionAction(id: number) {
-  return deleteTransaction(id);
+  return await deleteTransaction(id);
 }
 
-export async function saveSettingsAction(data: any) {
-  return updateSettings(data);
+export async function saveSettingsAction(data: unknown) {
+  return await updateSettings(data);
 }

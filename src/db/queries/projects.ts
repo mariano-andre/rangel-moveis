@@ -24,7 +24,7 @@ export const insertProjectSchema = z.object({
 export type InsertProject = z.infer<typeof insertProjectSchema>;
 
 export async function getProjects() {
-  return db.select().from(projects).orderBy(desc(projects.createdAt));
+  return await db.select().from(projects).orderBy(desc(projects.createdAt));
 }
 
 export async function getProjectById(id: number) {

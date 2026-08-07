@@ -1,6 +1,6 @@
 import { db } from "../index.ts";
 import { inventory } from "../schema.ts";
-import { desc, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const insertInventorySchema = z.object({
@@ -14,7 +14,7 @@ export const insertInventorySchema = z.object({
 export type InsertInventory = z.infer<typeof insertInventorySchema>;
 
 export async function getInventory() {
-  return db.select().from(inventory).orderBy(inventory.material);
+  return await db.select().from(inventory).orderBy(inventory.material);
 }
 
 export async function getInventoryById(id: number) {

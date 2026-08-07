@@ -43,13 +43,13 @@ export function ConfirmStepModal({
         </p>
 
         <div className="flex justify-end gap-2">
-          <button
+          <button type="button"
             onClick={onClose}
             className="px-4 py-2 rounded-lg text-sm text-text-secondary border border-border-input bg-bg-elevated hover:text-text-primary transition-colors"
           >
             Cancelar
           </button>
-          <button
+          <button type="button"
             onClick={() => {
               onConfirm();
               onClose();

@@ -42,7 +42,7 @@ export function Modal({ title, onClose, children, size = "md" }: ModalProps) {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-border-soft">
           <span className="text-sm font-medium text-text-primary">{title}</span>
-          <button
+          <button type="button"
             onClick={onClose}
             className="text-text-muted hover:text-text-primary transition-colors text-lg leading-none"
           >

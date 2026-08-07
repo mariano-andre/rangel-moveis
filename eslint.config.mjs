@@ -21,11 +21,11 @@ const eslintConfig = defineConfig([
         {
           "argsIgnorePattern": "^_",
           "varsIgnorePattern": "^_",
-          "caughtErrorsIgnorePattern": "^_"
-        }
-      ]
-    }
-  }
+          "caughtErrorsIgnorePattern": "^_",
+        },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;

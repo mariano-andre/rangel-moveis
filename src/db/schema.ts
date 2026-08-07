@@ -12,6 +12,7 @@ export const employees = sqliteTable("employees", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   contractType: text("contract_type").$type<ContractType>().notNull(), // 'clt' | 'commission'
+  password: text("password").notNull().default("123456"),
   fixedSalary: real("fixed_salary").notNull(),
   commissionPercent: real("commission_percent").notNull(),
   createdAt: text("created_at").notNull().$defaultFn(() =>
@@ -74,6 +75,7 @@ export const settings = sqliteTable("settings", {
   id: integer("id").primaryKey({ autoIncrement: true }), // Will only have id = 1
   companyName: text("company_name").notNull(),
   companyPhone: text("company_phone").notNull(),
+  managerPassword: text("manager_password").notNull().default("admin123"),
   monthlyRevenueGoal: real("monthly_revenue_goal").notNull(),
   defaultCommissionPercent: real("default_commission_percent").notNull(),
   alertLowInventory: integer("alert_low_inventory", { mode: "boolean" })

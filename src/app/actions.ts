@@ -135,3 +135,41 @@ export async function saveSettingsAction(
     "Erro ao salvar configurações",
   );
 }
+
+import {
+  verifyEmployeePassword,
+  verifyManagerPassword,
+} from "@/db/queries/auth.ts";
+import { clearSession, setSession } from "@/lib/auth.ts";
+
+export async function loginManagerAction(password: string) {
+  return await withSafeAction(async () => {
+    const isValid = await verifyManagerPassword(password);
+    if (!isValid) {
+      throw new Error("Senha incorreta");
+    }
+    await setSession({ role: "manager" });
+    return { success: true };
+  }, "Erro no login do gestor");
+}
+
+export async function loginEmployeeAction(
+  employeeId: number,
+  password: string,
+) {
+  return await withSafeAction(async () => {
+    const isValid = await verifyEmployeePassword(employeeId, password);
+    if (!isValid) {
+      throw new Error("Senha incorreta");
+    }
+    await setSession({ role: "employee", employeeId });
+    return { success: true };
+  }, "Erro no login do funcionário");
+}
+
+export async function logoutAction() {
+  return await withSafeAction(async () => {
+    await clearSession();
+    return { success: true };
+  }, "Erro ao fazer logout");
+}

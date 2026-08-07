@@ -1,6 +1,8 @@
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-    </div>
-  );
+import { getEmployees } from "@/db/queries/employees.ts";
+import { LoginClient } from "./LoginClient.tsx";
+
+export default async function Home() {
+  const employees = await getEmployees();
+
+  return <LoginClient employees={employees} />;
 }

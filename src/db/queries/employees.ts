@@ -6,6 +6,7 @@ import { z } from "zod";
 export const insertEmployeeSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
   contractType: z.enum(["clt", "commission"]),
+  password: z.string().min(4, "Senha muito curta").optional(),
   fixedSalary: z.number().min(0),
   commissionPercent: z.number().min(0).max(100),
 });

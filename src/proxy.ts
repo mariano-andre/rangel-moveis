@@ -32,7 +32,8 @@ export async function proxy(request: NextRequest) {
 
   // 3. Prevent employee from accessing manager routes
   if (session?.role === "employee") {
-    const isEmployeeRoute = pathname.startsWith("/employee");
+    const isEmployeeRoute = pathname === "/employee" ||
+      pathname.startsWith("/employee/");
     if (!isEmployeeRoute) {
       // Redirect unauthorized employee to their projects view
       return NextResponse.redirect(new URL("/employee/projects", request.url));
@@ -41,7 +42,8 @@ export async function proxy(request: NextRequest) {
 
   // 4. Prevent manager from accessing employee routes
   if (session?.role === "manager") {
-    const isEmployeeRoute = pathname.startsWith("/employee");
+    const isEmployeeRoute = pathname === "/employee" ||
+      pathname.startsWith("/employee/");
     if (isEmployeeRoute) {
       // Redirect unauthorized manager to their projects view
       return NextResponse.redirect(new URL("/projects", request.url));

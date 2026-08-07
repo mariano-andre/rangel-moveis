@@ -4,7 +4,7 @@ import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const insertProjectSchema = z.object({
-  name: z.string().min(1, "Nome é obrigatório"),
+  name: z.string().min(1, "Nome é obrigatório").max(100, "Nome muito longo"),
   employeeId: z.number().int().positive(),
   createdAt: z.string().regex(
     /^\d{4}-\d{2}-\d{2}$/,
@@ -14,8 +14,8 @@ export const insertProjectSchema = z.object({
     /^\d{4}-\d{2}-\d{2}$/,
     "Formato de data inválido (YYYY-MM-DD)",
   ),
-  value: z.number().min(0),
-  description: z.string(),
+  value: z.number().min(0).max(9999999, "Valor muito alto"),
+  description: z.string().max(1000, "Descrição muito longa"),
   steps: z.array(z.string()),
   currentStepIndex: z.number().int().min(0),
   status: z.enum(["in_progress", "waiting", "completed", "paused"]),

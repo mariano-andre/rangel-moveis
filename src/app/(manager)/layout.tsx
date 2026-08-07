@@ -1,7 +1,17 @@
 import { Sidebar } from "@/components/layout/Sidebar.tsx";
 import { ReactNode } from "react";
+import { getSession } from "@/lib/auth.ts";
+import { redirect } from "next/navigation";
 
-export default function ManagerLayout({ children }: { children: ReactNode }) {
+export default async function ManagerLayout(
+  { children }: { children: ReactNode },
+) {
+  const session = await getSession();
+
+  if (!session || session.role !== "manager") {
+    redirect("/");
+  }
+
   return (
     <div className="flex min-h-screen bg-bg-app">
       <Sidebar />

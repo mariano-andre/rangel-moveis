@@ -36,6 +36,7 @@ export function NewProjectModal(
 ) {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function set(key: keyof FormState, value: string) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -58,8 +59,9 @@ export function NewProjectModal(
     return Object.keys(e).length === 0;
   }
 
-  function handleSave() {
-    if (!validate()) return;
+  async function handleSave() {
+    if (!validate() || isSubmitting) return;
+    setIsSubmitting(true);
     const steps = form.stepsRaw.split("\n").map((s) => s.trim()).filter(
       Boolean,
     );
@@ -77,6 +79,8 @@ export function NewProjectModal(
       })
         .split("/").reverse().join("-"),
     });
+    // Modal will be closed by the parent, but we can reset if needed
+    setIsSubmitting(false);
     onClose();
   }
 
@@ -206,8 +210,14 @@ Instalação"
 
         {/* Footer */}
         <div className="flex justify-end gap-2 pt-1">
-          <Button onClick={onClose}>Cancelar</Button>
-          <Button variant="primary" onClick={handleSave}>Salvar projeto</Button>
+          <Button onClick={onClose} disabled={isSubmitting}>Cancelar</Button>
+          <Button
+            variant="primary"
+            onClick={handleSave}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Salvando..." : "Salvar projeto"}
+          </Button>
         </div>
       </div>
     </Modal>

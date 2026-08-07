@@ -4,11 +4,14 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const insertInventorySchema = z.object({
-  material: z.string().min(1, "Material é obrigatório"),
+  material: z.string().min(1, "Material é obrigatório").max(
+    100,
+    "Material muito longo",
+  ),
   unit: z.enum(["chapas", "unid.", "kg", "caixa", "metro", "litro"]),
-  quantity: z.number().min(0),
-  minimum: z.number().min(0),
-  pricePerUnit: z.number().min(0),
+  quantity: z.number().min(0).max(999999, "Quantidade muito alta"),
+  minimum: z.number().min(0).max(999999, "Mínimo muito alto"),
+  pricePerUnit: z.number().min(0).max(9999999, "Preço muito alto"),
 });
 
 export type InsertInventory = z.infer<typeof insertInventorySchema>;

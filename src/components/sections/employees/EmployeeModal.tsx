@@ -37,6 +37,7 @@ export function EmployeeModal(
     commissionPercent: employee ? String(employee.commissionPercent) : "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function set(key: keyof FormState, value: string) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -62,15 +63,17 @@ export function EmployeeModal(
     return Object.keys(e).length === 0;
   }
 
-  function handleSave() {
-    if (!validate()) return;
-    onSave({
+  async function handleSave() {
+    if (!validate() || isSubmitting) return;
+    setIsSubmitting(true);
+    await onSave({
       name: form.name.trim(),
       contractType: form.contractType,
       password: form.password,
       fixedSalary: parseFloat(form.fixedSalary) || 0,
       commissionPercent: parseFloat(form.commissionPercent) || 0,
     });
+    setIsSubmitting(false);
     onClose();
   }
 
@@ -180,9 +183,15 @@ export function EmployeeModal(
 
         {/* Footer */}
         <div className="flex justify-end gap-2 pt-1">
-          <Button onClick={onClose}>Cancelar</Button>
-          <Button variant="primary" onClick={handleSave}>
-            {employee ? "Salvar alterações" : "Adicionar funcionário"}
+          <Button onClick={onClose} disabled={isSubmitting}>Cancelar</Button>
+          <Button
+            variant="primary"
+            onClick={handleSave}
+            disabled={isSubmitting}
+          >
+            {isSubmitting
+              ? "Salvando..."
+              : (employee ? "Salvar alterações" : "Adicionar funcionário")}
           </Button>
         </div>
       </div>

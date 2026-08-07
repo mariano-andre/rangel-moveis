@@ -66,6 +66,7 @@ function EntryForm(
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const selectedItem = !isNew
     ? items.find((i) => i.id === parseInt(selectedId))
@@ -91,11 +92,12 @@ function EntryForm(
     return Object.keys(e).length === 0;
   }
 
-  function handleSave() {
-    if (!validate()) return;
+  async function handleSave() {
+    if (!validate() || isSubmitting) return;
+    setIsSubmitting(true);
 
     if (isNew && onCreateNew) {
-      onCreateNew({
+      await onCreateNew({
         material: newMaterial.trim(),
         unit: newUnit,
         quantity: parseFloat(quantity) || 0,
@@ -103,8 +105,13 @@ function EntryForm(
         pricePerUnit: parseFloat(price) || 0,
       });
     } else {
-      onSave(parseInt(selectedId), parseFloat(quantity), parseFloat(price));
+      await onSave(
+        parseInt(selectedId),
+        parseFloat(quantity),
+        parseFloat(price),
+      );
     }
+    setIsSubmitting(false);
     onClose();
   }
 
@@ -271,9 +278,9 @@ function EntryForm(
         )}
 
       <div className="flex justify-end gap-2 pt-1">
-        <Button onClick={onClose}>Cancelar</Button>
-        <Button variant="primary" onClick={handleSave}>
-          Registrar entrada
+        <Button onClick={onClose} disabled={isSubmitting}>Cancelar</Button>
+        <Button variant="primary" onClick={handleSave} disabled={isSubmitting}>
+          {isSubmitting ? "Salvando..." : "Registrar entrada"}
         </Button>
       </div>
     </div>
@@ -291,6 +298,7 @@ function EditForm({ item, onClose, onSave }: Omit<EditModalProps, "mode">) {
     pricePerUnit: String(item.pricePerUnit),
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function set(key: string, value: string) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -310,15 +318,17 @@ function EditForm({ item, onClose, onSave }: Omit<EditModalProps, "mode">) {
     return Object.keys(e).length === 0;
   }
 
-  function handleSave() {
-    if (!validate()) return;
-    onSave({
+  async function handleSave() {
+    if (!validate() || isSubmitting) return;
+    setIsSubmitting(true);
+    await onSave({
       material: form.material.trim(),
       unit: form.unit,
       quantity: parseFloat(form.quantity) || 0,
       minimum: parseFloat(form.minimum) || 0,
       pricePerUnit: parseFloat(form.pricePerUnit) || 0,
     });
+    setIsSubmitting(false);
     onClose();
   }
 
@@ -403,9 +413,9 @@ function EditForm({ item, onClose, onSave }: Omit<EditModalProps, "mode">) {
       </div>
 
       <div className="flex justify-end gap-2 pt-1">
-        <Button onClick={onClose}>Cancelar</Button>
-        <Button variant="primary" onClick={handleSave}>
-          Salvar alterações
+        <Button onClick={onClose} disabled={isSubmitting}>Cancelar</Button>
+        <Button variant="primary" onClick={handleSave} disabled={isSubmitting}>
+          {isSubmitting ? "Salvando..." : "Salvar alterações"}
         </Button>
       </div>
     </div>

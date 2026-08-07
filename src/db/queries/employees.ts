@@ -4,11 +4,13 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const insertEmployeeSchema = z.object({
-  name: z.string().min(1, "Nome é obrigatório"),
+  name: z.string().min(1, "Nome é obrigatório").max(100, "Nome muito longo"),
   contractType: z.enum(["clt", "commission"]),
-  password: z.union([z.string().min(4, "Senha muito curta"), z.literal("")])
-    .optional(),
-  fixedSalary: z.number().min(0),
+  password: z.union([
+    z.string().min(4, "Senha muito curta").max(100, "Senha muito longa"),
+    z.literal(""),
+  ]).optional(),
+  fixedSalary: z.number().min(0).max(999999, "Salário muito alto"),
   commissionPercent: z.number().min(0).max(100),
 });
 
@@ -41,7 +43,17 @@ export async function updateEmployee(
   return result[0];
 }
 
+import { projects } from "@/db/schema.ts";
+
 export async function deleteEmployee(id: number) {
-  // In a real app we might check if they have projects before deleting
+  // Check if they have projects before deleting
+  const existingProjects = await db.select().from(projects).where(
+    eq(projects.employeeId, id),
+  ).limit(1);
+  if (existingProjects.length > 0) {
+    throw new Error(
+      "Não é possível remover: o funcionário possui projetos associados. Reatribua-os ou conclua-os primeiro.",
+    );
+  }
   await db.delete(employees).where(eq(employees.id, id));
 }

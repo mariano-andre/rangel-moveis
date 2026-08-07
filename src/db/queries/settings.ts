@@ -4,10 +4,16 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const updateSettingsSchema = z.object({
-  companyName: z.string().min(1, "Nome é obrigatório"),
-  companyPhone: z.string(),
-  managerPassword: z.string().min(4, "Senha muito curta").optional(),
-  monthlyRevenueGoal: z.number().min(0),
+  companyName: z.string().min(1, "Nome é obrigatório").max(
+    100,
+    "Nome muito longo",
+  ),
+  companyPhone: z.string().max(20, "Telefone muito longo"),
+  managerPassword: z.string().min(4, "Senha muito curta").max(
+    100,
+    "Senha muito longa",
+  ).optional(),
+  monthlyRevenueGoal: z.number().min(0).max(9999999, "Meta muito alta"),
   defaultCommissionPercent: z.number().min(0).max(100),
   alertLowInventory: z.boolean(),
   alertDeadlineApproaching: z.boolean(),

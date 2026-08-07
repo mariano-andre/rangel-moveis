@@ -37,6 +37,7 @@ export function EditProjectModal(
     status: project.status,
   });
   const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function set(key: keyof FormState, value: string) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -59,8 +60,9 @@ export function EditProjectModal(
     return Object.keys(e).length === 0;
   }
 
-  function handleSave() {
-    if (!validate()) return;
+  async function handleSave() {
+    if (!validate() || isSubmitting) return;
+    setIsSubmitting(true);
     const steps = form.stepsRaw.split("\n").map((s) => s.trim()).filter(
       Boolean,
     );
@@ -81,6 +83,7 @@ export function EditProjectModal(
       steps,
       currentStepIndex,
     });
+    setIsSubmitting(false);
     onClose();
   }
 
@@ -221,9 +224,13 @@ export function EditProjectModal(
 
         {/* Footer */}
         <div className="flex justify-end gap-2 pt-1">
-          <Button onClick={onClose}>Cancelar</Button>
-          <Button variant="primary" onClick={handleSave}>
-            Salvar alterações
+          <Button onClick={onClose} disabled={isSubmitting}>Cancelar</Button>
+          <Button
+            variant="primary"
+            onClick={handleSave}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Salvando..." : "Salvar alterações"}
           </Button>
         </div>
       </div>

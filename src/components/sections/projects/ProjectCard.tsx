@@ -47,9 +47,14 @@ export function ProjectCard(
 
   const employee = employees.find((e) => e.id === project.employeeId);
   const status = statusConfig[project.status];
-  const progress = project.steps.length > 1
-    ? Math.round((project.currentStepIndex / (project.steps.length - 1)) * 100)
-    : 100;
+
+  const isCompleted = project.status === "completed";
+  const progress = isCompleted
+    ? 100
+    : project.steps.length > 0
+    ? Math.round((project.currentStepIndex / project.steps.length) * 100)
+    : 0;
+
   const isLastStep = project.currentStepIndex >= project.steps.length - 1;
   const currentStep = project.steps[project.currentStepIndex];
   const nextStep = isLastStep
@@ -105,9 +110,9 @@ export function ProjectCard(
         {/* Etapas */}
         <div className="flex flex-col gap-2.5">
           {project.steps.map((step, i) => {
-            const isDone = i < project.currentStepIndex;
-            const isCurrent = i === project.currentStepIndex;
-            const isPending = i > project.currentStepIndex;
+            const isDone = isCompleted || i < project.currentStepIndex;
+            const isCurrent = !isCompleted && i === project.currentStepIndex;
+            const isPending = !isCompleted && i > project.currentStepIndex;
             return (
               <div key={i} className="flex items-start gap-3">
                 <div className="flex flex-col items-center gap-0.5 pt-0.5">

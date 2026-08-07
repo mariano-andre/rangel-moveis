@@ -135,10 +135,11 @@ function Pagination({ currentPage, totalPages, onChange }: PaginationProps) {
 interface ProjectsClientProps {
   projects: Project[];
   employees: Employee[];
+  isEmployee?: boolean;
 }
 
 export function ProjectsClient(
-  { projects: initialProjects, employees }: ProjectsClientProps,
+  { projects: initialProjects, employees, isEmployee }: ProjectsClientProps,
 ) {
   // Use generic hook to manage projects state, eliminating duplicate rollback logic
   const { data: projects, optimisticCreate, optimisticUpdate } =
@@ -276,9 +277,14 @@ export function ProjectsClient(
             </div>
           </div>
         </div>
-        <Button variant="primary" onClick={() => setNewModalOpen(true)}>
-          + Novo projeto
-        </Button>
+        {!isEmployee && (
+          <Button
+            variant="primary"
+            onClick={() => setNewModalOpen(true)}
+          >
+            + Novo projeto
+          </Button>
+        )}
       </div>
 
       {/* Contador de resultados */}

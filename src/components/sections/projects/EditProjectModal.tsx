@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Employee, Project } from "@/lib/types/index.ts";
+import { Employee, Project, ProjectStatus } from "@/lib/types/index.ts";
 import { Modal } from "@/components/ui/Modal.tsx";
 import { Button } from "@/components/ui/Button.tsx";
 
@@ -19,6 +19,7 @@ interface FormState {
   deadline: string;
   value: string;
   stepsRaw: string;
+  status: string;
 }
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
@@ -33,6 +34,7 @@ export function EditProjectModal(
     deadline: project.deadline,
     value: String(project.value),
     stepsRaw: project.steps.join("\n"),
+    status: project.status,
   });
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -75,6 +77,7 @@ export function EditProjectModal(
       employeeId: parseInt(form.employeeId),
       deadline: form.deadline,
       value: parseFloat(form.value),
+      status: form.status as ProjectStatus,
       steps,
       currentStepIndex,
     });
@@ -120,24 +123,41 @@ export function EditProjectModal(
           />
         </div>
 
-        {/* Responsável */}
-        <div>
-          <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
-            Responsável
-          </label>
-          <select
-            value={form.employeeId}
-            onChange={(e) => set("employeeId", e.target.value)}
-            className={inputClass(!!errors.employeeId)}
-          >
-            <option value="">Selecionar funcionário...</option>
-            {employees.map((emp) => (
-              <option key={emp.id} value={emp.id}>{emp.name}</option>
-            ))}
-          </select>
-          {errors.employeeId && (
-            <p className="text-xs text-danger mt-1">{errors.employeeId}</p>
-          )}
+        {/* Responsável e Status */}
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
+              Responsável
+            </label>
+            <select
+              value={form.employeeId}
+              onChange={(e) => set("employeeId", e.target.value)}
+              className={inputClass(!!errors.employeeId)}
+            >
+              <option value="">Selecionar funcionário...</option>
+              {employees.map((emp) => (
+                <option key={emp.id} value={emp.id}>{emp.name}</option>
+              ))}
+            </select>
+            {errors.employeeId && (
+              <p className="text-xs text-danger mt-1">{errors.employeeId}</p>
+            )}
+          </div>
+          <div>
+            <label className="block text-xs text-text-muted uppercase tracking-wide mb-1.5">
+              Status
+            </label>
+            <select
+              value={form.status}
+              onChange={(e) => set("status", e.target.value)}
+              className={inputClass(false)}
+            >
+              <option value="in_progress">Em andamento</option>
+              <option value="waiting">Aguardando</option>
+              <option value="paused">Pausado</option>
+              <option value="completed">Concluído</option>
+            </select>
+          </div>
         </div>
 
         {/* Prazo e Valor */}

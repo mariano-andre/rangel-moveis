@@ -94,8 +94,9 @@ export function ProjectDetailModal(
         </p>
         <div className="flex flex-col gap-2.5">
           {project.steps.map((step, i) => {
-            const isDone = i < project.currentStepIndex;
-            const isCurrent = i === project.currentStepIndex;
+            const isCompleted = project.status === "completed";
+            const isDone = isCompleted || i < project.currentStepIndex;
+            const isCurrent = !isCompleted && i === project.currentStepIndex;
             return (
               <div key={i} className="flex items-start gap-3">
                 <div className="flex flex-col items-center pt-0.5">

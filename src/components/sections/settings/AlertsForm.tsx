@@ -1,5 +1,11 @@
+<<<<<<< HEAD
+import { AlertSettings } from "@/lib/types";
+import { Card, CardTitle } from "@/components/ui/Card";
+import { Icon } from "@/components/icons";
+=======
 import { AlertSettings } from "../../../lib/types/index.ts";
 import { Card, CardTitle } from "../../ui/Card.tsx";
+>>>>>>> master
 
 interface AlertsFormProps {
   data: AlertSettings;
@@ -16,7 +22,7 @@ const alerts: { key: keyof AlertSettings; label: string }[] = [
 export function AlertsForm({ data, onChange }: AlertsFormProps) {
   return (
     <Card>
-      <CardTitle icon={<span>🔔</span>}>Alertas automáticos</CardTitle>
+      <CardTitle icon={<Icon name="notification" size={18} />}>Alertas automáticos</CardTitle>
       <div className="flex flex-col gap-4">
         {alerts.map((a) => (
           <label

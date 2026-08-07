@@ -1,8 +1,17 @@
+<<<<<<< HEAD
+import { InventoryItem, InventoryStatus } from "@/lib/types";
+import { formatBRL } from "@/lib/format";
+import { calcInventoryStatus } from "@/lib/calculations";
+import { Card, CardTitle } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import { Icon } from "@/components/icons";
+=======
 import { InventoryItem, InventoryStatus } from "../../../lib/types/index.ts";
 import { formatBRL } from "../../../lib/format.ts";
 import { calcInventoryStatus } from "../../../lib/calculations.ts";
 import { Card, CardTitle } from "../../ui/Card.tsx";
 import { Badge } from "../../ui/Badge.tsx";
+>>>>>>> master
 
 const statusConfig: Record<
   InventoryStatus,
@@ -90,7 +99,7 @@ export function InventoryTable(
                       title="Registrar entrada"
                       className="text-text-muted hover:text-text-primary transition-colors p-1.5"
                     >
-                      +
+                      <Icon name="new" size={18} />
                     </button>
                     <button
                       type="button"
@@ -98,7 +107,7 @@ export function InventoryTable(
                       title="Editar"
                       className="text-text-muted hover:text-text-primary transition-colors p-1.5"
                     >
-                      ✎
+                      <Icon name="edit" size={18} />
                     </button>
                     <button
                       type="button"
@@ -106,7 +115,7 @@ export function InventoryTable(
                       title="Remover"
                       className="text-text-muted hover:text-danger transition-colors p-1.5"
                     >
-                      ✕
+                      <Icon name="cancel" size={18} />
                     </button>
                   </div>
                 </td>
@@ -132,6 +141,14 @@ export function InventoryTable(
                 </span>
                 <div className="flex items-center gap-1.5">
                   <Badge variant={status.variant}>{status.label}</Badge>
+<<<<<<< HEAD
+                  <button onClick={() => onEntry(item)}  className="text-text-muted hover:text-text-primary transition-colors p-1">+</button>
+                  <button onClick={() => onEdit(item)}   className="text-text-muted hover:text-text-primary transition-colors p-1">
+                    <Icon name="edit" size={18} />
+                  </button>
+                  <button onClick={() => onDelete(item.id)} className="text-text-muted hover:text-danger transition-colors p-1">
+                    <Icon name="cancel" size={18} />
+=======
                   <button
                     type="button"
                     onClick={() => onEntry(item)}
@@ -152,6 +169,7 @@ export function InventoryTable(
                     className="text-text-muted hover:text-danger transition-colors p-1"
                   >
                     ✕
+>>>>>>> master
                   </button>
                 </div>
               </div>

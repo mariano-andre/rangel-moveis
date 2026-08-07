@@ -3,6 +3,16 @@
 
 "use client";
 
+<<<<<<< HEAD
+import { Card, CardTitle } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Transaction } from "@/lib/types";
+import { formatBRL, formatDateBR } from "@/lib/format";
+import { useTransactionEdit } from "@/components/sections/financial/hooks/useTransactionEdit";
+import { TextCell, DateCell, NumberCell, TypeCell, ActionCell } from "@/components/sections/financial/EditableCell";
+import { Icon } from "@/components/icons";
+=======
 import { Card, CardTitle } from "../../ui/Card.tsx";
 import { Badge } from "../../ui/Badge.tsx";
 import { Button } from "../../ui/Button.tsx";
@@ -16,6 +26,7 @@ import {
   TextCell,
   TypeCell,
 } from "./EditableCell.tsx";
+>>>>>>> master
 
 interface TransactionsTableProps {
   transactions: Transaction[];
@@ -150,6 +161,10 @@ export function TransactionsTable(
                 >
                   {t.type === "income" ? "+" : "–"} {formatBRL(t.value)}
                 </span>
+<<<<<<< HEAD
+                <button onClick={() => startEdit(t)} title="Editar" className="text-text-muted hover:text-text-primary transition-colors text-sm">
+                  <Icon name="edit" size={18} />
+=======
                 <button
                   type="button"
                   onClick={() => startEdit(t)}
@@ -157,6 +172,7 @@ export function TransactionsTable(
                   className="text-text-muted hover:text-text-primary transition-colors text-sm"
                 >
                   ✎
+>>>>>>> master
                 </button>
               </div>
             </div>

@@ -11,6 +11,15 @@
 "use client";
 
 import { useState } from "react";
+<<<<<<< HEAD
+import { InventoryItem } from "@/lib/types";
+import { calcInventoryStatus } from "@/lib/calculations";
+import { Button } from "@/components/ui/Button";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { InventoryTable } from "@/components/sections/inventory/InventoryTable";
+import { InventoryModal } from "@/components/sections/inventory/InventoryModal";
+import { Icon } from "@/components/icons";
+=======
 import { InventoryItem } from "../../../lib/types/index.ts";
 import { calcInventoryStatus } from "../../../lib/calculations.ts";
 import { Button } from "../../ui/Button.tsx";
@@ -22,6 +31,7 @@ import {
   removeInventoryAction,
 } from "../../../app/actions.ts";
 import { useOptimisticData } from "../../../lib/hooks/useOptimisticData.ts";
+>>>>>>> master
 
 interface InventoryClientProps {
   initialItems: InventoryItem[];
@@ -110,7 +120,8 @@ export function InventoryClient({ initialItems }: InventoryClientProps) {
           <p className="text-sm text-text-muted mt-0.5">Materiais e insumos</p>
         </div>
         <Button variant="primary" onClick={() => setModal({ type: "entry" })}>
-          ↓ Registrar entrada
+          <Icon name="new" size={18} />
+          Registrar entrada
         </Button>
       </div>
 

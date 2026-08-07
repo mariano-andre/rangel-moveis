@@ -66,7 +66,7 @@ export function EmployeesTable(
                     title="Editar"
                     className="text-text-muted hover:text-text-primary transition-colors p-1.5"
                   >
-                    ✎
+                    <Icon name="edit" size={18} />
                   </button>
                   <button
                     type="button"
@@ -74,7 +74,7 @@ export function EmployeesTable(
                     title="Remover"
                     className="text-text-muted hover:text-danger transition-colors p-1.5"
                   >
-                    ✕
+                    <Icon name="cancel" size={18} />
                   </button>
                 </div>
               </td>

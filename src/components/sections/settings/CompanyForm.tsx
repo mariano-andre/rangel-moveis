@@ -1,6 +1,13 @@
+<<<<<<< HEAD
+import { CompanySettings } from "@/lib/types";
+import { Card, CardTitle } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/icons";
+=======
 import { CompanySettings } from "../../../lib/types/index.ts";
 import { Card, CardTitle } from "../../ui/Card.tsx";
 import { Button } from "../../ui/Button.tsx";
+>>>>>>> master
 
 interface CompanyFormProps {
   data: CompanySettings;
@@ -49,7 +56,7 @@ export function CompanyForm(
 ) {
   return (
     <Card>
-      <CardTitle icon={<span>🏢</span>}>Informações da empresa</CardTitle>
+      <CardTitle>Informações da empresa</CardTitle>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
         {fields.map((f) => (
@@ -76,10 +83,13 @@ export function CompanyForm(
 
       <div className="flex items-center gap-3">
         <Button variant="primary" onClick={onSave}>
-          🖫 Salvar alterações
+          <Icon name="save" size={18} />
+          Salvar alterações
         </Button>
         {saved && (
-          <span className="text-xs text-success">✓ Salvo com sucesso</span>
+          <span className="text-xs text-success">
+            <Icon name="apply" size={18} /> Salvo com sucesso
+          </span>
         )}
       </div>
     </Card>

@@ -1,6 +1,6 @@
-import { ProjectsClient } from "../../../components/sections/projects/ProjectsClient.tsx";
-import { getProjects } from "../../../db/queries/projects.ts";
-import { getEmployees } from "../../../db/queries/employees.ts";
+import { ProjectsClient } from "@/components/sections/projects/ProjectsClient.tsx";
+import { getProjects } from "@/db/queries/projects.ts";
+import { getEmployees } from "@/db/queries/employees.ts";
 
 export default async function ProjectsPage() {
   const projects = await getProjects();

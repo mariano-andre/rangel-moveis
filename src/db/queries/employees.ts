@@ -1,5 +1,5 @@
-import { db } from "../index.ts";
-import { employees } from "../schema.ts";
+import { db } from "@/db/index.ts";
+import { employees } from "@/db/schema.ts";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 

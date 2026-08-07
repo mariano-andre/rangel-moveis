@@ -1,4 +1,4 @@
-import { EmployeesData } from "../lib/types/index.ts";
+import { EmployeesData } from "@/lib/types/index.ts";
 
 export const employeesMock: EmployeesData = {
   employees: [

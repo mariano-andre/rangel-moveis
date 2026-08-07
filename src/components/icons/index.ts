@@ -1,1 +1,1 @@
-export * from "../icons/Icon";
+export * from "@/components/icons/Icon.tsx";

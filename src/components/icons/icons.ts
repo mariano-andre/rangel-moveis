@@ -1,17 +1,17 @@
 import {
-    ChartColumnBig,
-    FolderKanban,
-    Users,
-    Package,
-    Settings,
-    PencilIcon,
-    Check,
-    X,
-    Save,
-    Eye,
-    MoveRight,
-    CirclePlus,
-    Bell
+  Bell,
+  ChartColumnBig,
+  Check,
+  CirclePlus,
+  Eye,
+  FolderKanban,
+  MoveRight,
+  Package,
+  PencilIcon,
+  Save,
+  Settings,
+  Users,
+  X,
 } from "lucide-react";
 
 export const AppIcons = {
@@ -27,7 +27,7 @@ export const AppIcons = {
   details: Eye,
   next: MoveRight,
   new: CirclePlus,
-  notification: Bell
+  notification: Bell,
 } as const;
 
 export type IconName = keyof typeof AppIcons;

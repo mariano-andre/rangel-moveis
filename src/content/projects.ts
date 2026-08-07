@@ -1,4 +1,4 @@
-import { ProjectsData } from "../lib/types/index.ts";
+import { ProjectsData } from "@/lib/types/index.ts";
 
 export const projectsMock: ProjectsData = {
   projects: [

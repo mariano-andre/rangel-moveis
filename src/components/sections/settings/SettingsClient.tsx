@@ -1,14 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import {
-  AlertSettings,
-  CompanySettings,
-  Settings,
-} from "../../../lib/types/index.ts";
-import { CompanyForm } from "./CompanyForm.tsx";
-import { AlertsForm } from "./AlertsForm.tsx";
-import { saveSettingsAction } from "../../../app/actions.ts";
+import { AlertSettings, CompanySettings, Settings } from "@/lib/types/index.ts";
+import { CompanyForm } from "@/components/sections/settings/CompanyForm.tsx";
+import { AlertsForm } from "@/components/sections/settings/AlertsForm.tsx";
+import { saveSettingsAction } from "@/app/actions.ts";
 
 interface SettingsClientProps {
   initialSettings: Settings;

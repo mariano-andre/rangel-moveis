@@ -12,12 +12,12 @@
 "use client";
 
 import { useState } from "react";
-import { Employee, Project, ProjectStatus } from "../../../lib/types/index.ts";
-import { ProjectCard } from "./ProjectCard.tsx";
-import { NewProjectModal } from "./NewProjectModal.tsx";
-import { Button } from "../../ui/Button.tsx";
-import { addProjectAction, editProjectAction } from "../../../app/actions.ts";
-import { useOptimisticData } from "../../../lib/hooks/useOptimisticData.ts";
+import { Employee, Project, ProjectStatus } from "@/lib/types/index.ts";
+import { ProjectCard } from "@/components/sections/projects/ProjectCard.tsx";
+import { NewProjectModal } from "@/components/sections/projects/NewProjectModal.tsx";
+import { Button } from "@/components/ui/Button.tsx";
+import { addProjectAction, editProjectAction } from "@/app/actions.ts";
+import { useOptimisticData } from "@/lib/hooks/useOptimisticData.ts";
 
 type Filter = "all" | ProjectStatus;
 type SortKey = "createdAt" | "deadline";
@@ -25,17 +25,11 @@ type SortKey = "createdAt" | "deadline";
 const COMPLETED_PAGE_SIZE = 5; // projetos concluídos por página
 
 const filters: { value: Filter; label: string }[] = [
-<<<<<<< HEAD
-  { value: "in_progress", label: "Em andamento" },
-  { value: "completed",   label: "Concluído"    },
-  { value: "paused",      label: "Pausado"      },
-=======
   { value: "all", label: "Todos" },
   { value: "in_progress", label: "Em andamento" },
   { value: "waiting", label: "Aguardando" },
   { value: "completed", label: "Concluído" },
   { value: "paused", label: "Pausado" },
->>>>>>> master
 ];
 
 const sortOptions: { value: SortKey; label: string }[] = [
@@ -79,14 +73,18 @@ function Pagination({ currentPage, totalPages, onChange }: PaginationProps) {
     }
   }
 
-  const btnBase = "min-w-[32px] h-8 px-2 rounded-lg text-xs border transition-colors";
+  const btnBase =
+    "min-w-[32px] h-8 px-2 rounded-lg text-xs border transition-colors";
   const btnActive = "bg-brand text-text-inverted border-brand";
-  const btnDefault = "bg-bg-card text-text-secondary border-border-input hover:bg-bg-elevated hover:text-text-primary";
-  const btnDisabled = "bg-transparent text-text-muted border-transparent cursor-not-allowed";
+  const btnDefault =
+    "bg-bg-card text-text-secondary border-border-input hover:bg-bg-elevated hover:text-text-primary";
+  const btnDisabled =
+    "bg-transparent text-text-muted border-transparent cursor-not-allowed";
 
   return (
     <div className="flex items-center justify-center gap-1.5 mt-6">
       <button
+        type="button"
         onClick={() => onChange(currentPage - 1)}
         disabled={currentPage === 1}
         className={`${btnBase} ${currentPage === 1 ? btnDisabled : btnDefault}`}
@@ -95,23 +93,36 @@ function Pagination({ currentPage, totalPages, onChange }: PaginationProps) {
       </button>
 
       {pages.map((p, i) =>
-        p === "..." ? (
-          <span key={`ellipsis-${i}`} className="text-xs text-text-muted px-1">...</span>
-        ) : (
-          <button
-            key={p}
-            onClick={() => onChange(p as number)}
-            className={`${btnBase} ${p === currentPage ? btnActive : btnDefault}`}
-          >
-            {p}
-          </button>
-        )
+        p === "..."
+          ? (
+            <span
+              key={`ellipsis-${i}`}
+              className="text-xs text-text-muted px-1"
+            >
+              ...
+            </span>
+          )
+          : (
+            <button
+              type="button"
+              key={p}
+              onClick={() => onChange(p as number)}
+              className={`${btnBase} ${
+                p === currentPage ? btnActive : btnDefault
+              }`}
+            >
+              {p}
+            </button>
+          )
       )}
 
       <button
+        type="button"
         onClick={() => onChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className={`${btnBase} ${currentPage === totalPages ? btnDisabled : btnDefault}`}
+        className={`${btnBase} ${
+          currentPage === totalPages ? btnDisabled : btnDefault
+        }`}
       >
         →
       </button>
@@ -126,12 +137,6 @@ interface ProjectsClientProps {
   employees: Employee[];
 }
 
-<<<<<<< HEAD
-export function ProjectsClient({ projects: initialProjects }: ProjectsClientProps) {
-  const [projects, setProjects]         = useState<Project[]>(initialProjects);
-  const [activeFilter, setActiveFilter] = useState<Filter>("in_progress");
-  const [sortKey, setSortKey]           = useState<SortKey>("createdAt");
-=======
 export function ProjectsClient(
   { projects: initialProjects, employees }: ProjectsClientProps,
 ) {
@@ -141,7 +146,6 @@ export function ProjectsClient(
 
   const [activeFilter, setActiveFilter] = useState<Filter>("all");
   const [sortKey, setSortKey] = useState<SortKey>("createdAt");
->>>>>>> master
   const [newModalOpen, setNewModalOpen] = useState(false);
   const [completedPage, setCompletedPage] = useState(1);
 
@@ -212,11 +216,7 @@ export function ProjectsClient(
     }
   }
 
-<<<<<<< HEAD
-  // Filtragem e ordenação
-=======
   // Filter and sort the final data to be rendered
->>>>>>> master
   const filtered = activeFilter === "all"
     ? projects
     : projects.filter((p) => p.status === activeFilter);
@@ -224,10 +224,15 @@ export function ProjectsClient(
   const sorted = sortProjects(filtered, sortKey);
 
   // Paginação — aplicada apenas em projetos concluídos
-  const isCompleted   = activeFilter === "completed";
-  const totalPages    = isCompleted ? Math.ceil(sorted.length / COMPLETED_PAGE_SIZE) : 1;
+  const isCompleted = activeFilter === "completed";
+  const totalPages = isCompleted
+    ? Math.ceil(sorted.length / COMPLETED_PAGE_SIZE)
+    : 1;
   const visibleProjects = isCompleted
-    ? sorted.slice((completedPage - 1) * COMPLETED_PAGE_SIZE, completedPage * COMPLETED_PAGE_SIZE)
+    ? sorted.slice(
+      (completedPage - 1) * COMPLETED_PAGE_SIZE,
+      completedPage * COMPLETED_PAGE_SIZE,
+    )
     : sorted;
 
   return (
@@ -279,31 +284,15 @@ export function ProjectsClient(
       {/* Contador de resultados */}
       {isCompleted && sorted.length > 0 && (
         <p className="text-xs text-text-muted mb-4">
-          {sorted.length} projeto{sorted.length !== 1 ? "s" : ""} concluído{sorted.length !== 1 ? "s" : ""} ·{" "}
-          página {completedPage} de {totalPages}
+          {sorted.length} projeto{sorted.length !== 1 ? "s" : ""}{" "}
+          concluído{sorted.length !== 1 ? "s" : ""} · página {completedPage} de
+          {" "}
+          {totalPages}
         </p>
       )}
 
       {/* Cards */}
-<<<<<<< HEAD
-      {visibleProjects.length === 0 ? (
-        <p className="text-sm text-text-muted text-center py-12">
-          Nenhum projeto nessa categoria.
-        </p>
-      ) : (
-        <div className="flex flex-col gap-4">
-          {visibleProjects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              onAdvanceStep={() => handleAdvanceStep(project.id)}
-              onEdit={handleEditProject}
-            />
-          ))}
-        </div>
-      )}
-=======
-      {sorted.length === 0
+      {visibleProjects.length === 0
         ? (
           <p className="text-sm text-text-muted text-center py-12">
             Nenhum projeto nessa categoria.
@@ -311,7 +300,7 @@ export function ProjectsClient(
         )
         : (
           <div className="flex flex-col gap-4">
-            {sorted.map((project) => (
+            {visibleProjects.map((project) => (
               <ProjectCard
                 key={project.id}
                 project={project}
@@ -322,7 +311,6 @@ export function ProjectsClient(
             ))}
           </div>
         )}
->>>>>>> master
 
       {/* Paginação */}
       <Pagination

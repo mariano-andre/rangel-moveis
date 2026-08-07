@@ -4,24 +4,24 @@ import {
   createProject,
   deleteProject,
   updateProject,
-} from "../db/queries/projects.ts";
+} from "@/db/queries/projects.ts";
 import {
   createInventoryItem,
   deleteInventoryItem,
   updateInventoryItem,
-} from "../db/queries/inventory.ts";
+} from "@/db/queries/inventory.ts";
 import {
   createEmployee,
   deleteEmployee,
   updateEmployee,
-} from "../db/queries/employees.ts";
+} from "@/db/queries/employees.ts";
 import {
   createTransaction,
   deleteTransaction,
   updateTransaction,
-} from "../db/queries/financial.ts";
-import { updateSettings } from "../db/queries/settings.ts";
-import { withSafeAction } from "../lib/action-utils.ts";
+} from "@/db/queries/financial.ts";
+import { updateSettings } from "@/db/queries/settings.ts";
+import { withSafeAction } from "@/lib/action-utils.ts";
 
 /**
  * actions.ts

@@ -1,5 +1,5 @@
-import { Card, CardTitle } from "../../ui/Card.tsx";
-import { MonthlyRevenue } from "../../../lib/types/index.ts";
+import { Card, CardTitle } from "@/components/ui/Card.tsx";
+import { MonthlyRevenue } from "@/lib/types/index.ts";
 
 interface MonthlyRevenueChartProps {
   history: MonthlyRevenue[];

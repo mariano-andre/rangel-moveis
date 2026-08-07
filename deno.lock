@@ -12,6 +12,7 @@
     "npm:drizzle-orm@~0.45.2": "0.45.2_@types+better-sqlite3@9.6.0_better-sqlite3@13.0.2",
     "npm:eslint-config-next@16.2.9": "16.2.9_eslint@9.39.5_typescript@5.9.3",
     "npm:eslint@9": "9.39.5",
+    "npm:lucide-react@0.474": "0.474.0_react@19.2.4",
     "npm:next@16.2.9": "16.2.9_babel-plugin-react-compiler@1.0.0_react@19.2.4_react-dom@19.2.4__react@19.2.4",
     "npm:pm2@^7.0.3": "7.0.3",
     "npm:react-dom@19.2.4": "19.2.4_react@19.2.4",
@@ -2820,6 +2821,12 @@
     "lru-cache@7.18.3": {
       "integrity": "sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA=="
     },
+    "lucide-react@0.474.0_react@19.2.4": {
+      "integrity": "sha512-CmghgHkh0OJNmxGKWc0qfPJCYHASPMVSyGY8fj3xgk4v84ItqDg64JNKFZn5hC6E0vHi6gxnbCgwhyVB09wQtA==",
+      "dependencies": [
+        "react"
+      ]
+    },
     "magic-string@0.30.21": {
       "integrity": "sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==",
       "dependencies": [
@@ -3759,6 +3766,7 @@
       "npm:drizzle-orm@~0.45.2",
       "npm:eslint-config-next@16.2.9",
       "npm:eslint@9",
+      "npm:lucide-react@0.474",
       "npm:next@16.2.9",
       "npm:pm2@^7.0.3",
       "npm:react-dom@19.2.4",

@@ -5,12 +5,12 @@
 "use client";
 
 import { useState } from "react";
-import { Modal } from "../../ui/Modal.tsx";
+import { Modal } from "@/components/ui/Modal.tsx";
 import {
   ExpenseCategoryLabel,
   Transaction,
   TransactionType,
-} from "../../../lib/types/index.ts";
+} from "@/lib/types/index.ts";
 
 // Categorias fixas do sistema
 const FIXED_CATEGORIES: ExpenseCategoryLabel[] = [

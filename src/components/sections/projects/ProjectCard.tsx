@@ -1,23 +1,13 @@
 "use client";
 
 import { useState } from "react";
-<<<<<<< HEAD
-import { Project, ProjectStatus } from "@/lib/types";
-import { employeesMock } from "@/content/employees";
-import { formatBRL, formatDateBR } from "@/lib/format";
-import { ProjectDetailModal } from "@/components/sections/projects/ProjectDetailModal";
-import { ConfirmStepModal } from "@/components/sections/projects/ConfirmStepModal";
-import { EditProjectModal } from "@/components/sections/projects/EditProjectModal";
-import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/icons";
-=======
-import { Employee, Project, ProjectStatus } from "../../../lib/types/index.ts";
-import { formatBRL, formatDateBR } from "../../../lib/format.ts";
-import { ProjectDetailModal } from "./ProjectDetailModal.tsx";
-import { ConfirmStepModal } from "./ConfirmStepModal.tsx";
-import { EditProjectModal } from "./EditProjectModal.tsx";
-import { Button } from "../../ui/Button.tsx";
->>>>>>> master
+import { Employee, Project, ProjectStatus } from "@/lib/types/index.ts";
+import { formatBRL, formatDateBR } from "@/lib/format.ts";
+import { ProjectDetailModal } from "@/components/sections/projects/ProjectDetailModal.tsx";
+import { ConfirmStepModal } from "@/components/sections/projects/ConfirmStepModal.tsx";
+import { EditProjectModal } from "@/components/sections/projects/EditProjectModal.tsx";
+import { Button } from "@/components/ui/Button.tsx";
+import { Icon } from "@/components/icons/index.ts";
 
 interface ProjectCardProps {
   project: Project;
@@ -26,15 +16,6 @@ interface ProjectCardProps {
   onEdit: (updated: Project) => void;
 }
 
-<<<<<<< HEAD
-const statusConfig: Record<ProjectStatus, { label: string; className: string }> = {
-  in_progress: { label: "Em andamento", className: "bg-brand-muted text-brand border-brand-border" },
-  completed: { label: "Concluído", className: "bg-success-muted text-success border-success-border" },
-  paused: { label: "Pausado", className: "bg-bg-elevated text-text-muted border-border-input" },
-};
-
-export function ProjectCard({ project, onAdvanceStep, onEdit }: ProjectCardProps) {
-=======
 const statusConfig: Record<
   ProjectStatus,
   { label: string; className: string }
@@ -60,29 +41,20 @@ const statusConfig: Record<
 export function ProjectCard(
   { project, employees, onAdvanceStep, onEdit }: ProjectCardProps,
 ) {
->>>>>>> master
   const [detailOpen, setDetailOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-<<<<<<< HEAD
-  const employee = employeesMock.employees.find((e) => e.id === project.employeeId);
-=======
   const employee = employees.find((e) => e.id === project.employeeId);
->>>>>>> master
   const status = statusConfig[project.status];
   const progress = project.steps.length > 1
     ? Math.round((project.currentStepIndex / (project.steps.length - 1)) * 100)
     : 100;
   const isLastStep = project.currentStepIndex >= project.steps.length - 1;
   const currentStep = project.steps[project.currentStepIndex];
-<<<<<<< HEAD
-  const nextStep = isLastStep ? null : project.steps[project.currentStepIndex + 1];
-=======
   const nextStep = isLastStep
     ? null
     : project.steps[project.currentStepIndex + 1];
->>>>>>> master
 
   return (
     <>
@@ -139,12 +111,6 @@ export function ProjectCard(
             return (
               <div key={i} className="flex items-start gap-3">
                 <div className="flex flex-col items-center gap-0.5 pt-0.5">
-<<<<<<< HEAD
-                  <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${isDone ? "bg-success" :
-                      isCurrent ? "bg-brand" :
-                        "border border-border-input bg-transparent"
-                    }`} />
-=======
                   <div
                     className={`w-2.5 h-2.5 rounded-full shrink-0 ${
                       isDone
@@ -154,18 +120,11 @@ export function ProjectCard(
                         : "border border-border-input bg-transparent"
                     }`}
                   />
->>>>>>> master
                   {i < project.steps.length - 1 && (
                     <div className="w-px h-4 bg-border-strong" />
                   )}
                 </div>
                 <div className="flex flex-col gap-0.5 pb-1">
-<<<<<<< HEAD
-                  <span className={`text-sm ${isDone ? "text-text-muted line-through" :
-                      isCurrent ? "text-text-primary font-medium" :
-                        "text-text-secondary"
-                    }`}>
-=======
                   <span
                     className={`text-sm ${
                       isDone
@@ -175,7 +134,6 @@ export function ProjectCard(
                         : "text-text-secondary"
                     }`}
                   >
->>>>>>> master
                     {step}
                   </span>
                   {isCurrent && (
@@ -205,18 +163,13 @@ export function ProjectCard(
             />
           </div>
           {!isLastStep && (
-<<<<<<< HEAD
-            <Button variant="success" onClick={() => setConfirmOpen(true)} className="self-end mt-1">
-              Avançar para próxima etapa
-              <Icon name="next" size={18} />
-=======
             <Button
               variant="success"
               onClick={() => setConfirmOpen(true)}
               className="self-end mt-1"
             >
-              Avançar para próxima etapa →
->>>>>>> master
+              Avançar para próxima etapa
+              <Icon name="next" size={18} />
             </Button>
           )}
         </div>

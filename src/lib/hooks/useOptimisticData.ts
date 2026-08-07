@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SafeActionResponse } from "../action-utils.ts";
+import { SafeActionResponse } from "@/lib/action-utils.ts";
 
 /**
  * useOptimisticData.ts

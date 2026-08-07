@@ -6,10 +6,10 @@
 "use client";
 
 import { useState } from "react";
-import { InventoryItem, InventoryUnit } from "../../../lib/types/index.ts";
-import { formatBRL } from "../../../lib/format.ts";
-import { Modal } from "../../ui/Modal.tsx";
-import { Button } from "../../ui/Button.tsx";
+import { InventoryItem, InventoryUnit } from "@/lib/types/index.ts";
+import { formatBRL } from "@/lib/format.ts";
+import { Modal } from "@/components/ui/Modal.tsx";
+import { Button } from "@/components/ui/Button.tsx";
 
 const UNITS: InventoryUnit[] = [
   "chapas",

@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-import { CompanySettings } from "@/lib/types";
-import { Card, CardTitle } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/icons";
-=======
-import { CompanySettings } from "../../../lib/types/index.ts";
-import { Card, CardTitle } from "../../ui/Card.tsx";
-import { Button } from "../../ui/Button.tsx";
->>>>>>> master
+import { CompanySettings } from "@/lib/types/index.ts";
+import { Card, CardTitle } from "@/components/ui/Card.tsx";
+import { Button } from "@/components/ui/Button.tsx";
+import { Icon } from "@/components/icons/index.ts";
 
 interface CompanyFormProps {
   data: CompanySettings;

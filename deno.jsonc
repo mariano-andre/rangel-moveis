@@ -16,6 +16,7 @@
     "better-sqlite3": "npm:better-sqlite3@^13.0.2",
     "drizzle-kit": "npm:drizzle-kit@^0.31.10",
     "drizzle-orm": "npm:drizzle-orm@^0.45.2",
+    "lucide-react": "npm:lucide-react@^0.474.0",
     "next": "npm:next@16.2.9",
     "pm2": "npm:pm2@^7.0.3",
     "react": "npm:react@19.2.4",

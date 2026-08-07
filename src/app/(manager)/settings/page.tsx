@@ -1,5 +1,5 @@
-import { getSettings } from "../../../db/queries/settings.ts";
-import { SettingsClient } from "../../../components/sections/settings/SettingsClient.tsx";
+import { getSettings } from "@/db/queries/settings.ts";
+import { SettingsClient } from "@/components/sections/settings/SettingsClient.tsx";
 
 export default async function SettingsPage() {
   const settings = await getSettings();

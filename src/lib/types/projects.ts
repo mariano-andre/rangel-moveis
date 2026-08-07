@@ -1,16 +1,10 @@
 export type ProjectStep = string;
 
 export type ProjectStatus =
-<<<<<<< HEAD
-  | "in_progress"  // em andamento
-  | "completed"    // concluído
-  | "paused";      // pausado
-=======
   | "in_progress" // em andamento
   | "waiting" // aguardando (material, cliente, etc.)
   | "completed" // concluído
   | "paused"; // pausado
->>>>>>> master
 
 // Linha da tabela "projects" no banco
 export interface Project {

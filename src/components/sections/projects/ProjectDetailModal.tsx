@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-import { Project, ProjectStatus } from "@/lib/types";
-import { employeesMock } from "@/content/employees";
-import { formatBRL, formatDateBR } from "@/lib/format";
-import { Modal } from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/icons";
-=======
-import { Employee, Project, ProjectStatus } from "../../../lib/types/index.ts";
-import { formatBRL, formatDateBR } from "../../../lib/format.ts";
-import { Modal } from "../../ui/Modal.tsx";
-import { Button } from "../../ui/Button.tsx";
->>>>>>> master
+import { Employee, Project, ProjectStatus } from "@/lib/types/index.ts";
+import { formatBRL, formatDateBR } from "@/lib/format.ts";
+import { Modal } from "@/components/ui/Modal.tsx";
+import { Button } from "@/components/ui/Button.tsx";
+import { Icon } from "@/components/icons/index.ts";
 
 interface ProjectDetailModalProps {
   project: Project;
@@ -20,12 +12,6 @@ interface ProjectDetailModalProps {
   onAdvanceStep: () => void;
 }
 
-<<<<<<< HEAD
-const statusConfig: Record<ProjectStatus, { label: string; className: string }> = {
-  in_progress: { label: "Em andamento", className: "bg-brand-muted text-brand border-brand-border"      },
-  completed:   { label: "Concluído",    className: "bg-success-muted text-success border-success-border" },
-  paused:      { label: "Pausado",      className: "bg-bg-elevated text-text-muted border-border-input"  },
-=======
 const statusConfig: Record<
   ProjectStatus,
   { label: string; className: string }
@@ -46,7 +32,6 @@ const statusConfig: Record<
     label: "Pausado",
     className: "bg-bg-elevated text-text-muted border-border-input",
   },
->>>>>>> master
 };
 
 export function ProjectDetailModal(
@@ -151,24 +136,14 @@ export function ProjectDetailModal(
 
       {/* Footer */}
       <div className="flex justify-between items-center">
-<<<<<<< HEAD
-        {!isLastStep ? (
-          <Button variant="success" onClick={onAdvanceStep}>
-            Avançar para próxima etapa 
-            <Icon name="next" size={18} />
-          </Button>
-        ) : (
-          <span />
-        )}
-=======
         {!isLastStep
           ? (
             <Button variant="success" onClick={onAdvanceStep}>
-              Avançar para próxima etapa →
+              Avançar para próxima etapa
+              <Icon name="next" size={18} />
             </Button>
           )
           : <span />}
->>>>>>> master
         <Button variant="primary" onClick={onEdit}>
           <Icon name="edit" size={18} />
           Editar projeto

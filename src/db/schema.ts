@@ -5,7 +5,7 @@ import {
   InventoryUnit,
   ProjectStatus,
   TransactionType,
-} from "../lib/types/index.ts";
+} from "@/lib/types/index.ts";
 
 // Define the employees table with explicit $type to map to frontend types
 export const employees = sqliteTable("employees", {

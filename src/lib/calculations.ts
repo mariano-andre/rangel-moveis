@@ -1,4 +1,8 @@
-import { InventoryItem, InventoryStatus, Transaction } from "./types/index.ts";
+import {
+  InventoryItem,
+  InventoryStatus,
+  Transaction,
+} from "@/lib/types/index.ts";
 
 // Soma todas as entradas
 export function calcRevenue(transactions: Transaction[]): number {

@@ -1,4 +1,4 @@
-import { InventoryData } from "../lib/types/index.ts";
+import { InventoryData } from "@/lib/types/index.ts";
 
 export const inventoryMock: InventoryData = {
   items: [

@@ -1,8 +1,8 @@
 // Exibe os 4 KPIs principais do módulo financeiro.
 // Recebe valores já calculados via props — não faz cálculos, só formata e exibe.
 
-import { KpiCard } from "../../ui/KpiCard.tsx";
-import { formatBRL } from "../../../lib/format.ts";
+import { KpiCard } from "@/components/ui/KpiCard.tsx";
+import { formatBRL } from "@/lib/format.ts";
 
 interface FinancialKpisProps {
   revenue: number;

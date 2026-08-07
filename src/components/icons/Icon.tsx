@@ -1,5 +1,5 @@
 import type { SVGProps } from "react";
-import { AppIcons, type IconName } from "../icons/icons";
+import { AppIcons, type IconName } from "@/components/icons/icons.ts";
 
 interface IconProps extends SVGProps<SVGSVGElement> {
   name: IconName;

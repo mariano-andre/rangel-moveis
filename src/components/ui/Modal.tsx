@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect } from "react";
-import { Icon } from "../icons";
+import { Icon } from "@/components/icons/index.ts";
 
 type ModalSize = "md" | "lg" | "xl";
 

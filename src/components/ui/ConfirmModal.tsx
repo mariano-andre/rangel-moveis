@@ -1,7 +1,7 @@
 // Modal de confirmação genérico — reutilizável em qualquer tela.
 
-import { Modal } from "./Modal.tsx";
-import { Button } from "./Button.tsx";
+import { Modal } from "@/components/ui/Modal.tsx";
+import { Button } from "@/components/ui/Button.tsx";
 
 interface ConfirmModalProps {
   title: string;

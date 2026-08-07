@@ -3,18 +3,18 @@
 "use client";
 
 import { useState } from "react";
-import { Employee } from "../../../lib/types/index.ts";
-import { formatBRL } from "../../../lib/format.ts";
-import { KpiCard } from "../../ui/KpiCard.tsx";
-import { EmployeesTable } from "./EmployeesTable.tsx";
-import { EmployeeModal } from "./EmployeeModal.tsx";
-import { ConfirmModal } from "../../ui/ConfirmModal.tsx";
+import { Employee } from "@/lib/types/index.ts";
+import { formatBRL } from "@/lib/format.ts";
+import { KpiCard } from "@/components/ui/KpiCard.tsx";
+import { EmployeesTable } from "@/components/sections/employees/EmployeesTable.tsx";
+import { EmployeeModal } from "@/components/sections/employees/EmployeeModal.tsx";
+import { ConfirmModal } from "@/components/ui/ConfirmModal.tsx";
 import {
   addEmployeeAction,
   editEmployeeAction,
   removeEmployeeAction,
-} from "../../../app/actions.ts";
-import { useOptimisticData } from "../../../lib/hooks/useOptimisticData.ts";
+} from "@/app/actions.ts";
+import { useOptimisticData } from "@/lib/hooks/useOptimisticData.ts";
 
 interface EmployeesClientProps {
   initialEmployees: Employee[];

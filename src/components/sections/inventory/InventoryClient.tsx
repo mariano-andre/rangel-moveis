@@ -11,27 +11,15 @@
 "use client";
 
 import { useState } from "react";
-<<<<<<< HEAD
-import { InventoryItem } from "@/lib/types";
-import { calcInventoryStatus } from "@/lib/calculations";
-import { Button } from "@/components/ui/Button";
-import { ConfirmModal } from "@/components/ui/ConfirmModal";
-import { InventoryTable } from "@/components/sections/inventory/InventoryTable";
-import { InventoryModal } from "@/components/sections/inventory/InventoryModal";
-import { Icon } from "@/components/icons";
-=======
-import { InventoryItem } from "../../../lib/types/index.ts";
-import { calcInventoryStatus } from "../../../lib/calculations.ts";
-import { Button } from "../../ui/Button.tsx";
-import { ConfirmModal } from "../../ui/ConfirmModal.tsx";
-import { InventoryTable } from "./InventoryTable.tsx";
-import { InventoryModal } from "./InventoryModal.tsx";
-import {
-  editInventoryAction,
-  removeInventoryAction,
-} from "../../../app/actions.ts";
-import { useOptimisticData } from "../../../lib/hooks/useOptimisticData.ts";
->>>>>>> master
+import { InventoryItem } from "@/lib/types/index.ts";
+import { calcInventoryStatus } from "@/lib/calculations.ts";
+import { Button } from "@/components/ui/Button.tsx";
+import { ConfirmModal } from "@/components/ui/ConfirmModal.tsx";
+import { InventoryTable } from "@/components/sections/inventory/InventoryTable.tsx";
+import { InventoryModal } from "@/components/sections/inventory/InventoryModal.tsx";
+import { Icon } from "@/components/icons/index.ts";
+import { editInventoryAction, removeInventoryAction } from "@/app/actions.ts";
+import { useOptimisticData } from "@/lib/hooks/useOptimisticData.ts";
 
 interface InventoryClientProps {
   initialItems: InventoryItem[];

@@ -11,22 +11,19 @@
 "use client";
 
 import { useState } from "react";
-import { MonthlyRevenue, Transaction } from "../../../lib/types/index.ts";
+import { MonthlyRevenue, Transaction } from "@/lib/types/index.ts";
 import {
   calcExpenses,
   calcExpensesByCategory,
   calcRevenue,
-} from "../../../lib/calculations.ts";
-import { FinancialKpis } from "./FinancialKpis.tsx";
-import { ExpensesByCategory } from "./ExpensesByCategory.tsx";
-import { MonthlyRevenueChart } from "./MonthlyRevenueChart.tsx";
-import { TransactionsTable } from "./TransactionsTable.tsx";
-import { TransactionModal } from "./TransactionModal.tsx";
-import {
-  addTransactionAction,
-  editTransactionAction,
-} from "../../../app/actions.ts";
-import { useOptimisticData } from "../../../lib/hooks/useOptimisticData.ts";
+} from "@/lib/calculations.ts";
+import { FinancialKpis } from "@/components/sections/financial/FinancialKpis.tsx";
+import { ExpensesByCategory } from "@/components/sections/financial/ExpensesByCategory.tsx";
+import { MonthlyRevenueChart } from "@/components/sections/financial/MonthlyRevenueChart.tsx";
+import { TransactionsTable } from "@/components/sections/financial/TransactionsTable.tsx";
+import { TransactionModal } from "@/components/sections/financial/TransactionModal.tsx";
+import { addTransactionAction, editTransactionAction } from "@/app/actions.ts";
+import { useOptimisticData } from "@/lib/hooks/useOptimisticData.ts";
 
 interface FinancialClientProps {
   initialTransactions: Transaction[];

@@ -28,6 +28,7 @@ export function LoginClient({ employees }: LoginClientProps) {
         const result = await loginManagerAction(password);
         if (!result.success) {
           setError(result.error);
+          setIsLoading(false);
         } else {
           router.push("/projects");
         }
@@ -43,18 +44,14 @@ export function LoginClient({ employees }: LoginClientProps) {
         );
         if (!result.success) {
           setError(result.error);
+          setIsLoading(false);
         } else {
           router.push("/employee/projects");
         }
       }
     } catch (_err) {
       setError("Ocorreu um erro inesperado.");
-    } finally {
-      if (!error) {
-        // if success, keep loading state while redirecting
-      } else {
-        setIsLoading(false);
-      }
+      setIsLoading(false);
     }
   }
 
@@ -136,8 +133,10 @@ export function LoginClient({ employees }: LoginClientProps) {
               className="input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Sua senha"
-              required
+              placeholder={activeTab === "manager"
+                ? "Sua senha"
+                : "Sua senha (se houver)"}
+              required={activeTab === "manager"}
             />
           </div>
 

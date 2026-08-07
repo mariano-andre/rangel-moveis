@@ -18,5 +18,6 @@ export async function verifyEmployeePassword(
     eq(employees.id, employeeId),
   );
   if (result.length === 0) return false;
-  return result[0].password === password;
+  const dbPassword = result[0].password || "";
+  return dbPassword === password;
 }

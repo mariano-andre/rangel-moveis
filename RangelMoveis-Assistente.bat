@@ -51,7 +51,7 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-echo [1/3] Compilando o sistema...
+echo [1/2] Compilando o sistema...
 call deno task build
 if %errorlevel% neq 0 (
     color 0C
@@ -62,7 +62,7 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-echo [2/3] Atualizando o Banco de Dados...
+echo [2/2] Atualizando o Banco de Dados...
 call deno task db:migrate
 if %errorlevel% neq 0 (
     color 0C
@@ -72,16 +72,6 @@ if %errorlevel% neq 0 (
     goto MENU
 )
 
-echo.
-echo [3/3] Garantindo dados iniciais...
-call deno task db:seed
-if %errorlevel% neq 0 (
-    color 0C
-    echo [ERRO] Falha ao semear o banco de dados.
-    pause
-    color 0F
-    goto MENU
-)
 
 color 0A
 echo.

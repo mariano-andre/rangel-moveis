@@ -2,6 +2,7 @@ import { db } from "@/db/index.ts";
 import { inventory } from "@/db/schema.ts";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+import { inventoryMock } from "@/content/inventory.ts";
 
 export const insertInventorySchema = z.object({
   material: z.string().min(1, "Material é obrigatório").max(
@@ -17,7 +18,20 @@ export const insertInventorySchema = z.object({
 export type InsertInventory = z.infer<typeof insertInventorySchema>;
 
 export async function getInventory() {
-  return await db.select().from(inventory).orderBy(inventory.material);
+  const result = await db.select().from(inventory).orderBy(inventory.material);
+  if (result.length === 0) {
+    const defaultItems = inventoryMock.items.map((item) => ({
+      material: item.material,
+      unit: item.unit,
+      quantity: item.quantity,
+      minimum: item.minimum,
+      pricePerUnit: item.pricePerUnit,
+    }));
+    const inserted = await db.insert(inventory).values(defaultItems)
+      .returning();
+    return inserted.sort((a, b) => a.material.localeCompare(b.material));
+  }
+  return result;
 }
 
 export async function getInventoryById(id: number) {

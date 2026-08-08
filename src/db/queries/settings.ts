@@ -30,7 +30,7 @@ export async function getSettings() {
       id: 1,
       companyName: "Minha Marcenaria",
       companyPhone: "",
-      managerPassword: "admin", // default password
+      managerPassword: "admin123", // default password
       monthlyRevenueGoal: 10000,
       defaultCommissionPercent: 10,
       alertLowInventory: true,

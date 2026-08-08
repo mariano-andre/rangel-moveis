@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { AlertSettings, CompanySettings, Settings } from "@/lib/types/index.ts";
 import { CompanyForm } from "@/components/sections/settings/CompanyForm.tsx";
-import { AlertsForm } from "@/components/sections/settings/AlertsForm.tsx";
 import { saveSettingsAction } from "@/app/actions.ts";
 
 interface SettingsClientProps {
@@ -55,10 +54,6 @@ export function SettingsClient({ initialSettings }: SettingsClientProps) {
         onChange={handleCompanyChange}
         onSave={handleSave}
         saved={saved}
-      />
-      <AlertsForm
-        data={alerts}
-        onChange={handleAlertChange}
       />
     </div>
   );

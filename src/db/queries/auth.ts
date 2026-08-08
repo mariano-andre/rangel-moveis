@@ -1,13 +1,13 @@
 import { db } from "@/db/index.ts";
-import { employees, settings } from "@/db/schema.ts";
+import { employees } from "@/db/schema.ts";
 import { eq } from "drizzle-orm";
+import { getSettings } from "@/db/queries/settings.ts";
 
 export async function verifyManagerPassword(
   password: string,
 ): Promise<boolean> {
-  const result = await db.select().from(settings).where(eq(settings.id, 1));
-  if (result.length === 0) return false;
-  return result[0].managerPassword === password;
+  const settingsRow = await getSettings();
+  return settingsRow.managerPassword === password;
 }
 
 export async function verifyEmployeePassword(
